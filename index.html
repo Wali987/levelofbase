@@ -31,8 +31,8 @@
             font-family: 'Rajdhani', sans-serif;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 40%);
+                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.12) 0%, transparent 40%);
             min-height: 100vh;
         }
 
@@ -183,33 +183,38 @@
 
         .game-thumbnail {
             width: 100%;
-            height: 150px;
-            background: linear-gradient(135deg, #161b2e, #202640);
+            height: 160px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
+            background-size: cover;
+            background-position: center;
         }
 
-        .game-thumbnail::after {
+        .game-thumbnail::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: radial-gradient(circle, transparent 40%, rgba(0,0,0,0.6) 100%);
+            background: rgba(0, 0, 0, 0.35);
+            transition: background 0.3s;
+        }
+
+        .game-card:hover .game-thumbnail::before {
+            background: rgba(0, 0, 0, 0.1);
         }
 
         .game-thumbnail i {
-            font-size: 42px;
-            color: var(--accent-neon);
+            font-size: 36px;
+            color: white;
             z-index: 1;
-            transition: transform 0.3s ease, color 0.3s ease;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            transition: transform 0.3s ease;
         }
 
         .game-card:hover .game-thumbnail i {
-            transform: scale(1.15) rotate(5deg);
-            color: var(--accent-pink);
+            transform: scale(1.2);
         }
 
         .game-info {
@@ -386,56 +391,56 @@
 
     <script>
         const games = [
-            { title: "Cyber Strike 36", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs" },
-            { title: "Quantum Rush 37", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-rocket" },
-            { title: "Neon Drift 38", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car-burst" },
-            { title: "Hyper Blade 39", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-khanda" },
-            { title: "Void Runner 40", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running" },
-            { title: "Pixel Apex 41", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube" },
-            { title: "Omega Core 42", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom" },
-            { title: "Stellar Strike 43", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor" },
-            { title: "Titan Clash 44", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-shield-halved" },
-            { title: "Vortex Surge 45", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-tornado" },
-            { title: "Pulse Wave 46", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-wave-square" },
-            { title: "Zenith Bound 47", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-mountain" },
-            { title: "Shadow Strike 48", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-user-ninja" },
-            { title: "Ignite Engine 49", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-fire-flame-curved" },
-            { title: "Nexus Prime 50", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-globe" },
-            { title: "Arcade Master 01", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-gamepad" },
-            { title: "Arcade Master 02", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-dice" },
-            { title: "Arcade Master 03", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-ghost" },
-            { title: "Arcade Master 04", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-puzzle-piece" },
-            { title: "Arcade Master 05", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-chess" },
-            { title: "Arcade Master 06", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-dragon" },
-            { title: "Arcade Master 07", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-trophy" },
-            { title: "Arcade Master 08", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bolt-lightning" },
-            { title: "Arcade Master 09", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-brain" },
-            { title: "Arcade Master 10", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-jet-fighter" },
-            { title: "Arcade Master 11", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-car" },
-            { title: "Arcade Master 12", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-gun" },
-            { title: "Arcade Master 13", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-motorcycle" },
-            { title: "Arcade Master 14", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-fighter-jet" },
-            { title: "Arcade Master 15", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-bullseye" },
-            { title: "Arcade Master 16", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-headphones" },
-            { title: "Arcade Master 17", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-shield" },
-            { title: "Arcade Master 18", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-fire" },
-            { title: "Arcade Master 19", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-skull" },
-            { title: "Arcade Master 20", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-anchor" },
-            { title: "Arcade Master 21", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-wand-magic-sparkles" },
-            { title: "Arcade Master 22", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-gem" },
-            { title: "Arcade Master 23", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-crown" },
-            { title: "Arcade Master 24", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-star" },
-            { title: "Arcade Master 25", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-compass" },
-            { title: "Arcade Master 26", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-gauge-high" },
-            { title: "Arcade Master 27", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-bolt" },
-            { title: "Arcade Master 28", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-plane" },
-            { title: "Arcade Master 29", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-satellite" },
-            { title: "Arcade Master 30", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-circle-nodes" },
-            { title: "Arcade Master 31", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-microchip" },
-            { title: "Arcade Master 32", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-keyboard" },
-            { title: "Arcade Master 33", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-display" },
-            { title: "Arcade Master 34", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-vr-cardboard" },
-            { title: "Arcade Master 35", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-ghost" }
+            { title: "Cyber Strike 36", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)" },
+            { title: "Quantum Rush 37", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-rocket", bg: "linear-gradient(135deg, #141e30, #243b55)" },
+            { title: "Neon Drift 38", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car-burst", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
+            { title: "Hyper Blade 39", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-khanda", bg: "linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b)" },
+            { title: "Void Runner 40", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
+            { title: "Pixel Apex 41", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Omega Core 42", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
+            { title: "Stellar Strike 43", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
+            { title: "Titan Clash 44", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #000428, #004e92)" },
+            { title: "Vortex Surge 45", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-tornado", bg: "linear-gradient(135deg, #283048, #859398)" },
+            { title: "Pulse Wave 46", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-wave-square", bg: "linear-gradient(135deg, #3a6073, #16222a)" },
+            { title: "Zenith Bound 47", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-mountain", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
+            { title: "Shadow Strike 48", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #1a1a1a, #434343)" },
+            { title: "Ignite Engine 49", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-fire-flame-curved", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
+            { title: "Nexus Prime 50", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-globe", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Arcade Master 01", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-gamepad", bg: "linear-gradient(135deg, #0575e6, #00f2fe)" },
+            { title: "Arcade Master 02", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-dice", bg: "linear-gradient(135deg, #f7ff00, #db36a4)" },
+            { title: "Arcade Master 03", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-ghost", bg: "linear-gradient(135deg, #4facfe, #00f2fe)" },
+            { title: "Arcade Master 04", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-puzzle-piece", bg: "linear-gradient(135deg, #43e97b, #38f9d7)" },
+            { title: "Arcade Master 05", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-chess", bg: "linear-gradient(135deg, #fa709a, #fee140)" },
+            { title: "Arcade Master 06", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-dragon", bg: "linear-gradient(135deg, #30cfd0, #330867)" },
+            { title: "Arcade Master 07", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-trophy", bg: "linear-gradient(135deg, #a8ff78, #78ffd6)" },
+            { title: "Arcade Master 08", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bolt-lightning", bg: "linear-gradient(135deg, #ff0844, #ffb199)" },
+            { title: "Arcade Master 09", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-brain", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Arcade Master 10", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-jet-fighter", bg: "linear-gradient(135deg, #7f00ff, #e100ff)" },
+            { title: "Arcade Master 11", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-car", bg: "linear-gradient(135deg, #fc4a1a, #f7b733)" },
+            { title: "Arcade Master 12", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-gun", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
+            { title: "Arcade Master 13", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-motorcycle", bg: "linear-gradient(135deg, #ee0979, #ff6a00)" },
+            { title: "Arcade Master 14", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #4568dc, #b06ab3)" },
+            { title: "Arcade Master 15", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
+            { title: "Arcade Master 16", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-headphones", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
+            { title: "Arcade Master 17", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-shield", bg: "linear-gradient(135deg, #70e1f5, #ffd194)" },
+            { title: "Arcade Master 18", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-fire", bg: "linear-gradient(135deg, #f953c6, #b91d73)" },
+            { title: "Arcade Master 19", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-skull", bg: "linear-gradient(135deg, #606c88, #3f4c6b)" },
+            { title: "Arcade Master 20", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-anchor", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
+            { title: "Arcade Master 21", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-wand-magic-sparkles", bg: "linear-gradient(135deg, #834d9b, #d04ed6)" },
+            { title: "Arcade Master 22", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-gem", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
+            { title: "Arcade Master 23", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-crown", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
+            { title: "Arcade Master 24", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-star", bg: "linear-gradient(135deg, #ffe000, #799f0c)" },
+            { title: "Arcade Master 25", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-compass", bg: "linear-gradient(135deg, #396afc, #2948ff)" },
+            { title: "Arcade Master 26", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
+            { title: "Arcade Master 27", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-bolt", bg: "linear-gradient(135deg, #56ab2f, #a8e063)" },
+            { title: "Arcade Master 28", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-plane", bg: "linear-gradient(135deg, #396afc, #2948ff)" },
+            { title: "Arcade Master 29", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-satellite", bg: "linear-gradient(135deg, #4ca1af, #2c3e50)" },
+            { title: "Arcade Master 30", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-circle-nodes", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Arcade Master 31", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-microchip", bg: "linear-gradient(135deg, #232526, #414345)" },
+            { title: "Arcade Master 32", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-keyboard", bg: "linear-gradient(135deg, #4e54c8, #8f94fb)" },
+            { title: "Arcade Master 33", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-display", bg: "linear-gradient(135deg, #0f2027, #203a43)" },
+            { title: "Arcade Master 34", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-vr-cardboard", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)" },
+            { title: "Arcade Master 35", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-ghost", bg: "linear-gradient(135deg, #1f4068, #e43f5a)" }
         ];
 
         function renderGames(list) {
@@ -448,7 +453,7 @@
                 card.onclick = () => openGame(game.title, game.url);
                 
                 card.innerHTML = `
-                    <div class="game-thumbnail">
+                    <div class="game-thumbnail" style="background-image: ${game.bg};">
                         <i class="fa-solid ${game.icon}"></i>
                     </div>
                     <div class="game-info">
