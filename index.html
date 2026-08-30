@@ -37,7 +37,7 @@
 
         @media (min-width: 768px) {
             .app-container {
-                max-width: 900px; /* Laptop par ekdum wide aur khuli screen */
+                max-width: 900px;
                 border-radius: 16px;
                 margin: auto;
                 height: 92vh;
@@ -81,7 +81,6 @@
 
         .section-heading { font-family: 'Orbitron', sans-serif; font-size: 15px; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; color: var(--accent-neon); }
 
-        /* Games Grid - Laptop friendly (4 columns) */
         .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         @media (min-width: 768px) {
             .games-grid { grid-template-columns: repeat(4, 1fr); }
@@ -105,7 +104,10 @@
         .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
         .game-modal-header { padding: 12px 20px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
+        
+        /* Anti-Cheat Timer Banner with Status */
         .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: block !important; }
+        .afk-warning { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border-bottom: 1px dashed #ff4d4d; }
     </style>
 </head>
 <body>
@@ -170,7 +172,7 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Welcome to Nexus Arcade! Play games continuously for 30 minutes to earn your rewards. Keep streaks safe!</marquee>
+                <marquee scrollamount="4">📢 Active Play Required! Keep playing games interactively to earn your 30-minute rewards safely.</marquee>
             </div>
 
             <div class="wallet-card">
@@ -255,6 +257,8 @@
         let authMode = 'login';
         let gameTimer;
         let timeLeft = 1800; // 30 minutes
+        let lastActivityTime = Date.now();
+        let isAfk = false;
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -425,15 +429,45 @@
             }
         }
 
+        // Anti-Cheat: User interaction detection
+        function resetActivity() {
+            lastActivityTime = Date.now();
+            if (isAfk) {
+                isAfk = false;
+            }
+        }
+
         function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
 
             timeLeft = 1800; // 30 minutes
+            lastActivityTime = Date.now();
+            isAfk = false;
             updateTimerBanner();
 
+            // Listen for clicks/touches inside the page to keep tracking active play
+            window.addEventListener('mousemove', resetActivity);
+            window.addEventListener('keydown', resetActivity);
+            window.addEventListener('click', resetActivity);
+
             gameTimer = setInterval(() => {
+                let inactiveDuration = (Date.now() - lastActivityTime) / 1000; // seconds
+
+                // Agar user 30 seconds se kuch nahi kar raha (AFK)
+                if (inactiveDuration > 30) {
+                    isAfk = true;
+                    let banner = document.getElementById('timerBanner');
+                    banner.innerText = `⚠️ AFK WARNING: Play the game! Timer paused (${Math.floor(inactiveDuration)}s inactive)`;
+                    banner.classList.add('afk-warning');
+                    return; // Timer stop rahega jab tak user wapas play na kare
+                } else {
+                    isAfk = false;
+                    let banner = document.getElementById('timerBanner');
+                    banner.classList.remove('afk-warning');
+                }
+
                 timeLeft--;
                 updateTimerBanner();
 
@@ -449,6 +483,7 @@
         }
 
         function updateTimerBanner() {
+            if (isAfk) return;
             let mins = Math.floor(timeLeft / 60);
             let secs = timeLeft % 60;
             document.getElementById('timerBanner').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left to earn ₹5.00`;
@@ -456,6 +491,9 @@
 
         function closeGameModal() {
             clearInterval(gameTimer);
+            window.removeEventListener('mousemove', resetActivity);
+            window.removeEventListener('keydown', resetActivity);
+            window.removeEventListener('click', resetActivity);
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
         }
