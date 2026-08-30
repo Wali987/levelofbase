@@ -139,7 +139,7 @@
 
         .form-container {
             padding: 20px;
-            padding-bottom: 40px; /* Ensures register button is fully visible */
+            padding-bottom: 40px;
         }
 
         .input-group {
@@ -400,7 +400,7 @@
             height: 65px;
             background: var(--bg-card);
             border-top: 1px solid rgba(0, 240, 255, 0.15);
-            display: none; /* Hidden by default on auth screens */
+            display: none;
             justify-content: space-around;
             align-items: center;
             flex-shrink: 0;
@@ -408,7 +408,7 @@
         }
 
         .bottom-nav.active-nav {
-            display: flex; /* Shown only on dashboard screens */
+            display: flex;
         }
 
         .nav-item {
@@ -496,7 +496,7 @@
 
     <div class="app-container">
         
-        <!-- SCREEN 1: WELCOME / LANDING (No Bottom Nav) -->
+        <!-- SCREEN 1: WELCOME / LANDING -->
         <div id="screen-welcome" class="screen-content active">
             <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 30px; text-align: center;">
                 <h1 style="font-family: 'Orbitron'; font-size: 24px; color: var(--accent-neon);">NEXUS ARCADE</h1>
@@ -512,7 +512,7 @@
             </div>
         </div>
 
-        <!-- SCREEN 2: REGISTER (No Bottom Nav, Fully Scrollable for Button Visibility) -->
+        <!-- SCREEN 2: REGISTER -->
         <div id="screen-register" class="screen-content">
             <div class="header-bar">
                 <i class="fa-solid fa-arrow-left" onclick="showScreen('screen-welcome')"></i>
@@ -559,7 +559,7 @@
             </div>
         </div>
 
-        <!-- SCREEN 3: LOBBY / HOME (With Bottom Nav) -->
+        <!-- SCREEN 3: LOBBY / HOME -->
         <div id="screen-lobby" class="screen-content">
             <div class="dashboard-body">
                 <div class="wallet-card">
@@ -570,7 +570,6 @@
                     <button class="withdraw-btn" onclick="openWithdrawModal()">Withdraw</button>
                 </div>
 
-                <!-- 30-Minutes Active Gaming Timer Widget -->
                 <div class="timer-widget">
                     <div>
                         <div style="font-size: 12px; color: var(--text-muted);">Play Time Reward Target</div>
@@ -583,9 +582,7 @@
                     <i class="fa-solid fa-bolt" style="color: var(--accent-neon);"></i> Recommended Games (50+ Arcade Games)
                 </div>
 
-                <div class="games-grid" id="gamesGrid">
-                    <!-- Dynamically populated 50 games -->
-                </div>
+                <div class="games-grid" id="gamesGrid"></div>
             </div>
         </div>
 
@@ -627,7 +624,6 @@
             </div>
 
             <div class="dashboard-body" style="padding-top: 0;">
-                <!-- Daily Streak Feature -->
                 <div class="streak-card">
                     <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px;">
                         <span>🔥 Daily Login Streak</span>
@@ -742,7 +738,7 @@
             { title: "Ultimate Arcade", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-trophy", bg: "linear-gradient(135deg, #00bf8f, #001510)" }
         ];
 
-        let secondsLeft = 1800; // 30 Minutes
+        let secondsLeft = 1800;
         let timerInterval = null;
         let userBalance = 150.00;
         let generatedOtp = "";
@@ -868,6 +864,11 @@
         function closeGameModal() {
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
+            
+            if(timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
         }
 
         function openWithdrawModal() {
