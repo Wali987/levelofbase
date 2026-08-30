@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusArcade - Ultimate Gaming Portal</title>
+    <title>NexusArcade - Ultimate Gaming Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -12,10 +12,10 @@
             --bg-card: #131622;
             --accent-neon: #00f0ff;
             --accent-purple: #7000ff;
-            --accent-pink: #ff007f;
+            --accent-gold: #ffb703;
             --text-main: #ffffff;
             --text-muted: #8b9bb4;
-            --glow: 0 0 20px rgba(0, 240, 255, 0.4);
+            --glow: 0 0 20px rgba(0, 240, 255, 0.3);
         }
 
         * {
@@ -29,462 +29,581 @@
             background-color: var(--bg-deep);
             color: var(--text-main);
             font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(112, 0, 255, 0.12) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(0, 240, 255, 0.12) 0%, transparent 40%);
             min-height: 100vh;
-        }
-
-        header {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 20px 5%;
-            background: rgba(19, 22, 34, 0.85);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
 
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 26px;
-            font-weight: 900;
-            background: linear-gradient(45deg, var(--accent-neon), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: var(--glow);
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .search-container {
-            position: relative;
-            width: 320px;
-        }
-
-        .search-container input {
+        .app-container {
             width: 100%;
-            padding: 12px 20px 12px 45px;
-            background: rgba(10, 11, 16, 0.6);
-            border: 1px solid rgba(139, 155, 180, 0.3);
-            border-radius: 30px;
-            color: var(--text-main);
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 16px;
-            transition: all 0.3s ease;
-        }
-
-        .search-container input:focus {
-            border-color: var(--accent-neon);
-            box-shadow: var(--glow);
-        }
-
-        .search-container i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-        }
-
-        .main-container {
-            max-width: 1400px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .hero-banner {
-            background: linear-gradient(135deg, rgba(112, 0, 255, 0.25), rgba(0, 240, 255, 0.15));
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 16px;
-            padding: 40px;
-            margin-bottom: 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 480px;
+            height: 100vh;
+            max-height: 900px;
+            background: var(--bg-deep);
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            overflow-y: auto;
+            box-shadow: 0 0 50px rgba(0,0,0,0.9);
+            border: 1px solid rgba(0, 240, 255, 0.2);
         }
 
-        .hero-content h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 38px;
-            margin-bottom: 10px;
-            color: var(--text-main);
-            text-transform: uppercase;
+        .screen {
+            display: none;
+            flex-direction: column;
+            min-height: 100%;
+            padding-bottom: 70px;
         }
 
-        .hero-content p {
-            color: var(--text-muted);
-            font-size: 18px;
-            max-width: 600px;
+        .screen.active {
+            display: flex;
         }
 
-        .stats-badge {
-            background: rgba(0, 0, 0, 0.6);
-            padding: 15px 25px;
-            border-radius: 12px;
-            border: 1px solid var(--accent-neon);
-            font-family: 'Orbitron', sans-serif;
+        /* --- SCREEN 1: WELCOME / LANDING --- */
+        #screen-welcome {
+            justify-content: center;
+            align-items: center;
             text-align: center;
+            padding: 30px;
+            background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, var(--bg-deep) 70%);
+        }
+
+        .welcome-logo-box {
+            width: 160px;
+            height: 160px;
+            border: 2px dashed var(--accent-neon);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 25px auto;
+            background: rgba(0, 240, 255, 0.05);
             box-shadow: var(--glow);
         }
 
-        .stats-badge span {
-            display: block;
-            font-size: 24px;
+        .welcome-logo-box i {
+            font-size: 50px;
             color: var(--accent-neon);
-            font-weight: 700;
+            margin-bottom: 8px;
         }
 
-        .section-title {
+        .auth-btn-group {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-main {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 22px;
-            margin-bottom: 20px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon));
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-neon);
+            color: var(--accent-neon);
+        }
+
+        /* --- SCREEN 2: REGISTER --- */
+        .header-bar {
+            padding: 18px 20px;
             display: flex;
             align-items: center;
-            gap: 12px;
-            letter-spacing: 1px;
-            border-left: 4px solid var(--accent-neon);
-            padding-left: 12px;
+            gap: 15px;
+            background: var(--bg-card);
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
         }
 
-        .game-grid {
+        .header-bar i {
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .form-container {
+            padding: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .input-box {
+            display: flex;
+            align-items: center;
+            background: var(--bg-card);
+            border: 1px solid rgba(139, 155, 180, 0.2);
+            border-radius: 10px;
+            padding: 0 15px;
+        }
+
+        .input-box input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            padding: 12px 10px;
+            color: white;
+            font-size: 15px;
+            font-family: 'Rajdhani', sans-serif;
+        }
+
+        .input-box i {
+            color: var(--accent-neon);
+        }
+
+        /* --- SCREEN 3: LOBBY / GAMES --- */
+        .lobby-hero {
+            margin: 15px;
+            background: linear-gradient(135deg, rgba(112, 0, 255, 0.2), rgba(0, 240, 255, 0.1));
+            border-radius: 14px;
+            padding: 20px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+        }
+
+        .category-tabs {
+            display: flex;
+            gap: 10px;
+            padding: 0 15px;
+            overflow-x: auto;
+            margin-bottom: 20px;
+        }
+
+        .tab-item {
+            background: var(--bg-card);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            white-space: nowrap;
+            border: 1px solid rgba(139, 155, 180, 0.2);
+        }
+
+        .tab-item.active {
+            background: var(--accent-neon);
+            color: black;
+            border-color: var(--accent-neon);
+        }
+
+        .section-heading {
+            padding: 0 15px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 15px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .games-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            gap: 25px;
-            margin-bottom: 50px;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            padding: 0 15px;
         }
 
         .game-card {
             background: var(--bg-card);
-            border-radius: 14px;
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid rgba(139, 155, 180, 0.15);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+            transition: 0.2s;
         }
 
         .game-card:hover {
-            transform: translateY(-8px);
             border-color: var(--accent-neon);
-            box-shadow: var(--glow);
+            transform: translateY(-3px);
         }
 
-        .game-thumbnail {
-            width: 100%;
-            height: 160px;
-            position: relative;
+        .game-thumb {
+            height: 110px;
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            background-size: cover;
-            background-position: center;
+            position: relative;
         }
 
-        .game-thumbnail::before {
+        .game-thumb::after {
             content: '';
             position: absolute;
             inset: 0;
-            background: rgba(0, 0, 0, 0.35);
-            transition: background 0.3s;
+            background: rgba(0,0,0,0.3);
         }
 
-        .game-card:hover .game-thumbnail::before {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .game-thumbnail i {
-            font-size: 36px;
+        .game-thumb i {
+            font-size: 28px;
             color: white;
             z-index: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .game-card:hover .game-thumbnail i {
-            transform: scale(1.2);
         }
 
         .game-info {
-            padding: 15px;
+            padding: 10px;
             display: flex;
-            flex-direction: column;
-            flex-grow: 1;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .game-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 14px;
+        .game-name {
+            font-size: 13px;
             font-weight: 700;
-            margin-bottom: 12px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: #e2e8f0;
+            max-width: 90px;
         }
 
-        .play-btn {
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon));
-            color: white;
+        .play-now-sm {
+            background: var(--accent-neon);
+            color: black;
             border: none;
-            padding: 10px;
-            border-radius: 8px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: 700;
-            cursor: pointer;
-            width: 100%;
+        }
+
+        /* --- SCREEN 4: ACCOUNT & DAILY STREAK --- */
+        .account-header {
+            background: var(--bg-card);
+            padding: 25px;
             text-align: center;
-            transition: opacity 0.2s, box-shadow 0.2s;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.1);
         }
 
-        .play-btn:hover {
-            opacity: 0.95;
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.5);
+        .streak-card {
+            margin: 15px;
+            background: var(--bg-card);
+            border-radius: 14px;
+            padding: 15px;
+            border: 1px solid var(--accent-gold);
         }
 
-        /* Modal Player Styling */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 6, 9, 0.96);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
+        .streak-days {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .streak-day {
+            background: rgba(255,255,255,0.05);
+            width: 38px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
             flex-direction: column;
-            padding: 20px;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            gap: 2px;
         }
 
-        .modal-header {
-            width: 100%;
-            max-width: 1024px;
+        .streak-day.claimed {
+            background: var(--accent-gold);
+            color: black;
+            font-weight: 700;
+        }
+
+        .menu-list {
+            padding: 0 15px;
+        }
+
+        .menu-item {
+            background: var(--bg-card);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            cursor: pointer;
+            border: 1px solid rgba(139, 155, 180, 0.15);
         }
 
-        .modal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 20px;
+        /* --- BOTTOM NAV BAR --- */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 65px;
+            background: var(--bg-card);
+            border-top: 1px solid rgba(0, 240, 255, 0.15);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 11px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .nav-item.active {
             color: var(--accent-neon);
         }
 
-        .close-btn {
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
+        .nav-item i {
             font-size: 18px;
-            cursor: pointer;
-            transition: background 0.2s;
+            margin-bottom: 3px;
+        }
+
+        /* --- TRUE FULLSCREEN GAME PLAYER MODAL --- */
+        .game-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 3000;
+            flex-direction: column;
+        }
+
+        .game-modal-header {
+            padding: 12px 20px;
+            background: #131622;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
         }
 
-        .close-btn:hover {
-            background: var(--accent-pink);
+        .close-game-btn {
+            background: #ff007f;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Orbitron';
         }
 
-        .iframe-container {
-            width: 100%;
-            max-width: 1024px;
-            height: 80vh;
-            background: black;
-            border-radius: 12px;
-            overflow: hidden;
-            border: 2px solid var(--accent-neon);
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.4);
-        }
-
-        iframe {
+        .game-modal iframe {
+            flex: 1;
             width: 100%;
             height: 100%;
             border: none;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            background: var(--bg-card);
-            border-top: 1px solid rgba(139, 155, 180, 0.1);
-            color: var(--text-muted);
-            font-size: 15px;
-            margin-top: 60px;
-        }
-
-        @media(max-width: 768px) {
-            header { flex-direction: column; gap: 15px; }
-            .search-container { width: 100%; }
-            .hero-banner { flex-direction: column; text-align: center; gap: 20px; }
-            .iframe-container { height: 60vh; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo">
-            <i class="fa-solid fa-gamepad"></i> NEXUS ARCADE
-        </div>
-        <div class="search-container">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="searchInput" placeholder="Search 50 elite games..." onkeyup="filterGames()">
-        </div>
-    </header>
-
-    <div class="main-container">
-        <div class="hero-banner">
-            <div class="hero-content">
-                <h1>Next-Gen Cloud Gaming</h1>
-                <p>Explore an elite catalog of 50 high-performance web games. Zero downloads, instant action, pure arcade adrenaline.</p>
+    <div class="app-container">
+        
+        <div id="screen-welcome" class="screen active">
+            <h1 style="font-family: 'Orbitron'; font-size: 24px; color: var(--accent-neon);">NEXUS ARCADE</h1>
+            <div class="welcome-logo-box">
+                <i class="fa-solid fa-gamepad"></i>
+                <span style="font-family: 'Orbitron'; font-weight: 700; font-size: 12px;">LOGO</span>
             </div>
-            <div class="stats-badge">
-                Total Games
-                <span id="gameCount">50</span>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Instant Cloud Gaming Platform</p>
+            <div class="auth-btn-group">
+                <button class="btn-main btn-primary" onclick="switchScreen('screen-register')">Signup</button>
+                <button class="btn-main btn-outline" onclick="switchScreen('screen-lobby')">Login</button>
             </div>
         </div>
 
-        <div class="section-title">
-            <i class="fa-solid fa-bolt"></i> Featured & All Games
+        <div id="screen-register" class="screen">
+            <div class="header-bar">
+                <i class="fa-solid fa-arrow-left" onclick="switchScreen('screen-welcome')"></i>
+                <h3 style="font-family: 'Orbitron'; font-size: 16px;">Create Account</h3>
+            </div>
+            <div class="form-container">
+                <div class="input-group">
+                    <label>Phone Number</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-phone"></i>
+                        <input type="text" placeholder="Enter phone number">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Verification Code</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-shield"></i>
+                        <input type="text" placeholder="Confirmation code">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Set Password</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="Password">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-lock"></i>
+                        <input type="password" placeholder="Confirm password">
+                    </div>
+                </div>
+                <button class="btn-main btn-primary" style="width: 100%; margin-top: 15px;" onclick="switchScreen('screen-lobby')">Register</button>
+            </div>
         </div>
 
-        <div class="game-grid" id="gameGrid">
-            <!-- Dynamic Games will be injected here -->
+        <div id="screen-lobby" class="screen">
+            <div class="lobby-hero">
+                <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon);">Arcade Lobby</h2>
+                <p style="font-size: 13px; color: var(--text-muted); margin-top: 5px;">Choose your favorite game and play instantly.</p>
+            </div>
+
+            <div class="category-tabs">
+                <div class="tab-item active">All Games</div>
+                <div class="tab-item">Action</div>
+                <div class="tab-item">Racing</div>
+                <div class="tab-item">Puzzle</div>
+            </div>
+
+            <div class="section-heading">
+                <i class="fa-solid fa-bolt" style="color: var(--accent-neon);"></i> Recommended Games
+            </div>
+
+            <div class="games-grid" id="gamesGrid">
+                </div>
         </div>
+
+        <div id="screen-account" class="screen">
+            <div class="account-header">
+                <div style="font-size: 18px; font-family: 'Orbitron'; font-weight: 700;">Gamer Profile</div>
+                <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">ID: NEXUS-8942</div>
+            </div>
+
+            <div class="streak-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px;">
+                    <span>🔥 Daily Login Streak</span>
+                    <span style="color: var(--accent-gold);">Day 3 of 7</span>
+                </div>
+                <div class="streak-days">
+                    <div class="streak-day claimed">Day 1<span>XP</span></div>
+                    <div class="streak-day claimed">Day 2<span>XP</span></div>
+                    <div class="streak-day claimed">Day 3<span>XP</span></div>
+                    <div class="streak-day">Day 4<span>XP</span></div>
+                    <div class="streak-day">Day 5<span>XP</span></div>
+                    <div class="streak-day">Day 6<span>XP</span></div>
+                    <div class="streak-day">Day 7<span>VIP</span></div>
+                </div>
+            </div>
+
+            <div class="menu-list">
+                <div class="menu-item"><span><i class="fa-solid fa-gamepad" style="color: var(--accent-neon); margin-right: 10px;"></i> My Game History</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
+                <div class="menu-item"><span><i class="fa-solid fa-trophy" style="color: var(--accent-gold); margin-right: 10px;"></i> Achievements</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
+                <div class="menu-item"><span><i class="fa-solid fa-gear" style="color: var(--text-muted); margin-right: 10px;"></i> Settings</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
+            </div>
+        </div>
+
+        <div class="bottom-nav">
+            <button class="nav-item active" onclick="switchScreen('screen-lobby')">
+                <i class="fa-solid fa-house"></i> Home
+            </button>
+            <button class="nav-item" onclick="switchScreen('screen-lobby')">
+                <i class="fa-solid fa-compass"></i> Explore
+            </button>
+            <button class="nav-item" onclick="switchScreen('screen-lobby')">
+                <i class="fa-solid fa-trophy"></i> Rewards
+            </button>
+            <button class="nav-item" onclick="switchScreen('screen-account')">
+                <i class="fa-solid fa-user"></i> Account
+            </button>
+        </div>
+
     </div>
 
-    <!-- Game Player Modal -->
-    <div class="modal" id="gameModal">
-        <div class="modal-header">
-            <div class="modal-title" id="modalGameTitle">Playing Game</div>
-            <button class="close-btn" onclick="closeGame()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="game-modal" id="gameModal">
+        <div class="game-modal-header">
+            <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-neon);">Game</span>
+            <button class="close-game-btn" onclick="closeGameModal()">QUIT</button>
         </div>
-        <div class="iframe-container">
-            <iframe id="gameFrame" src="" allowfullscreen></iframe>
-        </div>
+        <iframe id="gameIframe" src="" allowfullscreen></iframe>
     </div>
-
-    <footer>
-        &copy; 2026 NexusArcade. All 50 elite titles embedded and optimized for supreme performance.
-    </footer>
 
     <script>
         const games = [
-            { title: "Cyber Strike 36", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)" },
-            { title: "Quantum Rush 37", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-rocket", bg: "linear-gradient(135deg, #141e30, #243b55)" },
-            { title: "Neon Drift 38", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car-burst", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
-            { title: "Hyper Blade 39", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-khanda", bg: "linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b)" },
-            { title: "Void Runner 40", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
-            { title: "Pixel Apex 41", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
-            { title: "Omega Core 42", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Stellar Strike 43", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
-            { title: "Titan Clash 44", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #000428, #004e92)" },
-            { title: "Vortex Surge 45", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-tornado", bg: "linear-gradient(135deg, #283048, #859398)" },
-            { title: "Pulse Wave 46", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-wave-square", bg: "linear-gradient(135deg, #3a6073, #16222a)" },
-            { title: "Zenith Bound 47", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-mountain", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
-            { title: "Shadow Strike 48", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #1a1a1a, #434343)" },
-            { title: "Ignite Engine 49", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-fire-flame-curved", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
-            { title: "Nexus Prime 50", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-globe", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
-            { title: "Arcade Master 01", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-gamepad", bg: "linear-gradient(135deg, #0575e6, #00f2fe)" },
-            { title: "Arcade Master 02", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-dice", bg: "linear-gradient(135deg, #f7ff00, #db36a4)" },
-            { title: "Arcade Master 03", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-ghost", bg: "linear-gradient(135deg, #4facfe, #00f2fe)" },
-            { title: "Arcade Master 04", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-puzzle-piece", bg: "linear-gradient(135deg, #43e97b, #38f9d7)" },
-            { title: "Arcade Master 05", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-chess", bg: "linear-gradient(135deg, #fa709a, #fee140)" },
-            { title: "Arcade Master 06", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-dragon", bg: "linear-gradient(135deg, #30cfd0, #330867)" },
-            { title: "Arcade Master 07", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-trophy", bg: "linear-gradient(135deg, #a8ff78, #78ffd6)" },
-            { title: "Arcade Master 08", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bolt-lightning", bg: "linear-gradient(135deg, #ff0844, #ffb199)" },
-            { title: "Arcade Master 09", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-brain", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
-            { title: "Arcade Master 10", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-jet-fighter", bg: "linear-gradient(135deg, #7f00ff, #e100ff)" },
-            { title: "Arcade Master 11", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-car", bg: "linear-gradient(135deg, #fc4a1a, #f7b733)" },
-            { title: "Arcade Master 12", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-gun", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
-            { title: "Arcade Master 13", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-motorcycle", bg: "linear-gradient(135deg, #ee0979, #ff6a00)" },
-            { title: "Arcade Master 14", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #4568dc, #b06ab3)" },
-            { title: "Arcade Master 15", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
-            { title: "Arcade Master 16", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-headphones", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
-            { title: "Arcade Master 17", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-shield", bg: "linear-gradient(135deg, #70e1f5, #ffd194)" },
-            { title: "Arcade Master 18", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-fire", bg: "linear-gradient(135deg, #f953c6, #b91d73)" },
-            { title: "Arcade Master 19", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-skull", bg: "linear-gradient(135deg, #606c88, #3f4c6b)" },
-            { title: "Arcade Master 20", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-anchor", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
-            { title: "Arcade Master 21", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-wand-magic-sparkles", bg: "linear-gradient(135deg, #834d9b, #d04ed6)" },
-            { title: "Arcade Master 22", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-gem", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
-            { title: "Arcade Master 23", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-crown", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
-            { title: "Arcade Master 24", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-star", bg: "linear-gradient(135deg, #ffe000, #799f0c)" },
-            { title: "Arcade Master 25", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-compass", bg: "linear-gradient(135deg, #396afc, #2948ff)" },
-            { title: "Arcade Master 26", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
-            { title: "Arcade Master 27", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-bolt", bg: "linear-gradient(135deg, #56ab2f, #a8e063)" },
-            { title: "Arcade Master 28", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-plane", bg: "linear-gradient(135deg, #396afc, #2948ff)" },
-            { title: "Arcade Master 29", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-satellite", bg: "linear-gradient(135deg, #4ca1af, #2c3e50)" },
-            { title: "Arcade Master 30", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-circle-nodes", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
-            { title: "Arcade Master 31", url: "https://html5.gamemonetize.co/ef5utfw1l3drq2dfojdsef2cc0clga6t/", icon: "fa-microchip", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Arcade Master 32", url: "https://html5.gamemonetize.co/yponinqihtbd9g8dglr27yj264o6nidq/", icon: "fa-keyboard", bg: "linear-gradient(135deg, #4e54c8, #8f94fb)" },
-            { title: "Arcade Master 33", url: "https://html5.gamemonetize.co/th53fdzqzvzoq9bn1caf6uynwf82gx5u/", icon: "fa-display", bg: "linear-gradient(135deg, #0f2027, #203a43)" },
-            { title: "Arcade Master 34", url: "https://html5.gamemonetize.co/56bqufae6eplbmeoxa0zex2661phsxyh/", icon: "fa-vr-cardboard", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)" },
-            { title: "Arcade Master 35", url: "https://html5.gamemonetize.co/b10mdp1zemecp8chfnvjjh3khq22puth/", icon: "fa-ghost", bg: "linear-gradient(135deg, #1f4068, #e43f5a)" }
+            { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
+            { title: "Quantum Rush", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-rocket", bg: "linear-gradient(135deg, #141e30, #243b55)" },
+            { title: "Neon Drift", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car-burst", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
+            { title: "Hyper Blade", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-khanda", bg: "linear-gradient(135deg, #3a1c71, #ffaf7b)" },
+            { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
+            { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
+            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
+            { title: "Titan Clash", url: "https://html5.gamemonetize.co/m9rfxj4jnp7p0dr7040jugksf97w346j/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #000428, #004e92)" },
+            { title: "Vortex Surge", url: "https://html5.gamemonetize.co/a81xdurs0gzcsq0ob11jfa3uxnsr1nrq/", icon: "fa-tornado", bg: "linear-gradient(135deg, #283048, #859398)" }
         ];
 
-        function renderGames(list) {
-            const grid = document.getElementById('gameGrid');
-            grid.innerHTML = '';
+        function switchScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
             
-            list.forEach((game) => {
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            if(screenId === 'screen-lobby') {
+                document.querySelectorAll('.nav-item')[0].classList.add('active');
+            } else if(screenId === 'screen-account') {
+                document.querySelectorAll('.nav-item')[3].classList.add('active');
+            }
+        }
+
+        function renderGames() {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+            games.forEach(game => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                card.onclick = () => openGame(game.title, game.url);
-                
+                card.onclick = () => launchGame(game.title, game.url);
                 card.innerHTML = `
-                    <div class="game-thumbnail" style="background-image: ${game.bg};">
+                    <div class="game-thumb" style="background-image: ${game.bg};">
                         <i class="fa-solid ${game.icon}"></i>
                     </div>
                     <div class="game-info">
-                        <div class="game-title">${game.title}</div>
-                        <button class="play-btn"><i class="fa-solid fa-play"></i> PLAY NOW</button>
+                        <span class="game-name">${game.title}</span>
+                        <button class="play-now-sm">Play</button>
                     </div>
                 `;
                 grid.appendChild(card);
             });
-            document.getElementById('gameCount').innerText = list.length;
         }
 
-        function filterGames() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = games.filter(g => g.title.toLowerCase().includes(query));
-            renderGames(filtered);
-        }
-
-        function openGame(title, url) {
+        function launchGame(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
-            document.getElementById('gameFrame').src = url;
+            document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
         }
 
-        function closeGame() {
+        function closeGameModal() {
             document.getElementById('gameModal').style.display = 'none';
-            document.getElementById('gameFrame').src = '';
+            document.getElementById('gameIframe').src = '';
         }
 
         window.onload = () => {
-            renderGames(games);
+            renderGames();
         };
     </script>
 </body>
