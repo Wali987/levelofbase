@@ -43,23 +43,26 @@
             max-height: 900px;
             background: var(--bg-deep);
             position: relative;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             box-shadow: 0 0 50px rgba(0,0,0,0.9);
             border: 1px solid rgba(0, 240, 255, 0.2);
+            overflow: hidden;
         }
 
-        .screen {
+        .screen-content {
+            flex: 1;
+            overflow-y: auto;
             display: none;
             flex-direction: column;
-            min-height: 100%;
-            padding-bottom: 85px; /* Sabhi main screens par bottom nav ke liye space */
+            position: relative;
         }
 
-        .screen.active {
+        .screen-content.active {
             display: flex;
         }
 
-        /* --- SCREEN 1: WELCOME (Design as per your drawing) --- */
+        /* --- SCREEN 1: WELCOME / LANDING --- */
         #screen-welcome {
             justify-content: center;
             align-items: center;
@@ -119,7 +122,7 @@
             color: var(--accent-neon);
         }
 
-        /* --- SCREEN 2: REGISTER (Design as per 91Club style) --- */
+        /* --- SCREEN 2: REGISTER --- */
         .header-bar {
             padding: 18px 20px;
             display: flex;
@@ -136,6 +139,7 @@
 
         .form-container {
             padding: 20px;
+            padding-bottom: 40px; /* Ensures register button is fully visible */
         }
 
         .input-group {
@@ -190,9 +194,14 @@
             cursor: not-allowed;
         }
 
-        /* --- SCREEN 3: LOBBY & 30-MIN TIMER --- */
+        /* --- DASHBOARD SCREENS CONTAINER INNER PADDING --- */
+        .dashboard-body {
+            padding: 15px;
+            padding-bottom: 30px;
+        }
+
+        /* --- WALLET & TIMER WIDGETS --- */
         .wallet-card {
-            margin: 15px;
             background: linear-gradient(135deg, #181d30, var(--bg-card));
             border-radius: 14px;
             padding: 20px;
@@ -200,6 +209,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
         }
 
         .balance-amount {
@@ -222,7 +232,6 @@
         }
 
         .timer-widget {
-            margin: 0 15px 15px 15px;
             background: rgba(0, 240, 255, 0.05);
             border: 1px dashed var(--accent-neon);
             border-radius: 12px;
@@ -230,6 +239,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 15px;
         }
 
         .timer-countdown {
@@ -240,7 +250,6 @@
         }
 
         .section-heading {
-            padding: 0 15px;
             font-family: 'Orbitron', sans-serif;
             font-size: 15px;
             margin-bottom: 12px;
@@ -253,7 +262,6 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            padding: 0 15px;
         }
 
         .game-card {
@@ -315,15 +323,14 @@
         }
 
         /* --- EXPLORE & REWARDS CONTENT PAGES --- */
-        .content-page {
-            padding: 20px;
-        }
-
         .page-title {
             font-family: 'Orbitron';
             font-size: 20px;
             color: var(--accent-neon);
             margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .card-box {
@@ -334,20 +341,21 @@
             border: 1px solid rgba(139, 155, 180, 0.15);
         }
 
-        /* --- SCREEN 4: ACCOUNT & DAILY STREAK --- */
+        /* --- ACCOUNT SCREEN --- */
         .account-header {
             background: var(--bg-card);
             padding: 25px;
             text-align: center;
             border-bottom: 1px solid rgba(0, 240, 255, 0.1);
+            margin-bottom: 15px;
         }
 
         .streak-card {
-            margin: 15px;
             background: var(--bg-card);
             border-radius: 14px;
             padding: 15px;
             border: 1px solid var(--accent-gold);
+            margin-bottom: 15px;
         }
 
         .streak-days {
@@ -375,10 +383,6 @@
             font-weight: 700;
         }
 
-        .menu-list {
-            padding: 0 15px;
-        }
-
         .menu-item {
             background: var(--bg-card);
             padding: 14px 18px;
@@ -391,19 +395,20 @@
             border: 1px solid rgba(139, 155, 180, 0.15);
         }
 
-        /* --- BOTTOM NAVIGATION BAR (Hamesha visible rahegi sabhi screens par) --- */
+        /* --- FIXED BOTTOM NAVIGATION BAR --- */
         .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
             height: 65px;
             background: var(--bg-card);
             border-top: 1px solid rgba(0, 240, 255, 0.15);
-            display: flex;
+            display: none; /* Hidden by default on auth screens */
             justify-content: space-around;
             align-items: center;
-            z-index: 100;
+            flex-shrink: 0;
+            width: 100%;
+        }
+
+        .bottom-nav.active-nav {
+            display: flex; /* Shown only on dashboard screens */
         }
 
         .nav-item {
@@ -491,22 +496,26 @@
 
     <div class="app-container">
         
-        <div id="screen-welcome" class="screen active">
-            <h1 style="font-family: 'Orbitron'; font-size: 24px; color: var(--accent-neon);">NEXUS ARCADE</h1>
-            <div class="welcome-logo-box">
-                <i class="fa-solid fa-gamepad"></i>
-                <span style="font-family: 'Orbitron'; font-weight: 700; font-size: 12px;">LOGO</span>
-            </div>
-            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Play 30 Mins Daily & Earn Rewards</p>
-            <div class="auth-btn-group">
-                <button class="btn-main btn-primary" onclick="switchScreen('screen-register')">Signup</button>
-                <button class="btn-main btn-outline" onclick="switchScreen('screen-lobby')">Login</button>
+        <!-- SCREEN 1: WELCOME / LANDING (No Bottom Nav) -->
+        <div id="screen-welcome" class="screen-content active">
+            <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 30px; text-align: center;">
+                <h1 style="font-family: 'Orbitron'; font-size: 24px; color: var(--accent-neon);">NEXUS ARCADE</h1>
+                <div class="welcome-logo-box">
+                    <i class="fa-solid fa-gamepad"></i>
+                    <span style="font-family: 'Orbitron'; font-weight: 700; font-size: 12px;">LOGO</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Play 30 Mins Daily & Earn Rewards</p>
+                <div class="auth-btn-group">
+                    <button class="btn-main btn-primary" onclick="showScreen('screen-register')">Signup</button>
+                    <button class="btn-main btn-outline" onclick="showScreen('screen-lobby', document.getElementById('nav-home'))">Login</button>
+                </div>
             </div>
         </div>
 
-        <div id="screen-register" class="screen">
+        <!-- SCREEN 2: REGISTER (No Bottom Nav, Fully Scrollable for Button Visibility) -->
+        <div id="screen-register" class="screen-content">
             <div class="header-bar">
-                <i class="fa-solid fa-arrow-left" onclick="switchScreen('screen-welcome')"></i>
+                <i class="fa-solid fa-arrow-left" onclick="showScreen('screen-welcome')"></i>
                 <h3 style="font-family: 'Orbitron'; font-size: 16px;">Create Account</h3>
             </div>
             <div class="form-container">
@@ -546,37 +555,43 @@
                         <input type="text" value="3556517548565">
                     </div>
                 </div>
-                <button class="btn-main btn-primary" style="width: 100%; margin-top: 10px;" onclick="handleRegister()">Register</button>
+                <button class="btn-main btn-primary" style="width: 100%; margin-top: 15px;" onclick="handleRegister()">Register</button>
             </div>
         </div>
 
-        <div id="screen-lobby" class="screen active">
-            <div class="wallet-card">
-                <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Earnings Balance</div>
-                    <div class="balance-amount" id="balanceDisplay">₹150.00</div>
+        <!-- SCREEN 3: LOBBY / HOME (With Bottom Nav) -->
+        <div id="screen-lobby" class="screen-content">
+            <div class="dashboard-body">
+                <div class="wallet-card">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Earnings Balance</div>
+                        <div class="balance-amount" id="balanceDisplay">₹150.00</div>
+                    </div>
+                    <button class="withdraw-btn" onclick="openWithdrawModal()">Withdraw</button>
                 </div>
-                <button class="withdraw-btn" onclick="openWithdrawModal()">Withdraw</button>
-            </div>
 
-            <div class="timer-widget">
-                <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Play Time Reward Target</div>
-                    <div style="font-size: 13px; font-weight: 700;">Play Any Game for 30 Mins</div>
+                <!-- 30-Minutes Active Gaming Timer Widget -->
+                <div class="timer-widget">
+                    <div>
+                        <div style="font-size: 12px; color: var(--text-muted);">Play Time Reward Target</div>
+                        <div style="font-size: 13px; font-weight: 700;">Play Any Game for 30 Mins</div>
+                    </div>
+                    <div class="timer-countdown" id="gameTimerDisplay">30:00</div>
                 </div>
-                <div class="timer-countdown" id="gameTimerDisplay">30:00</div>
-            </div>
 
-            <div class="section-heading">
-                <i class="fa-solid fa-bolt" style="color: var(--accent-neon);"></i> Recommended Games (50+ Arcade Games)
-            </div>
-
-            <div class="games-grid" id="gamesGrid">
+                <div class="section-heading">
+                    <i class="fa-solid fa-bolt" style="color: var(--accent-neon);"></i> Recommended Games (50+ Arcade Games)
                 </div>
+
+                <div class="games-grid" id="gamesGrid">
+                    <!-- Dynamically populated 50 games -->
+                </div>
+            </div>
         </div>
 
-        <div id="screen-explore" class="screen">
-            <div class="content-page">
+        <!-- EXPLORE PAGE -->
+        <div id="screen-explore" class="screen-content">
+            <div class="dashboard-body">
                 <div class="page-title"><i class="fa-solid fa-compass"></i> Explore Arcade</div>
                 <div class="card-box">
                     <h3 style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-neon); margin-bottom: 8px;">Trending Tournaments</h3>
@@ -589,8 +604,9 @@
             </div>
         </div>
 
-        <div id="screen-rewards" class="screen">
-            <div class="content-page">
+        <!-- REWARDS PAGE -->
+        <div id="screen-rewards" class="screen-content">
+            <div class="dashboard-body">
                 <div class="page-title"><i class="fa-solid fa-trophy"></i> Rewards & Bonuses</div>
                 <div class="card-box">
                     <h3 style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-green); margin-bottom: 8px;">30-Min Play Reward</h3>
@@ -603,60 +619,65 @@
             </div>
         </div>
 
-        <div id="screen-account" class="screen">
+        <!-- SCREEN 4: ACCOUNT & DAILY STREAK -->
+        <div id="screen-account" class="screen-content">
             <div class="account-header">
                 <div style="font-size: 18px; font-family: 'Orbitron'; font-weight: 700;">Gamer Profile</div>
                 <div style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">ID: NEXUS-8942</div>
             </div>
 
-            <div class="streak-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px;">
-                    <span>🔥 Daily Login Streak</span>
-                    <span style="color: var(--accent-gold);">Day 3 of 7</span>
+            <div class="dashboard-body" style="padding-top: 0;">
+                <!-- Daily Streak Feature -->
+                <div class="streak-card">
+                    <div style="display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 13px;">
+                        <span>🔥 Daily Login Streak</span>
+                        <span style="color: var(--accent-gold);">Day 3 of 7</span>
+                    </div>
+                    <div class="streak-days">
+                        <div class="streak-day claimed">Day 1<span>₹10</span></div>
+                        <div class="streak-day claimed">Day 2<span>₹20</span></div>
+                        <div class="streak-day claimed">Day 3<span>₹50</span></div>
+                        <div class="streak-day">Day 4<span>₹80</span></div>
+                        <div class="streak-day">Day 5<span>₹100</span></div>
+                        <div class="streak-day">Day 6<span>₹150</span></div>
+                        <div class="streak-day">Day 7<span>₹300</span></div>
+                    </div>
                 </div>
-                <div class="streak-days">
-                    <div class="streak-day claimed">Day 1<span>₹10</span></div>
-                    <div class="streak-day claimed">Day 2<span>₹20</span></div>
-                    <div class="streak-day claimed">Day 3<span>₹50</span></div>
-                    <div class="streak-day">Day 4<span>₹80</span></div>
-                    <div class="streak-day">Day 5<span>₹100</span></div>
-                    <div class="streak-day">Day 6<span>₹150</span></div>
-                    <div class="streak-day">Day 7<span>₹300</span></div>
-                </div>
-            </div>
 
-            <div class="menu-list">
                 <div class="menu-item" onclick="openWithdrawModal()"><span><i class="fa-solid fa-wallet" style="color: var(--accent-green); margin-right: 10px;"></i> Withdraw Earnings</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
                 <div class="menu-item"><span><i class="fa-solid fa-gamepad" style="color: var(--accent-neon); margin-right: 10px;"></i> My Game History</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
-                <div class="menu-item"><span><i class="fa-solid fa-gear" style="color: var(--text-muted); margin-right: 10px;"></i> Settings</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
+                <div class="menu-item" onclick="showScreen('screen-welcome')"><span><i class="fa-solid fa-right-from-bracket" style="color: #ff4d4d; margin-right: 10px;"></i> Logout</span><i class="fa-solid fa-chevron-right" style="color: var(--text-muted); font-size: 12px;"></i></div>
             </div>
         </div>
 
-        <div class="bottom-nav">
-            <button class="nav-item active" onclick="switchScreen('screen-lobby', this)">
+        <!-- FIXED BOTTOM NAVIGATION BAR -->
+        <div class="bottom-nav" id="mainBottomNav">
+            <button class="nav-item active" id="nav-home" onclick="showScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
             </button>
-            <button class="nav-item" onclick="switchScreen('screen-explore', this)">
+            <button class="nav-item" onclick="showScreen('screen-explore', this)">
                 <i class="fa-solid fa-compass"></i> Explore
             </button>
-            <button class="nav-item" onclick="switchScreen('screen-rewards', this)">
+            <button class="nav-item" onclick="showScreen('screen-rewards', this)">
                 <i class="fa-solid fa-trophy"></i> Rewards
             </button>
-            <button class="nav-item" onclick="switchScreen('screen-account', this)">
+            <button class="nav-item" onclick="showScreen('screen-account', this)">
                 <i class="fa-solid fa-user"></i> Account
             </button>
         </div>
 
     </div>
 
+    <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="game-modal-header">
             <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-neon);">Game</span>
-            <button class="close-game-btn" onclick="closeGameModal()">QUIT & SAVE TIME</button>
+            <button class="close-game-btn" onclick="closeGameModal()">QUIT GAME</button>
         </div>
         <iframe id="gameIframe" src="" allowfullscreen></iframe>
     </div>
 
+    <!-- WITHDRAWAL POPUP MODAL -->
     <div class="modal-overlay" id="withdrawModal">
         <div class="withdraw-box">
             <h3 style="font-family: 'Orbitron'; color: var(--accent-green); margin-bottom: 10px;"><i class="fa-solid fa-wallet"></i> Withdraw Funds</h3>
@@ -668,7 +689,6 @@
     </div>
 
     <script>
-        // Saare 50+ Games ke links aur guaranteed styling backgrounds (Thumbnail bug fixed forever)
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
             { title: "Quantum Rush", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-rocket", bg: "linear-gradient(135deg, #141e30, #243b55)" },
@@ -781,7 +801,7 @@
             }
 
             alert("Account created successfully!");
-            switchScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
+            showScreen('screen-lobby', document.getElementById('nav-home'));
         }
 
         function startTimer() {
@@ -801,10 +821,17 @@
             }, 1000);
         }
 
-        function switchScreen(screenId, navElement) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        function showScreen(screenId, navElement) {
+            document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             
+            const bottomNav = document.getElementById('mainBottomNav');
+            if(screenId === 'screen-welcome' || screenId === 'screen-register') {
+                bottomNav.classList.remove('active-nav');
+            } else {
+                bottomNav.classList.add('active-nav');
+            }
+
             if(navElement) {
                 document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
                 navElement.classList.add('active');
