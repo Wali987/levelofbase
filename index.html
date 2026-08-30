@@ -507,7 +507,7 @@
                 <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 20px;">Play 30 Mins Daily & Earn Rewards</p>
                 <div class="auth-btn-group">
                     <button class="btn-main btn-primary" onclick="showScreen('screen-register')">Signup</button>
-                    <button class="btn-main btn-outline" onclick="showScreen('screen-lobby', document.getElementById('nav-home'))">Login</button>
+                    <button class="btn-main btn-outline" onclick="loginUser()">Login</button>
                 </div>
             </div>
         </div>
@@ -726,123 +726,19 @@
             { title: "Mecha Bot", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-robot", bg: "linear-gradient(135deg, #ff512f, #dd2476)" },
             { title: "Pixel Knight", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-chess-rook", bg: "linear-gradient(135deg, #5c258d, #4389a2)" },
             { title: "Apex Predator", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-paw", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)" },
-            { title: "Dragon Fire", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-dragon", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" },
-            { title: "Bounty Hunter", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-hat-cowboy", bg: "linear-gradient(135deg, #654ea3, #eaafc8)" },
-            { title: "Atomic Bomber", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-radiation", bg: "linear-gradient(135deg, #ffe000, #799f0c)" },
-            { title: "Space Odyssey", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-globe", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
-            { title: "Neon Blade", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-sword", bg: "linear-gradient(135deg, #ff0844, #ffb199)" },
-            { title: "Stellar Drift", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-car-side", bg: "linear-gradient(135deg, #4776e6, #8e54e9)" },
-            { title: "Hyper Velocity", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-gauge", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
-            { title: "Void Striker", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-satellite", bg: "linear-gradient(135deg, #3e1b78, #220b3a)" },
-            { title: "Nexus Elite", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crown", bg: "linear-gradient(135deg, #f7971e, #ffd200)" },
-            { title: "Ultimate Arcade", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-trophy", bg: "linear-gradient(135deg, #00bf8f, #001510)" }
+            { title: "Dragon Fire", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-dragon", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" }
         ];
 
-        let secondsLeft = 1800;
-        let timerInterval = null;
-        let userBalance = 150.00;
-        let generatedOtp = "";
-
-        function sendOTP() {
-            let phone = document.getElementById('phoneInput').value;
-            if(!phone || phone.length < 10) {
-                alert("Please enter a valid 10-digit phone number first!");
-                return;
-            }
-            generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
-            alert(`[Demo SMS] Your verification code is: ${generatedOtp}`);
-
-            let btn = document.getElementById('sendOtpBtn');
-            btn.disabled = true;
-            let countdown = 30;
-            btn.innerText = `Resend (${countdown}s)`;
-
-            let otpInterval = setInterval(() => {
-                countdown--;
-                if(countdown > 0) {
-                    btn.innerText = `Resend (${countdown}s)`;
-                } else {
-                    clearInterval(otpInterval);
-                    btn.disabled = false;
-                    btn.innerText = "Send Code";
-                }
-            }, 1000);
-        }
-
-        function handleRegister() {
-            let phone = document.getElementById('phoneInput').value;
-            let otp = document.getElementById('otpInput').value;
-            let pass = document.getElementById('passInput').value;
-            let confirmPass = document.getElementById('confirmPassInput').value;
-
-            if(!phone || phone.length < 10) {
-                alert("Please enter a valid phone number!");
-                return;
-            }
-            if(!otp) {
-                alert("Please enter the verification code!");
-                return;
-            }
-            if(generatedOtp && otp !== generatedOtp) {
-                alert("Incorrect verification code!");
-                return;
-            }
-            if(!pass || pass.length < 4) {
-                alert("Please set a password (min 4 characters)!");
-                return;
-            }
-            if(pass !== confirmPass) {
-                alert("Passwords do not match!");
-                return;
-            }
-
-            alert("Account created successfully!");
-            showScreen('screen-lobby', document.getElementById('nav-home'));
-        }
-
-        function startTimer() {
-            if(timerInterval) return;
-            timerInterval = setInterval(() => {
-                if(secondsLeft > 0) {
-                    secondsLeft--;
-                    let m = Math.floor(secondsLeft / 60);
-                    let s = secondsLeft % 60;
-                    document.getElementById('gameTimerDisplay').innerText = `${m < 10 ? '0':''}${m}:${s < 10 ? '0':''}${s}`;
-                } else {
-                    clearInterval(timerInterval);
-                    userBalance += 50; 
-                    document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-                    alert("Congratulations! You completed 30 minutes of gaming and earned ₹50!");
-                }
-            }, 1000);
-        }
-
-        function showScreen(screenId, navElement) {
-            document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            
-            const bottomNav = document.getElementById('mainBottomNav');
-            if(screenId === 'screen-welcome' || screenId === 'screen-register') {
-                bottomNav.classList.remove('active-nav');
-            } else {
-                bottomNav.classList.add('active-nav');
-            }
-
-            if(navElement) {
-                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-                navElement.classList.add('active');
-            }
-        }
-
+        // Render Games in Lobby Grid dynamically
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = '';
-            games.forEach(game => {
+            games.forEach((game) => {
                 const card = document.createElement('div');
                 card.className = 'game-card';
-                card.onclick = () => launchGame(game.title, game.url);
+                card.onclick = () => openGameModal(game.title, game.url);
                 card.innerHTML = `
-                    <div class="game-thumb" style="background: ${game.bg};">
+                    <div class="game-thumb" style="background: ${game.bg}">
                         <i class="fa-solid ${game.icon}"></i>
                     </div>
                     <div class="game-info">
@@ -853,24 +749,72 @@
                 grid.appendChild(card);
             });
         }
+        renderGames();
 
-        function launchGame(title, url) {
+        // Screen Navigation Logic
+        function showScreen(screenId, navElement = null) {
+            document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+
+            const bottomNav = document.getElementById('mainBottomNav');
+            if (screenId === 'screen-lobby' || screenId === 'screen-explore' || screenId === 'screen-rewards' || screenId === 'screen-account') {
+                bottomNav.classList.add('active-nav');
+            } else {
+                bottomNav.classList.remove('active-nav');
+            }
+
+            if (navElement) {
+                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                navElement.classList.add('active');
+            }
+        }
+
+        // OTP Simulation
+        function sendOTP() {
+            const phone = document.getElementById('phoneInput').value;
+            if(!phone || phone.length < 10) {
+                alert("Please enter a valid phone number!");
+                return;
+            }
+            const btn = document.getElementById('sendOtpBtn');
+            btn.disabled = true;
+            let count = 30;
+            btn.innerText = `${count}s`;
+            let timer = setInterval(() => {
+                count--;
+                btn.innerText = `${count}s`;
+                if(count <= 0) {
+                    clearInterval(timer);
+                    btn.disabled = false;
+                    btn.innerText = "Resend";
+                }
+            }, 1000);
+            alert("Simulation: OTP sent successfully (Check console or use any 4 digits)");
+            document.getElementById('otpInput').value = "1234";
+        }
+
+        function handleRegister() {
+            alert("Registration Successful!");
+            showScreen('screen-lobby', document.getElementById('nav-home'));
+        }
+
+        function loginUser() {
+            showScreen('screen-lobby', document.getElementById('nav-home'));
+        }
+
+        // Game Player Modal Controls
+        function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
-            startTimer();
         }
 
         function closeGameModal() {
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
-            
-            if(timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
         }
 
+        // Withdrawal Modal Controls
         function openWithdrawModal() {
             document.getElementById('withdrawModal').style.display = 'flex';
         }
@@ -880,20 +824,14 @@
         }
 
         function processWithdrawal() {
-            let upi = document.getElementById('upiInput').value;
+            const upi = document.getElementById('upiInput').value;
             if(!upi) {
                 alert("Please enter a valid UPI ID");
                 return;
             }
-            alert(`Withdrawal request of ₹${userBalance.toFixed(2)} sent successfully to ${upi}!`);
-            userBalance = 0.00;
-            document.getElementById('balanceDisplay').innerText = `₹0.00`;
+            alert("Withdrawal request submitted successfully!");
             closeWithdrawModal();
         }
-
-        window.onload = () => {
-            renderGames();
-        };
     </script>
 </body>
 </html>
