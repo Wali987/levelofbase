@@ -101,13 +101,13 @@
         .nav-item.active { color: var(--accent-neon); }
         .nav-item i { font-size: 18px; margin-bottom: 2px; }
 
-        .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
+        .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: کریں۔ }
         .game-modal-header { padding: 12px 20px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
         
-        /* Anti-Cheat Timer Banner with Status */
-        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: block !important; }
+        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: flex; justify-content: center; align-items: center; gap: 15px; }
         .afk-warning { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border-bottom: 1px dashed #ff4d4d; }
+        .resume-btn { background: var(--accent-green); color: black; border: none; padding: 3px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; display: none; }
     </style>
 </head>
 <body>
@@ -152,7 +152,7 @@
                 <div class="input-group">
                     <label>Invitation Code (Optional)</label>
                     <div class="input-box">
-                        <i class="fa-solid fa-user-plus"></i>
+                        <i class="fa-solid  fa-user-plus"></i>
                         <input type="text" id="refInput" placeholder="Enter referral code">
                     </div>
                 </div>
@@ -172,7 +172,7 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Active Play Required! Keep playing games interactively to earn your 30-minute rewards safely.</marquee>
+                <marquee scrollamount="4">📢 30 Minute tak Game khelne par ₹5.00 ka reward milega! | Kisi dost ko Invite karne par extra bonus milega! | Daily Check-in par ₹10 tak ka bonus paayein!</marquee>
             </div>
 
             <div class="wallet-card">
@@ -243,7 +243,10 @@
 
     <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
-        <div class="timer-banner" id="timerBanner">Time Active: 30:00 left to earn ₹5.00</div>
+        <div class="timer-banner" id="timerBanner">
+            <span id="timerText">Time Active: 30:00 left to earn ₹5.00</span>
+            <button class="resume-btn" id="resumeBtn" onclick="manualResumeTimer()">RESUME PLAY</button>
+        </div>
         <div class="game-modal-header">
             <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon);">Game</span>
             <button class="close-game-btn" onclick="closeGameModal()">QUIT & CLAIM</button>
@@ -429,12 +432,18 @@
             }
         }
 
-        // Anti-Cheat: User interaction detection
         function resetActivity() {
             lastActivityTime = Date.now();
             if (isAfk) {
                 isAfk = false;
+                document.getElementById('timerBanner').classList.remove('afk-warning');
+                document.getElementById('resumeBtn').style.display = 'none';
             }
+        }
+
+        function manualResumeTimer() {
+            resetActivity();
+            updateTimerBanner();
         }
 
         function openGameModal(title, url) {
@@ -445,39 +454,38 @@
             timeLeft = 1800; // 30 minutes
             lastActivityTime = Date.now();
             isAfk = false;
+            document.getElementById('timerBanner').classList.remove('afk-warning');
+            document.getElementById('resumeBtn').style.display = 'none';
             updateTimerBanner();
 
-            // Listen for clicks/touches inside the page to keep tracking active play
             window.addEventListener('mousemove', resetActivity);
             window.addEventListener('keydown', resetActivity);
             window.addEventListener('click', resetActivity);
 
             gameTimer = setInterval(() => {
-                let inactiveDuration = (Date.now() - lastActivityTime) / 1000; // seconds
+                let inactiveDuration = (Date.now() - lastActivityTime) / 1000;
 
-                // Agar user 30 seconds se kuch nahi kar raha (AFK)
-                if (inactiveDuration > 30) {
+                if (inactiveDuration > 90) {
                     isAfk = true;
                     let banner = document.getElementById('timerBanner');
-                    banner.innerText = `⚠️ AFK WARNING: Play the game! Timer paused (${Math.floor(inactiveDuration)}s inactive)`;
                     banner.classList.add('afk-warning');
-                    return; // Timer stop rahega jab tak user wapas play na kare
-                } else {
-                    isAfk = false;
-                    let banner = document.getElementById('timerBanner');
-                    banner.classList.remove('afk-warning');
+                    document.getElementById('timerText').innerText = `⚠️ Timer Paused (Inactive)`;
+                    document.getElementById('resumeBtn').style.display = 'inline-block';
+                    return; 
                 }
 
-                timeLeft--;
-                updateTimerBanner();
+                if (!isAfk) {
+                    timeLeft--;
+                    updateTimerBanner();
 
-                if(timeLeft <= 0) {
-                    clearInterval(gameTimer);
-                    userBalance += 5.00;
-                    document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-                    saveUserData();
-                    alert('30 minutes completed! Earned ₹5.00 reward.');
-                    closeGameModal();
+                    if(timeLeft <= 0) {
+                        clearInterval(gameTimer);
+                        userBalance += 5.00;
+                        document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+                        saveUserData();
+                        alert('30 minutes completed! Earned ₹5.00 reward.');
+                        closeGameModal();
+                    }
                 }
             }, 1000);
         }
@@ -486,7 +494,8 @@
             if (isAfk) return;
             let mins = Math.floor(timeLeft / 60);
             let secs = timeLeft % 60;
-            document.getElementById('timerBanner').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left to earn ₹5.00`;
+            document.getElementById('timerText').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left to earn ₹5.00`;
+            document.getElementById('resumeBtn').style.display = 'none';
         }
 
         function closeGameModal() {
