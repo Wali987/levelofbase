@@ -24,9 +24,8 @@
 
         .app-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 100%; /* Laptop par full width ke liye */
             height: 100vh;
-            max-height: 900px;
             background: var(--bg-deep);
             position: relative;
             display: flex;
@@ -36,13 +35,22 @@
             overflow: hidden;
         }
 
+        @media (min-width: 768px) {
+            .app-container {
+                max-width: 800px; /* Laptop ke liye ek badiya spacious width */
+                border-radius: 16px;
+                margin: auto;
+                height: 90vh;
+            }
+        }
+
         .screen-content {
             flex: 1;
             overflow-y: auto;
             display: none;
             flex-direction: column;
             position: relative;
-            padding: 15px;
+            padding: 20px;
             padding-bottom: 80px;
         }
         .screen-content.active { display: flex; }
@@ -52,69 +60,65 @@
         .welcome-logo-box { width: 100px; height: 100px; border: 2px dashed var(--accent-neon); border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 15px auto; background: rgba(0, 240, 255, 0.05); box-shadow: var(--glow); }
         .welcome-logo-box i { font-size: 40px; color: var(--accent-neon); }
         
-        /* Auth Tabs Switcher */
-        .auth-tabs { display: flex; background: var(--bg-card); border-radius: 10px; padding: 4px; margin-bottom: 15px; border: 1px solid rgba(139,155,180,0.2); }
+        .auth-tabs { display: flex; background: var(--bg-card); border-radius: 10px; padding: 4px; margin-bottom: 15px; border: 1px solid rgba(139,155,180,0.2); max-width: 400px; margin-left: auto; margin-right: auto; }
         .auth-tab-btn { flex: 1; background: transparent; border: none; padding: 10px; color: var(--text-muted); font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 8px; transition: 0.2s; }
         .auth-tab-btn.active-tab { background: var(--accent-neon); color: black; box-shadow: var(--glow); }
 
-        .input-group { margin-bottom: 12px; text-align: left; }
+        .input-group { margin-bottom: 12px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; width: 100%; }
         .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
         .input-box { display: flex; align-items: center; background: var(--bg-card); border: 1px solid rgba(139, 155, 180, 0.2); border-radius: 10px; padding: 0 12px; }
         .input-box input { width: 100%; background: transparent; border: none; padding: 10px; color: white; font-size: 14px; }
         .input-box i { color: var(--accent-neon); font-size: 14px; }
 
-        .btn-main { width: 100%; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); }
+        .btn-main { width: 100%; max-width: 400px; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); margin-left: auto; margin-right: auto; display: block; }
         .btn-main:disabled { background: #334155; color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
 
-        /* Dashboard Top & Wallet */
-        .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
-        .marquee-box { background: rgba(0,240,255,0.05); border-left: 3px solid var(--accent-neon); padding: 6px 10px; font-size: 12px; color: var(--accent-neon); margin-bottom: 15px; border-radius: 4px; overflow: hidden; white-space: nowrap; }
+        .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
+        .marquee-box { background: rgba(0,240,255,0.05); border-left: 3px solid var(--accent-neon); padding: 8px 12px; font-size: 13px; color: var(--accent-neon); margin-bottom: 15px; border-radius: 4px; overflow: hidden; white-space: nowrap; }
         
-        .wallet-card { background: linear-gradient(135deg, #181d30, var(--bg-card)); border-radius: 14px; padding: 15px; border: 1px solid rgba(0, 240, 255, 0.2); display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .balance-amount { font-family: 'Orbitron', sans-serif; font-size: 20px; color: var(--accent-gold); font-weight: 700; }
-        .withdraw-btn { background: var(--accent-green); color: black; border: none; padding: 6px 12px; border-radius: 8px; font-weight: 700; font-size: 12px; cursor: pointer; font-family: 'Orbitron'; }
+        .wallet-card { background: linear-gradient(135deg, #181d30, var(--bg-card)); border-radius: 14px; padding: 20px; border: 1px solid rgba(0, 240, 255, 0.2); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .balance-amount { font-family: 'Orbitron', sans-serif; font-size: 24px; color: var(--accent-gold); font-weight: 700; }
+        .withdraw-btn { background: var(--accent-green); color: black; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: 'Orbitron'; }
 
-        .section-heading { font-family: 'Orbitron', sans-serif; font-size: 14px; margin: 15px 0 10px 0; display: flex; align-items: center; gap: 8px; color: var(--accent-neon); }
+        .section-heading { font-family: 'Orbitron', sans-serif; font-size: 15px; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; color: var(--accent-neon); }
 
-        /* Games Grid */
-        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        /* Games Grid - Laptop friendly (3-4 columns) */
+        .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        @media (min-width: 768px) {
+            .games-grid { grid-template-columns: repeat(4, 1fr); }
+        }
         .game-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid rgba(139, 155, 180, 0.15); cursor: pointer; transition: 0.2s; }
-        .game-thumb { height: 95px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; position: relative; }
+        .game-thumb { height: 110px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; position: relative; }
         .game-thumb::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
-        .game-thumb i { font-size: 24px; color: white; z-index: 1; }
-        .game-info { padding: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .game-name { font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 85px; }
-        .play-now-sm { background: var(--accent-neon); color: black; border: none; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 700; }
+        .game-thumb i { font-size: 28px; color: white; z-index: 1; }
+        .game-info { padding: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .game-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px; }
+        .play-now-sm { background: var(--accent-neon); color: black; border: none; padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; }
 
-        /* Leaderboard */
-        .leaderboard-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 10px 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(139,155,180,0.1); font-size: 13px; }
+        .leaderboard-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 12px 15px; border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(139,155,180,0.1); font-size: 14px; }
 
-        /* Bottom Nav Bar */
-        .bottom-nav { height: 60px; background: var(--bg-card); border-top: 1px solid rgba(0, 240, 255, 0.15); display: none; justify-content: space-around; align-items: center; position: absolute; bottom: 0; width: 100%; z-index: 100; }
+        .bottom-nav { height: 65px; background: var(--bg-card); border-top: 1px solid rgba(0, 240, 255, 0.15); display: none; justify-content: space-around; align-items: center; position: absolute; bottom: 0; width: 100%; z-index: 100; }
         .bottom-nav.active-nav { display: flex; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 10px; cursor: pointer; background: none; border: none; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; cursor: pointer; background: none; border: none; }
         .nav-item.active { color: var(--accent-neon); }
-        .nav-item i { font-size: 16px; margin-bottom: 2px; }
+        .nav-item i { font-size: 18px; margin-bottom: 2px; }
 
-        /* Game Modal */
         .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
-        .game-modal-header { padding: 10px 15px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
-        .close-game-btn { background: #ff007f; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; }
-        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 12px; color: var(--accent-neon); display: block !important; }
+        .game-modal-header { padding: 12px 20px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
+        .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
+        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: block !important; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
         
-        <!-- 1. LOGIN / REGISTER SCREEN WITH TABS -->
         <div id="screen-welcome" class="screen-content active">
-            <h1 style="font-family: 'Orbitron'; font-size: 20px; color: var(--accent-neon);">NEXUS ARCADE</h1>
+            <h1 style="font-family: 'Orbitron'; font-size: 22px; color: var(--accent-neon);">NEXUS ARCADE</h1>
             <div class="welcome-logo-box">
                 <i class="fa-solid fa-gamepad"></i>
             </div>
             
-            <!-- Tabs for Login / Register -->
             <div class="auth-tabs">
                 <button class="auth-tab-btn active-tab" id="tabLoginBtn" onclick="switchAuthMode('login')">Login</button>
                 <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthMode('register')">Register</button>
@@ -135,8 +139,7 @@
                 </div>
             </div>
             
-            <!-- Extra fields for Register mode only -->
-            <div id="registerExtraFields">
+            <div id="registerExtraFields" style="display:none;">
                 <div class="input-group">
                     <label>Verification Code (OTP)</label>
                     <div class="input-box">
@@ -153,17 +156,16 @@
                 </div>
             </div>
 
-            <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 5px;">Login</button>
+            <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 10px;">Login</button>
         </div>
 
-        <!-- 2. LOBBY / HOME SCREEN -->
         <div id="screen-lobby" class="screen-content">
             <div class="top-user-bar">
                 <div>
-                    <div style="font-size: 11px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
-                    <div style="font-size: 10px; color: var(--accent-gold);">VIP Level 1 Gamer</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
+                    <div style="font-size: 11px; color: var(--accent-gold);">VIP Level 1 Gamer</div>
                 </div>
-                <i class="fa-solid fa-headset" style="font-size: 20px; color: var(--accent-neon); cursor: pointer;" onclick="alert('Support AI / Customer service connected!')"></i>
+                <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="alert('Support AI connected!')"></i>
             </div>
 
             <div class="marquee-box">
@@ -172,10 +174,10 @@
 
             <div class="wallet-card">
                 <div>
-                    <div style="font-size: 11px; color: var(--text-muted);">Total Balance</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Total Balance</div>
                     <div class="balance-amount" id="balanceDisplay">₹0.00</div>
                 </div>
-                <button class="withdraw-btn" onclick="alert('Banking system coming soon! Payouts will be enabled shortly.')">Withdraw</button>
+                <button class="withdraw-btn" onclick="alert('Banking system coming soon!')">Withdraw</button>
             </div>
 
             <div class="section-heading">
@@ -185,9 +187,8 @@
             <div class="games-grid" id="gamesGrid"></div>
         </div>
 
-        <!-- 3. LEADERBOARD SCREEN -->
         <div id="screen-leaderboard" class="screen-content">
-            <h2 style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-neon); margin-bottom: 12px;"><i class="fa-solid fa-trophy"></i> Top Active Earners</h2>
+            <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 15px;"><i class="fa-solid fa-trophy"></i> Top Active Earners</h2>
             <div id="leaderboardList">
                 <div class="leaderboard-item"><span>🥇 #918291 (Abdul Q.)</span><span style="color:var(--accent-gold)">₹1,450.00</span></div>
                 <div class="leaderboard-item"><span>🥈 #917382 (Rohan M.)</span><span style="color:var(--accent-gold)">₹1,200.00</span></div>
@@ -197,35 +198,25 @@
             </div>
         </div>
 
-        <!-- 4. REWARDS & CHECK-IN SCREEN -->
         <div id="screen-rewards" class="screen-content">
-            <h2 style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-neon); margin-bottom: 12px;">Daily Check-in Streak</h2>
-            <div style="background: var(--bg-card); padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: center; border:1px solid rgba(139,155,180,0.2);">
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Claim your daily bonus check-in reward!</p>
-                <button class="btn-main" id="claimBonusBtn" onclick="claimDailyBonus()" style="padding: 10px; font-size: 12px;">Claim Day 1 Bonus (₹10)</button>
-            </div>
-
-            <h2 style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-neon); margin-bottom: 12px;">Referral System</h2>
-            <div style="background: var(--bg-card); padding: 12px; border-radius: 10px; border: 1px solid rgba(139,155,180,0.2);">
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px;">Invite friends and earn active bonuses when they play!</p>
-                <input type="text" value="https://nexusarcade.com/ref/ABDUL91" readonly style="width:100%; padding:8px; background:rgba(0,0,0,0.3); border:1px solid #334155; color:white; border-radius:6px; margin-bottom:8px; font-size: 12px;">
-                <button class="btn-main" onclick="alert('Referral link copied!')" style="padding:8px; font-size:12px;">Copy Link</button>
+            <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">Daily Check-in Streak</h2>
+            <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; border:1px solid rgba(139,155,180,0.2);">
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Claim your daily bonus check-in reward!</p>
+                <button class="btn-main" id="claimBonusBtn" onclick="claimDailyBonus()" style="padding: 10px; font-size: 13px;">Claim Day 1 Bonus (₹10)</button>
             </div>
         </div>
 
-        <!-- 5. ACCOUNT PROFILE -->
         <div id="screen-account" class="screen-content">
-            <div style="text-align:center; padding: 15px; background:var(--bg-card); border-radius:10px; margin-bottom:12px;">
-                <i class="fa-solid fa-user-circle" style="font-size:45px; color:var(--accent-neon); margin-bottom:8px;"></i>
-                <div id="accountPhone" style="font-family:'Orbitron'; font-weight:700; font-size: 14px;">+91 9876543210</div>
-                <div style="font-size:11px; color: var(--text-muted);">Status: Active Time-Earn Gamer</div>
+            <div style="text-align:center; padding: 20px; background:var(--bg-card); border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%;">
+                <i class="fa-solid fa-user-circle" style="font-size:50px; color:var(--accent-neon); margin-bottom:10px;"></i>
+                <div id="accountPhone" style="font-family:'Orbitron'; font-weight:700; font-size: 15px;">+91 9876543210</div>
+                <div style="font-size:12px; color: var(--text-muted);">Status: Active Time-Earn Gamer</div>
             </div>
-            <div onclick="logoutUser()" style="background:var(--bg-card); padding:12px; border-radius:10px; text-align:center; color:#ff4d4d; font-weight:700; cursor:pointer; border:1px solid rgba(255,77,77,0.2); font-size: 13px;">
+            <div onclick="logoutUser()" style="background:var(--bg-card); padding:12px; border-radius:10px; text-align:center; color:#ff4d4d; font-weight:700; cursor:pointer; border:1px solid rgba(255,77,77,0.2); font-size: 14px; max-width:400px; margin-left:auto; margin-right:auto;">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </div>
         </div>
 
-        <!-- FIXED BOTTOM NAVIGATION BAR -->
         <div class="bottom-nav" id="mainBottomNav">
             <button class="nav-item active" onclick="showScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
@@ -243,11 +234,10 @@
 
     </div>
 
-    <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="timer-banner" id="timerBanner">Time Active: 30:00 left to earn ₹5.00</div>
         <div class="game-modal-header">
-            <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon);">Game</span>
+            <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon);">Game</span>
             <button class="close-game-btn" onclick="closeGameModal()">QUIT & CLAIM</button>
         </div>
         <iframe id="gameIframe" src="" allowfullscreen style="flex:1; width:100%; border:none;"></iframe>
@@ -258,7 +248,7 @@
         let userBalance = 0.00;
         let authMode = 'login';
         let gameTimer;
-        let timeLeft = 1800; // 30 minutes in seconds
+        let timeLeft = 1800; // 30 minutes
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -268,40 +258,7 @@
             { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
             { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
             { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
-            { title: "Turbo Clash", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
-            { title: "Galaxy Patrol", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #283048, #859398)" },
-            { title: "Shadow Ninja", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #141E30, #243B55)" },
-            { title: "Blaze Runner", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-fire", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
-            { title: "Neon Shooter", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)" },
-            { title: "Crypto Miner", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-coins", bg: "linear-gradient(135deg, #005c97, #363795)" },
-            { title: "Matrix Hacker", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-terminal", bg: "linear-gradient(135deg, #0f9b0f, #000000)" },
-            { title: "Aero Fighter", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-plane", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
-            { title: "Zombie Arena", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-skull", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
-            { title: "Speed Racer", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-car", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
-            { title: "Alien Invasion", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-spider", bg: "linear-gradient(135deg, #4b6cb7, #182848)" },
-            { title: "Epic Quest", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #1f4068, #162447)" },
-            { title: "Cyber Jump", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-angles-up", bg: "linear-gradient(135deg, #3a6186, #89253e)" },
-            { title: "Super Sniper", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-scope", bg: "linear-gradient(135deg, #606c88, #3f4c6b)" },
-            { title: "Rebel Road", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-road", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
-            { title: "Titan Smash", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-hand-fist", bg: "linear-gradient(135deg, #8e44ad, #c0392b)" },
-            { title: "Galaxy Defender", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-shield", bg: "linear-gradient(135deg, #000428, #004e92)" },
-            { title: "Subterranean", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-dungeon", bg: "linear-gradient(135deg, #3e5151, #decba4)" },
-            { title: "Vortex Drift", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-circle-notch", bg: "linear-gradient(135deg, #4ca1af, #2c3e50)" },
-            { title: "Hyper Ball", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-baseball", bg: "linear-gradient(135deg, #ff9966, #ff5e62)" },
-            { title: "Rogue Wave", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-water", bg: "linear-gradient(135deg, #2980b9, #2c3e50)" },
-            { title: "Star Fighter", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
-            { title: "Dark Nebula", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-cloud-moon", bg: "linear-gradient(135deg, #31111d, #120309)" },
-            { title: "Nitro Burn", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #fc4a1a, #f7b733)" },
-            { title: "Arcade Master", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-gamepad", bg: "linear-gradient(135deg, #7f00ff, #e100ff)" },
-            { title: "Plasma Gunner", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-burst", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
-            { title: "Quantum Leap", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-bolt-lightning", bg: "linear-gradient(135deg, #f7ff00, #db36a4)" },
-            { title: "Shadow Strike", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-ghost", bg: "linear-gradient(135deg, #2c3e50, #000000)" },
-            { title: "Cyber Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-biking", bg: "linear-gradient(135deg, #43cea2, #185a9d)" },
-            { title: "Mecha Bot", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-robot", bg: "linear-gradient(135deg, #ff512f, #dd2476)" },
-            { title: "Pixel Knight", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-chess-rook", bg: "linear-gradient(135deg, #5c258d, #4389a2)" },
-            { title: "Apex Predator", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-paw", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)" },
-            { title: "Dragon Fire", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-dragon", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" }
+            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" }
         ];
 
         function renderGames() {
@@ -349,38 +306,20 @@
             const phone = document.getElementById('phoneInput').value.trim();
             const pass = document.getElementById('passInput').value.trim();
 
-            if (!phone || phone.length < 10) {
-                alert("Please enter a valid 10-digit phone number!");
-                return;
-            }
-            if (!pass) {
-                alert("Please enter your password!");
-                return;
-            }
+            if (!phone || phone.length < 10) { alert("Enter valid phone number!"); return; }
+            if (!pass) { alert("Enter password!"); return; }
 
-            // Using local + simulated secure persistent cloud database sync layer
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
 
             if (authMode === 'register') {
-                if (usersDB[phone]) {
-                    alert("Account already exists with this number! Please login instead.");
-                    switchAuthMode('login');
-                    return;
-                }
+                if (usersDB[phone]) { alert("Account exists! Please login."); switchAuthMode('login'); return; }
                 usersDB[phone] = { password: pass, balance: 0.00, playerId: '#' + Math.floor(100000 + Math.random() * 900000), lastClaimDate: '' };
                 localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                alert("Registration successful! Your account is now permanently saved. You can login.");
+                alert("Registration successful! Please login.");
                 switchAuthMode('login');
             } else {
-                if (!usersDB[phone]) {
-                    alert("Account not found! Please register first.");
-                    switchAuthMode('register');
-                    return;
-                }
-                if (usersDB[phone].password !== pass) {
-                    alert("Incorrect password! Please try again.");
-                    return;
-                }
+                if (!usersDB[phone]) { alert("Account not found! Register first."); switchAuthMode('register'); return; }
+                if (usersDB[phone].password !== pass) { alert("Incorrect password!"); return; }
                 
                 currentUser = phone;
                 userBalance = usersDB[phone].balance;
@@ -408,7 +347,6 @@
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
             let todayStr = new Date().toDateString();
             const btn = document.getElementById('claimBonusBtn');
-
             if (usersDB[currentUser] && usersDB[currentUser].lastClaimDate === todayStr) {
                 btn.innerText = "Already Claimed Today (✓)";
                 btn.disabled = true;
@@ -423,10 +361,7 @@
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
             let todayStr = new Date().toDateString();
 
-            if (usersDB[currentUser].lastClaimDate === todayStr) {
-                alert("You have already claimed your daily bonus today! Come back tomorrow.");
-                return;
-            }
+            if (usersDB[currentUser].lastClaimDate === todayStr) { alert("Already claimed today!"); return; }
 
             userBalance += 10.00;
             usersDB[currentUser].balance = userBalance;
@@ -435,7 +370,7 @@
 
             document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
             checkDailyBonusStatus();
-            alert('Daily Check-in bonus of ₹10.00 claimed successfully!');
+            alert('Check-in bonus ₹10.00 claimed!');
         }
 
         function showScreen(screenId, navElement = null) {
@@ -443,11 +378,8 @@
             document.getElementById(screenId).classList.add('active');
 
             const bottomNav = document.getElementById('mainBottomNav');
-            if (screenId === 'screen-welcome') {
-                bottomNav.classList.remove('active-nav');
-            } else {
-                bottomNav.classList.add('active-nav');
-            }
+            if (screenId === 'screen-welcome') bottomNav.classList.remove('active-nav');
+            else bottomNav.classList.add('active-nav');
 
             if (navElement && navElement.classList && navElement.classList.contains('nav-item')) {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -472,7 +404,7 @@
                     userBalance += 5.00;
                     document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
                     saveUserData();
-                    alert('Congratulations! You completed 30 minutes of gameplay and earned ₹5.00 reward.');
+                    alert('30 minutes completed! Earned ₹5.00 reward.');
                     closeGameModal();
                 }
             }, 1000);
@@ -481,8 +413,7 @@
         function updateTimerBanner() {
             let mins = Math.floor(timeLeft / 60);
             let secs = timeLeft % 60;
-            document.getElementById('timerBanner').innerText = 
-                `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left to earn ₹5.00`;
+            document.getElementById('timerBanner').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left to earn ₹5.00`;
         }
 
         function closeGameModal() {
