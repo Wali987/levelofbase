@@ -64,6 +64,7 @@
         .input-box i { color: var(--accent-neon); font-size: 14px; }
 
         .btn-main { width: 100%; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); }
+        .btn-main:disabled { background: #334155; color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
 
         /* Dashboard Top & Wallet */
         .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 10px 15px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
@@ -99,7 +100,7 @@
         .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
         .game-modal-header { padding: 10px 15px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 5px 12px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 11px; }
-        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 6px; text-align: center; font-family: 'Orbitron'; font-size: 12px; color: var(--accent-neon); }
+        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 12px; color: var(--accent-neon); display: block !important; }
     </style>
 </head>
 <body>
@@ -166,7 +167,7 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Welcome to Nexus Arcade! Play clean daily games, maintain time streaks & earn Halal rewards securely!</marquee>
+                <marquee scrollamount="4">📢 Welcome to Nexus Arcade! Play games continuously for 30 minutes to earn your rewards. Keep streaks safe!</marquee>
             </div>
 
             <div class="wallet-card">
@@ -201,7 +202,7 @@
             <h2 style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-neon); margin-bottom: 12px;">Daily Check-in Streak</h2>
             <div style="background: var(--bg-card); padding: 12px; border-radius: 10px; margin-bottom: 15px; text-align: center; border:1px solid rgba(139,155,180,0.2);">
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Claim your daily bonus check-in reward!</p>
-                <button class="btn-main" onclick="claimDailyBonus()" style="padding: 10px; font-size: 12px;">Claim Day 1 Bonus (₹10)</button>
+                <button class="btn-main" id="claimBonusBtn" onclick="claimDailyBonus()" style="padding: 10px; font-size: 12px;">Claim Day 1 Bonus (₹10)</button>
             </div>
 
             <h2 style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-neon); margin-bottom: 12px;">Referral System</h2>
@@ -244,7 +245,7 @@
 
     <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
-        <div class="timer-banner" id="timerBanner">Time Active: 02:00 left to earn ₹5.00</div>
+        <div class="timer-banner" id="timerBanner">Time Active: 30:00 left to earn ₹5.00</div>
         <div class="game-modal-header">
             <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon);">Game</span>
             <button class="close-game-btn" onclick="closeGameModal()">QUIT & CLAIM</button>
@@ -255,9 +256,9 @@
     <script>
         let currentUser = null;
         let userBalance = 0.00;
-        let authMode = 'login'; // 'login' or 'register'
+        let authMode = 'login';
         let gameTimer;
-        let timeLeft = 120; // 2 minutes reward milestone
+        let timeLeft = 1800; // 30 minutes in seconds
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -365,13 +366,11 @@
                     switchAuthMode('login');
                     return;
                 }
-                // Register new user
-                usersDB[phone] = { password: pass, balance: 0.00, playerId: '#' + Math.floor(100000 + Math.random() * 900000) };
+                usersDB[phone] = { password: pass, balance: 0.00, playerId: '#' + Math.floor(100000 + Math.random() * 900000), lastClaimDate: '' };
                 localStorage.setItem('nexus_users', JSON.stringify(usersDB));
                 alert("Registration successful! You can now login.");
                 switchAuthMode('login');
             } else {
-                // Login check
                 if (!usersDB[phone]) {
                     alert("Account not found! Please register first.");
                     switchAuthMode('register');
@@ -381,7 +380,7 @@
                     alert("Incorrect password! Please try again.");
                     return;
                 }
-                // Successful Login
+                
                 currentUser = phone;
                 userBalance = usersDB[phone].balance;
                 
@@ -389,6 +388,7 @@
                 document.getElementById('displayPlayerId').innerText = usersDB[phone].playerId;
                 document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
 
+                checkDailyBonusStatus();
                 showScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
             }
         }
@@ -400,6 +400,41 @@
                 usersDB[currentUser].balance = userBalance;
                 localStorage.setItem('nexus_users', JSON.stringify(usersDB));
             }
+        }
+
+        function checkDailyBonusStatus() {
+            if (!currentUser) return;
+            let usersDB = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            let todayStr = new Date().toDateString();
+            const btn = document.getElementById('claimBonusBtn');
+
+            if (usersDB[currentUser] && usersDB[currentUser].lastClaimDate === todayStr) {
+                btn.innerText = "Already Claimed Today (✓)";
+                btn.disabled = true;
+            } else {
+                btn.innerText = "Claim Day 1 Bonus (₹10)";
+                btn.disabled = false;
+            }
+        }
+
+        function claimDailyBonus() {
+            if (!currentUser) return;
+            let usersDB = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            let todayStr = new Date().toDateString();
+
+            if (usersDB[currentUser].lastClaimDate === todayStr) {
+                alert("You have already claimed your daily bonus today! Come back tomorrow.");
+                return;
+            }
+
+            userBalance += 10.00;
+            usersDB[currentUser].balance = userBalance;
+            usersDB[currentUser].lastClaimDate = todayStr;
+            localStorage.setItem('nexus_users', JSON.stringify(usersDB));
+
+            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+            checkDailyBonusStatus();
+            alert('Daily Check-in bonus of ₹10.00 claimed successfully!');
         }
 
         function showScreen(screenId, navElement = null) {
@@ -419,19 +454,12 @@
             }
         }
 
-        function claimDailyBonus() {
-            userBalance += 10.00;
-            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-            saveUserData();
-            alert('Daily Check-in bonus of ₹10.00 claimed successfully!');
-        }
-
         function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
 
-            timeLeft = 120;
+            timeLeft = 1800; // Reset to 30 minutes
             updateTimerBanner();
 
             gameTimer = setInterval(() => {
@@ -443,7 +471,7 @@
                     userBalance += 5.00;
                     document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
                     saveUserData();
-                    alert('Congratulations! You spent time playing and earned ₹5.00 reward.');
+                    alert('Congratulations! You completed 30 minutes of gameplay and earned ₹5.00 reward.');
                     closeGameModal();
                 }
             }, 1000);
