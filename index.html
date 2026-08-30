@@ -50,8 +50,13 @@
         /* Auth Screen */
         #screen-welcome { justify-content: center; text-align: center; padding: 25px; background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, var(--bg-deep) 70%); }
         .welcome-logo-box { width: 100px; height: 100px; border: 2px dashed var(--accent-neon); border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 15px auto; background: rgba(0, 240, 255, 0.05); box-shadow: var(--glow); }
-        .welcome-logo-box i { font-size: 35px; color: var(--accent-neon); margin-bottom: 5px; }
+        .welcome-logo-box i { font-size: 40px; color: var(--accent-neon); }
         
+        /* Auth Tabs Switcher */
+        .auth-tabs { display: flex; background: var(--bg-card); border-radius: 10px; padding: 4px; margin-bottom: 15px; border: 1px solid rgba(139,155,180,0.2); }
+        .auth-tab-btn { flex: 1; background: transparent; border: none; padding: 10px; color: var(--text-muted); font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 8px; transition: 0.2s; }
+        .auth-tab-btn.active-tab { background: var(--accent-neon); color: black; box-shadow: var(--glow); }
+
         .input-group { margin-bottom: 12px; text-align: left; }
         .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
         .input-box { display: flex; align-items: center; background: var(--bg-card); border: 1px solid rgba(139, 155, 180, 0.2); border-radius: 10px; padding: 0 12px; }
@@ -101,15 +106,19 @@
 
     <div class="app-container">
         
-        <!-- 1. LOGIN / SIGNUP SCREEN -->
+        <!-- 1. LOGIN / REGISTER SCREEN WITH TABS -->
         <div id="screen-welcome" class="screen-content active">
             <h1 style="font-family: 'Orbitron'; font-size: 20px; color: var(--accent-neon);">NEXUS ARCADE</h1>
             <div class="welcome-logo-box">
                 <i class="fa-solid fa-gamepad"></i>
-                <span style="font-family: 'Orbitron'; font-size: 10px;">91 CLUB STYLE</span>
             </div>
-            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Play games, track time & earn halal rewards daily!</p>
             
+            <!-- Tabs for Login / Register -->
+            <div class="auth-tabs">
+                <button class="auth-tab-btn active-tab" id="tabLoginBtn" onclick="switchAuthMode('login')">Login</button>
+                <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthMode('register')">Register</button>
+            </div>
+
             <div class="input-group">
                 <label>Phone Number</label>
                 <div class="input-box">
@@ -124,21 +133,26 @@
                     <input type="password" id="passInput" placeholder="Enter password">
                 </div>
             </div>
-            <div class="input-group">
-                <label>Verification Code (OTP)</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-shield-halved"></i>
-                    <input type="text" placeholder="Enter 4-digit OTP">
+            
+            <!-- Extra fields for Register mode only -->
+            <div id="registerExtraFields">
+                <div class="input-group">
+                    <label>Verification Code (OTP)</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <input type="text" id="otpInput" placeholder="Enter 4-digit OTP">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Invitation Code (Optional)</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <input type="text" id="refInput" placeholder="Enter referral code">
+                    </div>
                 </div>
             </div>
-            <div class="input-group">
-                <label>Invitation Code (Optional)</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <input type="text" placeholder="Enter referral code">
-                </div>
-            </div>
-            <button class="btn-main" onclick="handleLogin()" style="margin-top: 5px;">Login / Register</button>
+
+            <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 5px;">Login</button>
         </div>
 
         <!-- 2. LOBBY / HOME SCREEN -->
@@ -205,7 +219,7 @@
                 <div id="accountPhone" style="font-family:'Orbitron'; font-weight:700; font-size: 14px;">+91 9876543210</div>
                 <div style="font-size:11px; color: var(--text-muted);">Status: Active Time-Earn Gamer</div>
             </div>
-            <div onclick="showScreen('screen-welcome', this)" style="background:var(--bg-card); padding:12px; border-radius:10px; text-align:center; color:#ff4d4d; font-weight:700; cursor:pointer; border:1px solid rgba(255,77,77,0.2); font-size: 13px;">
+            <div onclick="logoutUser()" style="background:var(--bg-card); padding:12px; border-radius:10px; text-align:center; color:#ff4d4d; font-weight:700; cursor:pointer; border:1px solid rgba(255,77,77,0.2); font-size: 13px;">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </div>
         </div>
@@ -239,7 +253,9 @@
     </div>
 
     <script>
-        let balance = 0.00;
+        let currentUser = null;
+        let userBalance = 0.00;
+        let authMode = 'login'; // 'login' or 'register'
         let gameTimer;
         let timeLeft = 120; // 2 minutes reward milestone
 
@@ -308,6 +324,84 @@
         }
         renderGames();
 
+        function switchAuthMode(mode) {
+            authMode = mode;
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+            const extraFields = document.getElementById('registerExtraFields');
+            const submitBtn = document.getElementById('authSubmitBtn');
+
+            if (mode === 'login') {
+                loginBtn.classList.add('active-tab');
+                regBtn.classList.remove('active-tab');
+                extraFields.style.display = 'none';
+                submitBtn.innerText = 'Login';
+            } else {
+                regBtn.classList.add('active-tab');
+                loginBtn.classList.remove('active-tab');
+                extraFields.style.display = 'block';
+                submitBtn.innerText = 'Register Account';
+            }
+        }
+
+        function handleAuth() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            const pass = document.getElementById('passInput').value.trim();
+
+            if (!phone || phone.length < 10) {
+                alert("Please enter a valid 10-digit phone number!");
+                return;
+            }
+            if (!pass) {
+                alert("Please enter your password!");
+                return;
+            }
+
+            let usersDB = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+
+            if (authMode === 'register') {
+                if (usersDB[phone]) {
+                    alert("Account already exists with this number! Please login instead.");
+                    switchAuthMode('login');
+                    return;
+                }
+                // Register new user
+                usersDB[phone] = { password: pass, balance: 0.00, playerId: '#' + Math.floor(100000 + Math.random() * 900000) };
+                localStorage.setItem('nexus_users', JSON.stringify(usersDB));
+                alert("Registration successful! You can now login.");
+                switchAuthMode('login');
+            } else {
+                // Login check
+                if (!usersDB[phone]) {
+                    alert("Account not found! Please register first.");
+                    switchAuthMode('register');
+                    return;
+                }
+                if (usersDB[phone].password !== pass) {
+                    alert("Incorrect password! Please try again.");
+                    return;
+                }
+                // Successful Login
+                currentUser = phone;
+                userBalance = usersDB[phone].balance;
+                
+                document.getElementById('accountPhone').innerText = phone;
+                document.getElementById('displayPlayerId').innerText = usersDB[phone].playerId;
+                document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+
+                showScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
+            }
+        }
+
+        function saveUserData() {
+            if (!currentUser) return;
+            let usersDB = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            if (usersDB[currentUser]) {
+                usersDB[currentUser].balance = userBalance;
+                localStorage.setItem('nexus_users', JSON.stringify(usersDB));
+            }
+        }
+
         function showScreen(screenId, navElement = null) {
             document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -325,20 +419,10 @@
             }
         }
 
-        function handleLogin() {
-            const phone = document.getElementById('phoneInput').value;
-            if(!phone || phone.length < 10) {
-                alert("Please enter a valid phone number!");
-                return;
-            }
-            document.getElementById('accountPhone').innerText = phone;
-            document.getElementById('displayPlayerId').innerText = '#' + Math.floor(100000 + Math.random() * 900000);
-            showScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
-        }
-
         function claimDailyBonus() {
-            balance += 10.00;
-            document.getElementById('balanceDisplay').innerText = `₹${balance.toFixed(2)}`;
+            userBalance += 10.00;
+            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+            saveUserData();
             alert('Daily Check-in bonus of ₹10.00 claimed successfully!');
         }
 
@@ -356,8 +440,9 @@
 
                 if(timeLeft <= 0) {
                     clearInterval(gameTimer);
-                    balance += 5.00;
-                    document.getElementById('balanceDisplay').innerText = `₹${balance.toFixed(2)}`;
+                    userBalance += 5.00;
+                    document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+                    saveUserData();
                     alert('Congratulations! You spent time playing and earned ₹5.00 reward.');
                     closeGameModal();
                 }
@@ -375,6 +460,14 @@
             clearInterval(gameTimer);
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            userBalance = 0.00;
+            document.getElementById('phoneInput').value = '';
+            document.getElementById('passInput').value = '';
+            showScreen('screen-welcome');
         }
     </script>
 </body>
