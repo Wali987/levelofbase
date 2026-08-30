@@ -24,7 +24,7 @@
 
         .app-container {
             width: 100%;
-            max-width: 100%; /* Laptop par full width ke liye */
+            max-width: 100%;
             height: 100vh;
             background: var(--bg-deep);
             position: relative;
@@ -37,10 +37,10 @@
 
         @media (min-width: 768px) {
             .app-container {
-                max-width: 800px; /* Laptop ke liye ek badiya spacious width */
+                max-width: 900px; /* Laptop par ekdum wide aur khuli screen */
                 border-radius: 16px;
                 margin: auto;
-                height: 90vh;
+                height: 92vh;
             }
         }
 
@@ -55,7 +55,6 @@
         }
         .screen-content.active { display: flex; }
 
-        /* Auth Screen */
         #screen-welcome { justify-content: center; text-align: center; padding: 25px; background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, var(--bg-deep) 70%); }
         .welcome-logo-box { width: 100px; height: 100px; border: 2px dashed var(--accent-neon); border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 15px auto; background: rgba(0, 240, 255, 0.05); box-shadow: var(--glow); }
         .welcome-logo-box i { font-size: 40px; color: var(--accent-neon); }
@@ -82,7 +81,7 @@
 
         .section-heading { font-family: 'Orbitron', sans-serif; font-size: 15px; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; color: var(--accent-neon); }
 
-        /* Games Grid - Laptop friendly (3-4 columns) */
+        /* Games Grid - Laptop friendly (4 columns) */
         .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
         @media (min-width: 768px) {
             .games-grid { grid-template-columns: repeat(4, 1fr); }
@@ -113,6 +112,7 @@
 
     <div class="app-container">
         
+        <!-- 1. LOGIN / REGISTER SCREEN -->
         <div id="screen-welcome" class="screen-content active">
             <h1 style="font-family: 'Orbitron'; font-size: 22px; color: var(--accent-neon);">NEXUS ARCADE</h1>
             <div class="welcome-logo-box">
@@ -159,6 +159,7 @@
             <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 10px;">Login</button>
         </div>
 
+        <!-- 2. LOBBY / HOME SCREEN -->
         <div id="screen-lobby" class="screen-content">
             <div class="top-user-bar">
                 <div>
@@ -187,6 +188,7 @@
             <div class="games-grid" id="gamesGrid"></div>
         </div>
 
+        <!-- 3. LEADERBOARD SCREEN -->
         <div id="screen-leaderboard" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 15px;"><i class="fa-solid fa-trophy"></i> Top Active Earners</h2>
             <div id="leaderboardList">
@@ -198,6 +200,7 @@
             </div>
         </div>
 
+        <!-- 4. REWARDS SCREEN -->
         <div id="screen-rewards" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">Daily Check-in Streak</h2>
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; border:1px solid rgba(139,155,180,0.2);">
@@ -206,6 +209,7 @@
             </div>
         </div>
 
+        <!-- 5. ACCOUNT PROFILE -->
         <div id="screen-account" class="screen-content">
             <div style="text-align:center; padding: 20px; background:var(--bg-card); border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%;">
                 <i class="fa-solid fa-user-circle" style="font-size:50px; color:var(--accent-neon); margin-bottom:10px;"></i>
@@ -217,6 +221,7 @@
             </div>
         </div>
 
+        <!-- FIXED BOTTOM NAVIGATION BAR -->
         <div class="bottom-nav" id="mainBottomNav">
             <button class="nav-item active" onclick="showScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
@@ -234,6 +239,7 @@
 
     </div>
 
+    <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="timer-banner" id="timerBanner">Time Active: 30:00 left to earn ₹5.00</div>
         <div class="game-modal-header">
@@ -258,7 +264,39 @@
             { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
             { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
             { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" }
+            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
+            { title: "Speed Racer", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Galaxy Warrior", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #42275a, #734b6d)" },
+            { title: "Neon Ninja", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #0f0c29, #302b63)" },
+            { title: "Zombie Arena", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-skull", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
+            { title: "Turbo Drifter", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car", bg: "linear-gradient(135deg, #1d976c, #93f9b9)" },
+            { title: "Sky Dash", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-plane", bg: "linear-gradient(135deg, #3a6073, #16222a)" },
+            { title: "Blade Storm", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-hurricane", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
+            { title: "Block Breaker", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-th", bg: "linear-gradient(135deg, #8e44ad, #c0392b)" },
+            { title: "Shadow Hunter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-ghost", bg: "linear-gradient(135deg, #000000, #434343)" },
+            { title: "Apex Strikers", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
+            { title: "Cosmic Jump", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-feather", bg: "linear-gradient(135deg, #ffb347, #ffcc33)" },
+            { title: "Subway Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-train", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Fire Fighter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-fire", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
+            { title: "Aqua Splash", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-water", bg: "linear-gradient(135deg, #005c97, #363795)" },
+            { title: "Desert Storm", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-sun", bg: "linear-gradient(135deg, #f39c12, #e74c3c)" },
+            { title: "Iron Mech", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-robot", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)" },
+            { title: "Crystal Cave", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-gem", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)" },
+            { title: "Power Punch", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-fist-raised", bg: "linear-gradient(135deg, #eb3349, #f45c43)" },
+            { title: "Night Rider", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-motorcycle", bg: "linear-gradient(135deg, #141414, #282828)" },
+            { title: "Bio Hazard", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-biohazard", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Magic Wizard", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-hat-wizard", bg: "linear-gradient(135deg, #5c258d, #4389a2)" },
+            { title: "Thunder Bolt", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bolt", bg: "linear-gradient(135deg, #f39c12, #f1c40f)" },
+            { title: "Gold Miner", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-coins", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
+            { title: "Target Master", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #232526, #414345)" },
+            { title: "Skull Island", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-skull-crossbones", bg: "linear-gradient(135deg, #203a43, #0f2027)" },
+            { title: "Starfighter", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #2980b9, #2c3e50)" },
+            { title: "Super Cube", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-shapes", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
+            { title: "Dungeon Crawler", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-dungeon", bg: "linear-gradient(135deg, #485563, #29323c)" },
+            { title: "Vortex Spin", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-compact-disc", bg: "linear-gradient(135deg, #833ab4, #fd1d1d)" },
+            { title: "Infinity Loop", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-infinity", bg: "linear-gradient(135deg, #3a1c71, #d76d77)" },
+            { title: "Shield Defender", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-shield-alt", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
+            { title: "Ultimate Arena", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-trophy", bg: "linear-gradient(135deg, #f7971e, #ffd200)" }
         ];
 
         function renderGames() {
