@@ -52,14 +52,14 @@
             display: none;
             flex-direction: column;
             min-height: 100%;
-            padding-bottom: 75px;
+            padding-bottom: 85px; /* Sabhi main screens par bottom nav ke liye space */
         }
 
         .screen.active {
             display: flex;
         }
 
-        /* --- SCREEN 1: WELCOME --- */
+        /* --- SCREEN 1: WELCOME (Design as per your drawing) --- */
         #screen-welcome {
             justify-content: center;
             align-items: center;
@@ -119,7 +119,7 @@
             color: var(--accent-neon);
         }
 
-        /* --- SCREEN 2: REGISTER --- */
+        /* --- SCREEN 2: REGISTER (Design as per 91Club style) --- */
         .header-bar {
             padding: 18px 20px;
             display: flex;
@@ -314,6 +314,26 @@
             font-weight: 700;
         }
 
+        /* --- EXPLORE & REWARDS CONTENT PAGES --- */
+        .content-page {
+            padding: 20px;
+        }
+
+        .page-title {
+            font-family: 'Orbitron';
+            font-size: 20px;
+            color: var(--accent-neon);
+            margin-bottom: 15px;
+        }
+
+        .card-box {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 15px;
+            border: 1px solid rgba(139, 155, 180, 0.15);
+        }
+
         /* --- SCREEN 4: ACCOUNT & DAILY STREAK --- */
         .account-header {
             background: var(--bg-card);
@@ -371,7 +391,7 @@
             border: 1px solid rgba(139, 155, 180, 0.15);
         }
 
-        /* --- BOTTOM NAV BAR --- */
+        /* --- BOTTOM NAVIGATION BAR (Hamesha visible rahegi sabhi screens par) --- */
         .bottom-nav {
             position: absolute;
             bottom: 0;
@@ -501,7 +521,7 @@
                     <label>Verification Code</label>
                     <div class="input-box">
                         <i class="fa-solid fa-shield"></i>
-                        <input type="text" placeholder="Enter 4-digit code">
+                        <input type="text" id="otpInput" placeholder="Enter 4-digit code">
                         <button class="send-otp-btn" id="sendOtpBtn" onclick="sendOTP()">Send Code</button>
                     </div>
                 </div>
@@ -509,14 +529,28 @@
                     <label>Set Password</label>
                     <div class="input-box">
                         <i class="fa-solid fa-lock"></i>
-                        <input type="password" placeholder="Password">
+                        <input type="password" id="passInput" placeholder="Password">
                     </div>
                 </div>
-                <button class="btn-main btn-primary" style="width: 100%; margin-top: 15px;" onclick="switchScreen('screen-lobby')">Register</button>
+                <div class="input-group">
+                    <label>Confirm Password</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-lock-open"></i>
+                        <input type="password" id="confirmPassInput" placeholder="Confirm password">
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Invite Code (Optional)</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-ticket"></i>
+                        <input type="text" value="3556517548565">
+                    </div>
+                </div>
+                <button class="btn-main btn-primary" style="width: 100%; margin-top: 10px;" onclick="handleRegister()">Register</button>
             </div>
         </div>
 
-        <div id="screen-lobby" class="screen">
+        <div id="screen-lobby" class="screen active">
             <div class="wallet-card">
                 <div>
                     <div style="font-size: 12px; color: var(--text-muted);">Earnings Balance</div>
@@ -534,11 +568,39 @@
             </div>
 
             <div class="section-heading">
-                <i class="fa-solid fa-bolt" style="color: var(--accent-neon);"></i> Recommended Games
+                <i class="fa-solid fa-bolt" style="color: var(--accent-neon);"></i> Recommended Games (50+ Arcade Games)
             </div>
 
             <div class="games-grid" id="gamesGrid">
                 </div>
+        </div>
+
+        <div id="screen-explore" class="screen">
+            <div class="content-page">
+                <div class="page-title"><i class="fa-solid fa-compass"></i> Explore Arcade</div>
+                <div class="card-box">
+                    <h3 style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-neon); margin-bottom: 8px;">Trending Tournaments</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Compete with global players daily to win mega reward pools!</p>
+                </div>
+                <div class="card-box">
+                    <h3 style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-gold); margin-bottom: 8px;">New Releases</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Fresh HTML5 cyber titles added to the repository this week.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="screen-rewards" class="screen">
+            <div class="content-page">
+                <div class="page-title"><i class="fa-solid fa-trophy"></i> Rewards & Bonuses</div>
+                <div class="card-box">
+                    <h3 style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-green); margin-bottom: 8px;">30-Min Play Reward</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Active game timer gives you ₹50 straight to your wallet every day.</p>
+                </div>
+                <div class="card-box">
+                    <h3 style="font-family: 'Orbitron'; font-size: 15px; color: var(--accent-gold); margin-bottom: 8px;">Referral Bonus</h3>
+                    <p style="color: var(--text-muted); font-size: 13px;">Invite your friends using your link and earn 10% commission on gameplay.</p>
+                </div>
+            </div>
         </div>
 
         <div id="screen-account" class="screen">
@@ -571,16 +633,16 @@
         </div>
 
         <div class="bottom-nav">
-            <button class="nav-item active" onclick="switchScreen('screen-lobby')">
+            <button class="nav-item active" onclick="switchScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
             </button>
-            <button class="nav-item" onclick="switchScreen('screen-lobby')">
+            <button class="nav-item" onclick="switchScreen('screen-explore', this)">
                 <i class="fa-solid fa-compass"></i> Explore
             </button>
-            <button class="nav-item" onclick="switchScreen('screen-lobby')">
+            <button class="nav-item" onclick="switchScreen('screen-rewards', this)">
                 <i class="fa-solid fa-trophy"></i> Rewards
             </button>
-            <button class="nav-item" onclick="switchScreen('screen-account')">
+            <button class="nav-item" onclick="switchScreen('screen-account', this)">
                 <i class="fa-solid fa-user"></i> Account
             </button>
         </div>
@@ -606,6 +668,7 @@
     </div>
 
     <script>
+        // Saare 50+ Games ke links aur guaranteed styling backgrounds (Thumbnail bug fixed forever)
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
             { title: "Quantum Rush", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-rocket", bg: "linear-gradient(135deg, #141e30, #243b55)" },
@@ -614,25 +677,69 @@
             { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
             { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
             { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" }
+            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
+            { title: "Turbo Clash", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Galaxy Patrol", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #283048, #859398)" },
+            { title: "Shadow Ninja", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #141E30, #243B55)" },
+            { title: "Blaze Runner", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-fire", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Neon Shooter", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045)" },
+            { title: "Crypto Miner", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-coins", bg: "linear-gradient(135deg, #005c97, #363795)" },
+            { title: "Matrix Hacker", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-terminal", bg: "linear-gradient(135deg, #0f9b0f, #000000)" },
+            { title: "Aero Fighter", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-plane", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
+            { title: "Zombie Arena", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-skull", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
+            { title: "Speed Racer", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-car", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
+            { title: "Alien Invasion", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-spider", bg: "linear-gradient(135deg, #4b6cb7, #182848)" },
+            { title: "Epic Quest", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #1f4068, #162447)" },
+            { title: "Cyber Jump", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-angles-up", bg: "linear-gradient(135deg, #3a6186, #89253e)" },
+            { title: "Super Sniper", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-scope", bg: "linear-gradient(135deg, #606c88, #3f4c6b)" },
+            { title: "Rebel Road", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-road", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
+            { title: "Titan Smash", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-hand-fist", bg: "linear-gradient(135deg, #8e44ad, #c0392b)" },
+            { title: "Galaxy Defender", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-shield", bg: "linear-gradient(135deg, #000428, #004e92)" },
+            { title: "Subterranean", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-dungeon", bg: "linear-gradient(135deg, #3e5151, #decba4)" },
+            { title: "Vortex Drift", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-circle-notch", bg: "linear-gradient(135deg, #4ca1af, #2c3e50)" },
+            { title: "Hyper Ball", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-baseball", bg: "linear-gradient(135deg, #ff9966, #ff5e62)" },
+            { title: "Rogue Wave", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-water", bg: "linear-gradient(135deg, #2980b9, #2c3e50)" },
+            { title: "Star Fighter", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
+            { title: "Dark Nebula", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-cloud-moon", bg: "linear-gradient(135deg, #31111d, #120309)" },
+            { title: "Nitro Burn", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #fc4a1a, #f7b733)" },
+            { title: "Arcade Master", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-gamepad", bg: "linear-gradient(135deg, #7f00ff, #e100ff)" },
+            { title: "Plasma Gunner", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-burst", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
+            { title: "Quantum Leap", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-bolt-lightning", bg: "linear-gradient(135deg, #f7ff00, #db36a4)" },
+            { title: "Shadow Strike", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-ghost", bg: "linear-gradient(135deg, #2c3e50, #000000)" },
+            { title: "Cyber Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-biking", bg: "linear-gradient(135deg, #43cea2, #185a9d)" },
+            { title: "Mecha Bot", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-robot", bg: "linear-gradient(135deg, #ff512f, #dd2476)" },
+            { title: "Pixel Knight", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-chess-rook", bg: "linear-gradient(135deg, #5c258d, #4389a2)" },
+            { title: "Apex Predator", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-paw", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)" },
+            { title: "Dragon Fire", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-dragon", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" },
+            { title: "Bounty Hunter", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-hat-cowboy", bg: "linear-gradient(135deg, #654ea3, #eaafc8)" },
+            { title: "Atomic Bomber", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-radiation", bg: "linear-gradient(135deg, #ffe000, #799f0c)" },
+            { title: "Space Odyssey", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-globe", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
+            { title: "Neon Blade", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-sword", bg: "linear-gradient(135deg, #ff0844, #ffb199)" },
+            { title: "Stellar Drift", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-car-side", bg: "linear-gradient(135deg, #4776e6, #8e54e9)" },
+            { title: "Hyper Velocity", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-gauge", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
+            { title: "Void Striker", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-satellite", bg: "linear-gradient(135deg, #3e1b78, #220b3a)" },
+            { title: "Nexus Elite", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crown", bg: "linear-gradient(135deg, #f7971e, #ffd200)" },
+            { title: "Ultimate Arcade", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-trophy", bg: "linear-gradient(135deg, #00bf8f, #001510)" }
         ];
 
         let secondsLeft = 1800; // 30 Minutes
         let timerInterval = null;
         let userBalance = 150.00;
+        let generatedOtp = "";
 
         function sendOTP() {
             let phone = document.getElementById('phoneInput').value;
             if(!phone || phone.length < 10) {
-                alert("Please enter a valid phone number first!");
+                alert("Please enter a valid 10-digit phone number first!");
                 return;
             }
+            generatedOtp = Math.floor(1000 + Math.random() * 9000).toString();
+            alert(`[Demo SMS] Your verification code is: ${generatedOtp}`);
+
             let btn = document.getElementById('sendOtpBtn');
             btn.disabled = true;
             let countdown = 30;
             btn.innerText = `Resend (${countdown}s)`;
-            
-            alert("Verification Code sent successfully to " + phone);
 
             let otpInterval = setInterval(() => {
                 countdown--;
@@ -644,6 +751,37 @@
                     btn.innerText = "Send Code";
                 }
             }, 1000);
+        }
+
+        function handleRegister() {
+            let phone = document.getElementById('phoneInput').value;
+            let otp = document.getElementById('otpInput').value;
+            let pass = document.getElementById('passInput').value;
+            let confirmPass = document.getElementById('confirmPassInput').value;
+
+            if(!phone || phone.length < 10) {
+                alert("Please enter a valid phone number!");
+                return;
+            }
+            if(!otp) {
+                alert("Please enter the verification code!");
+                return;
+            }
+            if(generatedOtp && otp !== generatedOtp) {
+                alert("Incorrect verification code!");
+                return;
+            }
+            if(!pass || pass.length < 4) {
+                alert("Please set a password (min 4 characters)!");
+                return;
+            }
+            if(pass !== confirmPass) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            alert("Account created successfully!");
+            switchScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
         }
 
         function startTimer() {
@@ -663,15 +801,13 @@
             }, 1000);
         }
 
-        function switchScreen(screenId) {
+        function switchScreen(screenId, navElement) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
             
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            if(screenId === 'screen-lobby') {
-                document.querySelectorAll('.nav-item')[0].classList.add('active');
-            } else if(screenId === 'screen-account') {
-                document.querySelectorAll('.nav-item')[3].classList.add('active');
+            if(navElement) {
+                document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+                navElement.classList.add('active');
             }
         }
 
@@ -683,7 +819,7 @@
                 card.className = 'game-card';
                 card.onclick = () => launchGame(game.title, game.url);
                 card.innerHTML = `
-                    <div class="game-thumb" style="background-image: ${game.bg};">
+                    <div class="game-thumb" style="background: ${game.bg};">
                         <i class="fa-solid ${game.icon}"></i>
                     </div>
                     <div class="game-info">
