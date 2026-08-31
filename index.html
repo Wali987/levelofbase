@@ -70,7 +70,6 @@
         .input-box i { color: var(--accent-neon); font-size: 14px; }
 
         .btn-main { width: 100%; max-width: 400px; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); margin-left: auto; margin-right: auto; display: block; }
-        .btn-main:disabled { background: #334155; color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
 
         .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
         
@@ -103,12 +102,10 @@
         .nav-item.active { color: var(--accent-neon); }
         .nav-item i { font-size: 18px; margin-bottom: 2px; }
 
-        /* Streak Grid UI */
         .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 15px 0; }
         .streak-day { background: var(--bg-deep); border: 1px solid rgba(139,155,180,0.2); border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 11px; }
         .streak-day.completed { border-color: var(--accent-green); background: rgba(0,255,102,0.1); color: var(--accent-green); }
 
-        /* AI Support Chat Modal */
         .chat-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; justify-content: center; align-items: center; padding: 15px; }
         .chat-container { width: 100%; max-width: 450px; height: 500px; background: var(--bg-card); border-radius: 14px; border: 1px solid var(--accent-neon); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--glow); }
         .chat-header { background: #181d30; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,240,255,0.2); font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); }
@@ -125,14 +122,13 @@
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
         
         .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .afk-warning { background: rgba(255, 77, 77, 0.2); color: #ff4d4d; border-bottom: 1px dashed #ff4d4d; }
+        .afk-warning { background: rgba(255, 77, 77, 0.2) !important; color: #ff4d4d !important; border-bottom: 1px dashed #ff4d4d; }
         .resume-btn { background: var(--accent-green); color: black; border: none; padding: 3px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; display: none; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        
         <!-- 1. LOGIN / REGISTER SCREEN -->
         <div id="screen-welcome" class="screen-content active">
             <h1 style="font-family: 'Orbitron'; font-size: 22px; color: var(--accent-neon);">NEXUS ARCADE</h1>
@@ -221,7 +217,7 @@
             </div>
         </div>
 
-        <!-- 4. REWARDS SCREEN (7-Day Streak Challenge) -->
+        <!-- 4. REWARDS SCREEN -->
         <div id="screen-rewards" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">7-Day Play Streak Challenge</h2>
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(139,155,180,0.2);">
@@ -268,7 +264,6 @@
                 <i class="fa-solid fa-user"></i> Account
             </button>
         </div>
-
     </div>
 
     <!-- AI SUPPORT CHAT MODAL -->
@@ -305,7 +300,7 @@
         let currentUser = null;
         let userBalance = 0.00;
         let authMode = 'login';
-        let gameTimer;
+        let gameTimer = null;
         let timeLeft = 1800; // 30 minutes
         let lastActivityTime = Date.now();
         let isAfk = false;
@@ -318,43 +313,12 @@
             { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
             { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
             { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
-            { title: "Speed Racer", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
-            { title: "Galaxy Warrior", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #42275a, #734b6d)" },
-            { title: "Neon Ninja", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #0f0c29, #302b63)" },
-            { title: "Zombie Arena", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-skull", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
-            { title: "Turbo Drifter", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car", bg: "linear-gradient(135deg, #1d976c, #93f9b9)" },
-            { title: "Sky Dash", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-plane", bg: "linear-gradient(135deg, #3a6073, #16222a)" },
-            { title: "Blade Storm", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-hurricane", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
-            { title: "Block Breaker", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-th", bg: "linear-gradient(135deg, #8e44ad, #c0392b)" },
-            { title: "Shadow Hunter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-ghost", bg: "linear-gradient(135deg, #000000, #434343)" },
-            { title: "Apex Strikers", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
-            { title: "Cosmic Jump", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-feather", bg: "linear-gradient(135deg, #ffb347, #ffcc33)" },
-            { title: "Subway Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-train", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
-            { title: "Fire Fighter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-fire", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
-            { title: "Aqua Splash", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-water", bg: "linear-gradient(135deg, #005c97, #363795)" },
-            { title: "Desert Storm", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-sun", bg: "linear-gradient(135deg, #f39c12, #e74c3c)" },
-            { title: "Iron Mech", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-robot", bg: "linear-gradient(135deg, #bdc3c7, #2c3e50)" },
-            { title: "Crystal Cave", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-gem", bg: "linear-gradient(135deg, #3a7bd5, #3a6073)" },
-            { title: "Power Punch", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-fist-raised", bg: "linear-gradient(135deg, #eb3349, #f45c43)" },
-            { title: "Night Rider", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-motorcycle", bg: "linear-gradient(135deg, #141414, #282828)" },
-            { title: "Bio Hazard", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-biohazard", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
-            { title: "Magic Wizard", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-hat-wizard", bg: "linear-gradient(135deg, #5c258d, #4389a2)" },
-            { title: "Thunder Bolt", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-bolt", bg: "linear-gradient(135deg, #f39c12, #f1c40f)" },
-            { title: "Gold Miner", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-coins", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
-            { title: "Target Master", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Skull Island", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-skull-crossbones", bg: "linear-gradient(135deg, #203a43, #0f2027)" },
-            { title: "Starfighter", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #2980b9, #2c3e50)" },
-            { title: "Super Cube", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-shapes", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
-            { title: "Dungeon Crawler", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-dungeon", bg: "linear-gradient(135deg, #485563, #29323c)" },
-            { title: "Vortex Spin", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-compact-disc", bg: "linear-gradient(135deg, #833ab4, #fd1d1d)" },
-            { title: "Infinity Loop", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-infinity", bg: "linear-gradient(135deg, #3a1c71, #d76d77)" },
-            { title: "Shield Defender", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-shield-alt", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
-            { title: "Ultimate Arena", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-trophy", bg: "linear-gradient(135deg, #f7971e, #ffd200)" }
+            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" }
         ];
 
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
+            if(!grid) return;
             grid.innerHTML = '';
             games.forEach((game) => {
                 const card = document.createElement('div');
@@ -405,27 +369,25 @@
 
             if (authMode === 'register') {
                 if (usersDB[phone]) { alert("Account exists! Please login."); switchAuthMode('login'); return; }
-                // New user registration gets Rs 20 welcome bonus, and streak count = 0
                 usersDB[phone] = { 
                     password: pass, 
                     balance: 20.00, 
                     playerId: '#' + Math.floor(100000 + Math.random() * 900000), 
-                    streakCount: 0, 
-                    lastPlayDate: '', 
+                    streakCount: 1, 
+                    lastPlayDate: new Date().toDateString(), 
                     streakClaimed: false 
                 };
                 localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                alert("Registration successful! You received ₹20.00 Welcome Bonus. Please login.");
+                alert("Registration successful! You received ₹20.00 Welcome Bonus.");
                 switchAuthMode('login');
             } else {
                 if (!usersDB[phone]) { 
-                    // Auto-register convenience for testing
                     usersDB[phone] = { 
                         password: pass, 
                         balance: 20.00, 
                         playerId: '#' + Math.floor(100000 + Math.random() * 900000), 
-                        streakCount: 0, 
-                        lastPlayDate: '', 
+                        streakCount: 1, 
+                        lastPlayDate: new Date().toDateString(), 
                         streakClaimed: false 
                     };
                     localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
@@ -440,226 +402,150 @@
                 document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
 
                 updateStreakUI();
-                showScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
+                showScreen('screen-lobby', document.querySelector('.bottom-nav .nav-item'));
+                document.getElementById('mainBottomNav').classList.add('active-nav');
             }
         }
 
-        function saveUserData() {
-            if (!currentUser) return;
-            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            if (usersDB[currentUser]) {
-                usersDB[currentUser].balance = userBalance;
-                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-            }
-        }
-
-        function updateStreakUI() {
-            if (!currentUser) return;
-            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            let userData = usersDB[currentUser];
-            if (!userData) return;
-
-            let count = userData.streakCount || 0;
-            for (let i = 1; i <= 7; i++) {
-                let dayEl = document.getElementById(`day${i}`);
-                if (i <= count) {
-                    dayEl.classList.add('completed');
-                    dayEl.innerHTML = `Day ${i}<br>✓`;
-                } else {
-                    dayEl.classList.remove('completed');
-                    dayEl.innerHTML = `Day ${i}${i===7?'<br><small>₹20</small>':''}`;
-                }
-            }
-
-            const claimBtn = document.getElementById('claimStreakBtn');
-            if (userData.streakClaimed) {
-                claimBtn.innerText = "Streak Bonus Claimed (✓)";
-                claimBtn.disabled = true;
-            } else if (count >= 7) {
-                claimBtn.innerText = "Claim 7-Day Streak Reward (₹20)";
-                claimBtn.disabled = false;
-            } else {
-                claimBtn.innerText = `Streak: ${count}/7 Days Completed`;
-                claimBtn.disabled = true;
-            }
-        }
-
-        function claimStreakBonus() {
-            if (!currentUser) return;
-            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            let userData = usersDB[currentUser];
-
-            if (userData.streakClaimed || (userData.streakCount || 0) < 7) {
-                alert("Streak not completed or already claimed!");
-                return;
-            }
-
-            userBalance += 20.00;
-            userData.balance = userBalance;
-            userData.streakClaimed = true;
-            usersDB[currentUser] = userData;
-            localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-
-            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-            updateStreakUI();
-            alert('Congratulations! ₹20.00 7-day streak bonus added to your wallet.');
-        }
-
-        function showScreen(screenId, navElement = null) {
+        function showScreen(screenId, navElement) {
             document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
-
-            const bottomNav = document.getElementById('mainBottomNav');
-            if (screenId === 'screen-welcome') bottomNav.classList.remove('active-nav');
-            else bottomNav.classList.add('active-nav');
-
-            if (navElement && navElement.classList && navElement.classList.contains('nav-item')) {
+            
+            if(navElement) {
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 navElement.classList.add('active');
             }
-        }
-
-        /* AI Support Chat Functions */
-        function openChatModal() {
-            document.getElementById('chatModal').style.display = 'flex';
-        }
-
-        function closeChatModal() {
-            document.getElementById('chatModal').style.display = 'none';
-        }
-
-        function handleChatKey(e) {
-            if (e.key === 'Enter') sendChatMessage();
-        }
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const chatBody = document.getElementById('chatBody');
-            
-            const userBubble = document.createElement('div');
-            userBubble.className = 'chat-bubble user';
-            userBubble.innerText = text;
-            chatBody.appendChild(userBubble);
-            input.value = '';
-            chatBody.scrollTop = chatBody.scrollHeight;
-
-            setTimeout(() => {
-                const botBubble = document.createElement('div');
-                botBubble.className = 'chat-bubble bot';
-                
-                let lowerText = text.toLowerCase();
-                if (lowerText.includes('reward') || lowerText.includes('bonus') || lowerText.includes('paise')) {
-                    botBubble.innerText = "Naye users ko registration par ₹20 milte hain, aur 7 din tak roz 30 min game khelne par ₹20 ka extra streak bonus milta hai!";
-                } else if (lowerText.includes('withdraw') || lowerText.includes('nikalna')) {
-                    botBubble.innerText = "Withdrawal system jald hi live hoga jisme aap UPI ke zariye apne paise transfer kar sakenge.";
-                } else {
-                    botBubble.innerText = "Main aapki baat samajh gaya. Game kheliye aur apna 7-day streak complete karke bonus claim kijiye!";
-                }
-
-                chatBody.appendChild(botBubble);
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 600);
-        }
-
-        function resetActivity() {
-            lastActivityTime = Date.now();
-            if (isAfk) {
-                isAfk = false;
-                document.getElementById('timerBanner').classList.remove('afk-warning');
-                document.getElementById('resumeBtn').style.display = 'none';
-            }
-        }
-
-        function manualResumeTimer() {
-            resetActivity();
-            updateTimerBanner();
         }
 
         function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
-
-            timeLeft = 1800; // 30 minutes
+            
+            timeLeft = 1800;
             lastActivityTime = Date.now();
             isAfk = false;
-            document.getElementById('timerBanner').classList.remove('afk-warning');
-            document.getElementById('resumeBtn').style.display = 'none';
-            updateTimerBanner();
+            startTimer();
+        }
 
-            window.addEventListener('mousemove', resetActivity);
-            window.addEventListener('keydown', resetActivity);
-            window.addEventListener('click', resetActivity);
+        function closeGameModal() {
+            document.getElementById('gameModal').style.display = 'none';
+            document.getElementById('gameIframe').src = '';
+            clearInterval(gameTimer);
+        }
 
+        function startTimer() {
+            clearInterval(gameTimer);
             gameTimer = setInterval(() => {
-                let inactiveDuration = (Date.now() - lastActivityTime) / 1000;
+                if (isAfk) return;
 
-                if (inactiveDuration > 90) {
-                    isAfk = true;
-                    let banner = document.getElementById('timerBanner');
-                    banner.classList.add('afk-warning');
-                    document.getElementById('timerText').innerText = `⚠️ Timer Paused (Inactive)`;
-                    document.getElementById('resumeBtn').style.display = 'inline-block';
-                    return; 
+                if (Date.now() - lastActivityTime > 60000) { // 1 min inactivity check
+                    triggerAfkMode();
+                    return;
                 }
 
-                if (!isAfk) {
-                    timeLeft--;
-                    updateTimerBanner();
+                timeLeft--;
+                let mins = Math.floor(timeLeft / 60);
+                let secs = timeLeft % 60;
+                document.getElementById('timerText').innerText = `Time Active: ${mins}:${secs < 10 ? '0' : ''}${secs} left to complete session`;
 
-                    if(timeLeft <= 0) {
-                        clearInterval(gameTimer);
-                        
-                        // Increment streak progress for completing 30 mins session
-                        if (currentUser) {
-                            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-                            let userData = usersDB[currentUser];
-                            let todayStr = new Date().toDateString();
-
-                            if (userData && userData.lastPlayDate !== todayStr) {
-                                userData.streakCount = (userData.streakCount || 0) + 1;
-                                if (userData.streakCount > 7) userData.streakCount = 7;
-                                userData.lastPlayDate = todayStr;
-                                usersDB[currentUser] = userData;
-                                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                            }
-                        }
-
-                        alert('30 minutes session completed! Your streak progress has been updated.');
-                        closeGameModal();
-                        updateStreakUI();
-                    }
+                if (timeLeft <= 0) {
+                    clearInterval(gameTimer);
+                    rewardUserForPlaySession();
                 }
             }, 1000);
         }
 
-        function updateTimerBanner() {
-            if (isAfk) return;
-            let mins = Math.floor(timeLeft / 60);
-            let secs = timeLeft % 60;
-            document.getElementById('timerText').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left in session`;
+        function triggerAfkMode() {
+            isAfk = true;
+            let banner = document.getElementById('timerBanner');
+            banner.classList.add('afk-warning');
+            document.getElementById('timerText').innerText = '⚠️ AFK Detected! Timer Paused.';
+            document.getElementById('resumeBtn').style.display = 'inline-block';
+        }
+
+        function manualResumeTimer() {
+            isAfk = false;
+            lastActivityTime = Date.now();
+            let banner = document.getElementById('timerBanner');
+            banner.classList.remove('afk-warning');
             document.getElementById('resumeBtn').style.display = 'none';
         }
 
-        function closeGameModal() {
-            clearInterval(gameTimer);
-            window.removeEventListener('mousemove', resetActivity);
-            window.removeEventListener('keydown', resetActivity);
-            window.removeEventListener('click', resetActivity);
-            document.getElementById('gameModal').style.display = 'none';
-            document.getElementById('gameIframe').src = '';
+        window.addEventListener('mousemove', () => { if(isAfk == false) lastActivityTime = Date.now(); });
+        window.addEventListener('keypress', () => { if(isAfk == false) lastActivityTime = Date.now(); });
+
+        function rewardUserForPlaySession() {
+            userBalance += 5.00;
+            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+            
+            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+            if(currentUser && usersDB[currentUser]) {
+                usersDB[currentUser].balance = userBalance;
+                if(usersDB[currentUser].streakCount < 7) usersDB[currentUser].streakCount++;
+                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
+            }
+            alert("Session completed! You earned ₹5.00 reward.");
+            closeGameModal();
+            updateStreakUI();
+        }
+
+        function updateStreakUI() {
+            if(!currentUser) return;
+            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+            let count = usersDB[currentUser] ? usersDB[currentUser].streakCount : 1;
+            
+            for(let i=1; i<=7; i++) {
+                let dayEl = document.getElementById(`day${i}`);
+                if(i <= count) {
+                    dayEl.classList.add('completed');
+                } else {
+                    dayEl.classList.remove('completed');
+                }
+            }
+        }
+
+        function claimStreakBonus() {
+            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+            if(!currentUser || !usersDB[currentUser]) return;
+
+            if(usersDB[currentUser].streakCount >= 7 && !usersDB[currentUser].streakClaimed) {
+                usersDB[currentUser].balance += 20.00;
+                usersDB[currentUser].streakClaimed = true;
+                userBalance = usersDB[currentUser].balance;
+                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
+                document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+                alert("Successfully claimed your ₹20 7-Day Streak Reward!");
+            } else {
+                alert("Complete your 7-day streak or you have already claimed this reward!");
+            }
         }
 
         function logoutUser() {
             currentUser = null;
-            userBalance = 0.00;
-            document.getElementById('phoneInput').value = '';
-            document.getElementById('passInput').value = '';
-            showScreen('screen-welcome');
+            document.getElementById('mainBottomNav').classList.remove('active-nav');
+            showScreen('screen-welcome', null);
         }
+
+        function openChatModal() { document.getElementById('chatModal').style.display = 'flex'; }
+        function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
+        
+        function sendChatMessage() {
+            let input = document.getElementById('chatInput');
+            let text = input.value.trim();
+            if(!text) return;
+
+            let chatBody = document.getElementById('chatBody');
+            chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+            input.value = '';
+
+            setTimeout(() => {
+                chatBody.innerHTML += `<div class="chat-bubble bot">Thanks for reaching out! Our team or automated system will help you resolve your query shortly. Keep playing to earn more!</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 600);
+        }
+
+        function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
     </script>
 </body>
 </html>
