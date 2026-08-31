@@ -145,14 +145,14 @@
                 <label>Phone Number</label>
                 <div class="input-box">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="text" id="phoneInput" placeholder="Enter phone number">
+                    <input type="text" id="phoneInput" placeholder="Enter phone number" onkeypress="handleAuthKey(event)">
                 </div>
             </div>
             <div class="input-group">
                 <label>Password</label>
                 <div class="input-box">
                     <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="passInput" placeholder="Enter password">
+                    <input type="password" id="passInput" placeholder="Enter password" onkeypress="handleAuthKey(event)">
                 </div>
             </div>
             
@@ -161,14 +161,14 @@
                     <label>Verification Code (OTP)</label>
                     <div class="input-box">
                         <i class="fa-solid fa-shield-halved"></i>
-                        <input type="text" id="otpInput" placeholder="Enter 4-digit OTP">
+                        <input type="text" id="otpInput" placeholder="Enter 4-digit OTP" onkeypress="handleAuthKey(event)">
                     </div>
                 </div>
                 <div class="input-group">
                     <label>Invitation Code (Optional)</label>
                     <div class="input-box">
                         <i class="fa-solid fa-user-plus"></i>
-                        <input type="text" id="refInput" placeholder="Enter referral code">
+                        <input type="text" id="refInput" placeholder="Enter referral code" onkeypress="handleAuthKey(event)">
                     </div>
                 </div>
             </div>
@@ -338,6 +338,26 @@
         }
         renderGames();
 
+        // Check if user was already logged in before refresh
+        window.onload = function() {
+            let savedUser = localStorage.getItem('nexus_current_session');
+            if(savedUser) {
+                let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+                if(usersDB[savedUser]) {
+                    currentUser = savedUser;
+                    userBalance = usersDB[savedUser].balance;
+                    
+                    document.getElementById('accountPhone').innerText = currentUser;
+                    document.getElementById('displayPlayerId').innerText = usersDB[currentUser].playerId;
+                    document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+
+                    updateStreakUI();
+                    showScreen('screen-lobby', document.querySelector('.bottom-nav .nav-item'));
+                    document.getElementById('mainBottomNav').classList.add('active-nav');
+                }
+            }
+        };
+
         function switchAuthMode(mode) {
             authMode = mode;
             const loginBtn = document.getElementById('tabLoginBtn');
@@ -355,6 +375,12 @@
                 loginBtn.classList.remove('active-tab');
                 extraFields.style.display = 'block';
                 submitBtn.innerText = 'Register Account';
+            }
+        }
+
+        function handleAuthKey(e) {
+            if(e.key === 'Enter') {
+                handleAuth();
             }
         }
 
@@ -396,6 +422,9 @@
                 
                 currentUser = phone;
                 userBalance = usersDB[phone].balance;
+                
+                // Save session so page refresh won't log out
+                localStorage.setItem('nexus_current_session', currentUser);
                 
                 document.getElementById('accountPhone').innerText = phone;
                 document.getElementById('displayPlayerId').innerText = usersDB[phone].playerId;
@@ -523,6 +552,7 @@
 
         function logoutUser() {
             currentUser = null;
+            localStorage.removeItem('nexus_current_session');
             document.getElementById('mainBottomNav').classList.remove('active-nav');
             showScreen('screen-welcome', null);
         }
