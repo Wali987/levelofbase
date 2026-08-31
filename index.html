@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NexusArcade - Play & Earn Rewards</title>
-    <!-- Professional Neon Gaming Favicon/Logo -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%2300f0ff' d='M448 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V96c0-35.35-28.65-64-64-64zm-248 288h-48v48c0 8.84-7.16 16-16 16s-16-7.16-16-16v-48h-48c-8.84 0-16-7.16-16-16s7.16-16 16-16h48v-48c0-8.84 7.16-16 16-16s16 7.16 16 16v48h48c8.84 0 16 7.16 16 16s-7.16 16-16 16zm152 40c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40zm48-96c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40z'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -131,7 +130,6 @@
 <body>
 
     <div class="app-container">
-        <!-- 1. LOGIN / REGISTER SCREEN -->
         <div id="screen-welcome" class="screen-content active">
             <h1 style="font-family: 'Orbitron'; font-size: 22px; color: var(--accent-neon);">NEXUS ARCADE</h1>
             <div class="welcome-logo-box">
@@ -178,14 +176,12 @@
             <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 10px;">Login</button>
         </div>
 
-        <!-- 2. LOBBY / HOME SCREEN -->
         <div id="screen-lobby" class="screen-content">
             <div class="top-user-bar">
                 <div>
                     <div style="font-size: 12px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
                     <div style="font-size: 11px; color: var(--accent-gold);">VIP Level 1 Gamer</div>
                 </div>
-                <!-- AI Support Chat Trigger Button -->
                 <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="openChatModal()" title="Open AI Support"></i>
             </div>
 
@@ -208,7 +204,6 @@
             <div class="games-grid" id="gamesGrid"></div>
         </div>
 
-        <!-- 3. LEADERBOARD SCREEN -->
         <div id="screen-leaderboard" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 15px;"><i class="fa-solid fa-trophy"></i> Top Active Earners</h2>
             <div id="leaderboardList">
@@ -220,7 +215,6 @@
             </div>
         </div>
 
-        <!-- 4. REWARDS SCREEN -->
         <div id="screen-rewards" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">7-Day Play Streak Challenge</h2>
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(139,155,180,0.2);">
@@ -240,7 +234,6 @@
             </div>
         </div>
 
-        <!-- 5. ACCOUNT PROFILE -->
         <div id="screen-account" class="screen-content">
             <div style="text-align:center; padding: 20px; background:var(--bg-card); border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%;">
                 <i class="fa-solid fa-user-circle" style="font-size:50px; color:var(--accent-neon); margin-bottom:10px;"></i>
@@ -252,7 +245,6 @@
             </div>
         </div>
 
-        <!-- FIXED BOTTOM NAVIGATION BAR -->
         <div class="bottom-nav" id="mainBottomNav">
             <button class="nav-item active" onclick="showScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
@@ -269,7 +261,6 @@
         </div>
     </div>
 
-    <!-- AI SUPPORT CHAT MODAL -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-container">
             <div class="chat-header">
@@ -286,7 +277,6 @@
         </div>
     </div>
 
-    <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="timer-banner" id="timerBanner">
             <span id="timerText">Time Active: 30:00 left to complete session</span>
@@ -316,7 +306,39 @@
             { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
             { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
             { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" }
+            { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
+            { title: "Galaxy Siege", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #200122, #6f0000)" },
+            { title: "Nitro X", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #000000, #434343)" },
+            { title: "Shadow Ninja", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #2c3e50, #000000)" },
+            { title: "Ball Blast", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-bowling-ball", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Zombieland", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-skull", bg: "linear-gradient(135deg, #4ca1af, #2c3e50)" },
+            { title: "Block Puzzle", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-shapes", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
+            { title: "Tower Defense", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-chess-rook", bg: "linear-gradient(135deg, #ff9966, #ff5e62)" },
+            { title: "Super Racer", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
+            { title: "Bubble Shooter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-circle-dot", bg: "linear-gradient(135deg, #e96443, #904e95)" },
+            { title: "Temple Jump", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-person-hiking", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
+            { title: "Fruit Slicer", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-apple-whole", bg: "linear-gradient(135deg, #56ab2f, #a8e063)" },
+            { title: "Ludo Master", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-dice", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
+            { title: "Carrom Clash", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-circle", bg: "linear-gradient(135deg, #870000, #190a05)" },
+            { title: "Chess Arena", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-chess", bg: "linear-gradient(135deg, #283048, #859398)" },
+            { title: "Pool King", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-baseball", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
+            { title: "Cricket Hero", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-baseball-bat-ball", bg: "linear-gradient(135deg, #314755, #26a0da)" },
+            { title: "Football Star", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-futbol", bg: "linear-gradient(135deg, #005c97, #363795)" },
+            { title: "Basketball Dunk", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-basketball", bg: "linear-gradient(135deg, #fc4a1a, #f7b733)" },
+            { title: "Archery Master", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #4568dc, #b06ab3)" },
+            { title: "Knife Hit", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-utensils", bg: "linear-gradient(135deg, #654ea3, #eaafc8)" },
+            { title: "Pinball Wizard", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-star", bg: "linear-gradient(135deg, #ff0844, #ffb199)" },
+            { title: "Snake Rush", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-worm", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Tic Tac Toe", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-hashtag", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Memory Cards", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-clone", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
+            { title: "Jigsaw Puzzle", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-puzzle-piece", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)" },
+            { title: "Word Search", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-font", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Math Quiz", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-calculator", bg: "linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4)" },
+            { title: "Color Match", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-palette", bg: "linear-gradient(135deg, #ee0979, #ff6a00)" },
+            { title: "Brick Breaker", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-bars", bg: "linear-gradient(135deg, #45af52, #11998e)" },
+            { title: "Space Shooter", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-jet-fighter", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)" },
+            { title: "Tank Wars", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #3e5151, #decba4)" },
+            { title: "Ghost Hunter", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-ghost", bg: "linear-gradient(135deg, #2b5876, #4e4376)" }
         ];
 
         function renderGames() {
