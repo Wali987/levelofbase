@@ -73,8 +73,10 @@
         .btn-main:disabled { background: #334155; color: var(--text-muted); cursor: not-allowed; box-shadow: none; }
 
         .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
-        .marquee-box { background: rgba(0,240,255,0.05); border-left: 3px solid var(--accent-neon); padding: 8px 12px; font-size: 13px; color: var(--accent-neon); margin-bottom: 15px; border-radius: 4px; overflow: hidden; white-space: nowrap; }
         
+        .marquee-box { background: rgba(0,240,255,0.08); border-left: 3px solid var(--accent-neon); padding: 10px 12px; font-size: 13px; color: var(--accent-neon); margin-bottom: 15px; border-radius: 6px; display: flex; align-items: center; overflow: hidden; width: 100%; }
+        .marquee-box marquee { width: 100%; font-weight: 600; letter-spacing: 0.5px; }
+
         .wallet-card { background: linear-gradient(135deg, #181d30, var(--bg-card)); border-radius: 14px; padding: 20px; border: 1px solid rgba(0, 240, 255, 0.2); display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .balance-amount { font-family: 'Orbitron', sans-serif; font-size: 24px; color: var(--accent-gold); font-weight: 700; }
         .withdraw-btn { background: var(--accent-green); color: black; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; font-family: 'Orbitron'; }
@@ -101,7 +103,24 @@
         .nav-item.active { color: var(--accent-neon); }
         .nav-item i { font-size: 18px; margin-bottom: 2px; }
 
-        .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: کریں۔ }
+        /* Streak Grid UI */
+        .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 15px 0; }
+        .streak-day { background: var(--bg-deep); border: 1px solid rgba(139,155,180,0.2); border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 11px; }
+        .streak-day.completed { border-color: var(--accent-green); background: rgba(0,255,102,0.1); color: var(--accent-green); }
+
+        /* AI Support Chat Modal */
+        .chat-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; justify-content: center; align-items: center; padding: 15px; }
+        .chat-container { width: 100%; max-width: 450px; height: 500px; background: var(--bg-card); border-radius: 14px; border: 1px solid var(--accent-neon); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--glow); }
+        .chat-header { background: #181d30; padding: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,240,255,0.2); font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+        .chat-bubble { padding: 10px 14px; border-radius: 10px; font-size: 13px; max-width: 80%; line-height: 1.4; }
+        .chat-bubble.bot { background: rgba(0,240,255,0.1); color: white; align-self: flex-start; border-left: 2px solid var(--accent-neon); }
+        .chat-bubble.user { background: var(--accent-purple); color: white; align-self: flex-end; }
+        .chat-footer { padding: 10px; background: #181d30; display: flex; gap: 8px; border-top: 1px solid rgba(0,240,255,0.2); }
+        .chat-footer input { flex: 1; background: var(--bg-deep); border: 1px solid rgba(139,155,180,0.3); border-radius: 8px; padding: 10px; color: white; font-size: 13px; }
+        .chat-footer button { background: var(--accent-neon); color: black; border: none; padding: 0 15px; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+        .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
         .game-modal-header { padding: 12px 20px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
         
@@ -152,7 +171,7 @@
                 <div class="input-group">
                     <label>Invitation Code (Optional)</label>
                     <div class="input-box">
-                        <i class="fa-solid  fa-user-plus"></i>
+                        <i class="fa-solid fa-user-plus"></i>
                         <input type="text" id="refInput" placeholder="Enter referral code">
                     </div>
                 </div>
@@ -168,11 +187,11 @@
                     <div style="font-size: 12px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
                     <div style="font-size: 11px; color: var(--accent-gold);">VIP Level 1 Gamer</div>
                 </div>
-                <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="alert('Support AI connected!')"></i>
+                <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="openChatModal()"></i>
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 30 Minute tak Game khelne par ₹5.00 ka reward milega! | Kisi dost ko Invite karne par extra bonus milega! | Daily Check-in par ₹10 tak ka bonus paayein!</marquee>
+                <marquee scrollamount="4">📢 Naye users ko Signup par ₹20.00 Welcome Bonus milta hai! | 7 Din tak roz 30 min game khelne par ₹20.00 Extra Bonus paayein! | Invite friends & earn more!</marquee>
             </div>
 
             <div class="wallet-card">
@@ -202,12 +221,23 @@
             </div>
         </div>
 
-        <!-- 4. REWARDS SCREEN -->
+        <!-- 4. REWARDS SCREEN (7-Day Streak Challenge) -->
         <div id="screen-rewards" class="screen-content">
-            <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">Daily Check-in Streak</h2>
-            <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; text-align: center; border:1px solid rgba(139,155,180,0.2);">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Claim your daily bonus check-in reward!</p>
-                <button class="btn-main" id="claimBonusBtn" onclick="claimDailyBonus()" style="padding: 10px; font-size: 13px;">Claim Day 1 Bonus (₹10)</button>
+            <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">7-Day Play Streak Challenge</h2>
+            <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(139,155,180,0.2);">
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Roz 30 minutes game khel kar 7 din ka streak poora karein aur paayein <b>₹20.00 Bonus</b>!</p>
+                
+                <div class="streak-grid" id="streakGrid">
+                    <div class="streak-day" id="day1">Day 1</div>
+                    <div class="streak-day" id="day2">Day 2</div>
+                    <div class="streak-day" id="day3">Day 3</div>
+                    <div class="streak-day" id="day4">Day 4</div>
+                    <div class="streak-day" id="day5">Day 5</div>
+                    <div class="streak-day" id="day6">Day 6</div>
+                    <div class="streak-day" id="day7">Day 7<br><small>₹20</small></div>
+                </div>
+
+                <button class="btn-main" id="claimStreakBtn" onclick="claimStreakBonus()" style="padding: 10px; font-size: 13px; margin-top: 10px;">Claim 7-Day Streak Reward (₹20)</button>
             </div>
         </div>
 
@@ -241,15 +271,32 @@
 
     </div>
 
+    <!-- AI SUPPORT CHAT MODAL -->
+    <div class="chat-modal" id="chatModal">
+        <div class="chat-container">
+            <div class="chat-header">
+                <span><i class="fa-solid fa-robot"></i> Nexus Support AI</span>
+                <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeChatModal()"></i>
+            </div>
+            <div class="chat-body" id="chatBody">
+                <div class="chat-bubble bot">Hello! Main Nexus Arcade AI Support hoon. Naye user ko ₹20 welcome bonus milta hai aur 7 din 30 min khelne par ₹20 ka extra streak bonus milta hai!</div>
+            </div>
+            <div class="chat-footer">
+                <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKey(event)">
+                <button onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
     <!-- FULLSCREEN GAME PLAYER MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="timer-banner" id="timerBanner">
-            <span id="timerText">Time Active: 30:00 left to earn ₹5.00</span>
+            <span id="timerText">Time Active: 30:00 left to complete session</span>
             <button class="resume-btn" id="resumeBtn" onclick="manualResumeTimer()">RESUME PLAY</button>
         </div>
         <div class="game-modal-header">
             <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon);">Game</span>
-            <button class="close-game-btn" onclick="closeGameModal()">QUIT & CLAIM</button>
+            <button class="close-game-btn" onclick="closeGameModal()">QUIT & SAVE</button>
         </div>
         <iframe id="gameIframe" src="" allowfullscreen style="flex:1; width:100%; border:none;"></iframe>
     </div>
@@ -358,12 +405,31 @@
 
             if (authMode === 'register') {
                 if (usersDB[phone]) { alert("Account exists! Please login."); switchAuthMode('login'); return; }
-                usersDB[phone] = { password: pass, balance: 0.00, playerId: '#' + Math.floor(100000 + Math.random() * 900000), lastClaimDate: '' };
+                // New user registration gets Rs 20 welcome bonus, and streak count = 0
+                usersDB[phone] = { 
+                    password: pass, 
+                    balance: 20.00, 
+                    playerId: '#' + Math.floor(100000 + Math.random() * 900000), 
+                    streakCount: 0, 
+                    lastPlayDate: '', 
+                    streakClaimed: false 
+                };
                 localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                alert("Registration successful! Please login.");
+                alert("Registration successful! You received ₹20.00 Welcome Bonus. Please login.");
                 switchAuthMode('login');
             } else {
-                if (!usersDB[phone]) { alert("Account not found! Register first."); switchAuthMode('register'); return; }
+                if (!usersDB[phone]) { 
+                    // Auto-register convenience for testing
+                    usersDB[phone] = { 
+                        password: pass, 
+                        balance: 20.00, 
+                        playerId: '#' + Math.floor(100000 + Math.random() * 900000), 
+                        streakCount: 0, 
+                        lastPlayDate: '', 
+                        streakClaimed: false 
+                    };
+                    localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
+                }
                 if (usersDB[phone].password !== pass) { alert("Incorrect password!"); return; }
                 
                 currentUser = phone;
@@ -373,7 +439,7 @@
                 document.getElementById('displayPlayerId').innerText = usersDB[phone].playerId;
                 document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
 
-                checkDailyBonusStatus();
+                updateStreakUI();
                 showScreen('screen-lobby', document.querySelectorAll('.nav-item')[0]);
             }
         }
@@ -387,35 +453,56 @@
             }
         }
 
-        function checkDailyBonusStatus() {
+        function updateStreakUI() {
             if (!currentUser) return;
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            let todayStr = new Date().toDateString();
-            const btn = document.getElementById('claimBonusBtn');
-            if (usersDB[currentUser] && usersDB[currentUser].lastClaimDate === todayStr) {
-                btn.innerText = "Already Claimed Today (✓)";
-                btn.disabled = true;
+            let userData = usersDB[currentUser];
+            if (!userData) return;
+
+            let count = userData.streakCount || 0;
+            for (let i = 1; i <= 7; i++) {
+                let dayEl = document.getElementById(`day${i}`);
+                if (i <= count) {
+                    dayEl.classList.add('completed');
+                    dayEl.innerHTML = `Day ${i}<br>✓`;
+                } else {
+                    dayEl.classList.remove('completed');
+                    dayEl.innerHTML = `Day ${i}${i===7?'<br><small>₹20</small>':''}`;
+                }
+            }
+
+            const claimBtn = document.getElementById('claimStreakBtn');
+            if (userData.streakClaimed) {
+                claimBtn.innerText = "Streak Bonus Claimed (✓)";
+                claimBtn.disabled = true;
+            } else if (count >= 7) {
+                claimBtn.innerText = "Claim 7-Day Streak Reward (₹20)";
+                claimBtn.disabled = false;
             } else {
-                btn.innerText = "Claim Day 1 Bonus (₹10)";
-                btn.disabled = false;
+                claimBtn.innerText = `Streak: ${count}/7 Days Completed`;
+                claimBtn.disabled = true;
             }
         }
 
-        function claimDailyBonus() {
+        function claimStreakBonus() {
             if (!currentUser) return;
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            let todayStr = new Date().toDateString();
+            let userData = usersDB[currentUser];
 
-            if (usersDB[currentUser].lastClaimDate === todayStr) { alert("Already claimed today!"); return; }
+            if (userData.streakClaimed || (userData.streakCount || 0) < 7) {
+                alert("Streak not completed or already claimed!");
+                return;
+            }
 
-            userBalance += 10.00;
-            usersDB[currentUser].balance = userBalance;
-            usersDB[currentUser].lastClaimDate = todayStr;
+            userBalance += 20.00;
+            userData.balance = userBalance;
+            userData.streakClaimed = true;
+            usersDB[currentUser] = userData;
             localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
 
             document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-            checkDailyBonusStatus();
-            alert('Check-in bonus ₹10.00 claimed!');
+            updateStreakUI();
+            alert('Congratulations! ₹20.00 7-day streak bonus added to your wallet.');
         }
 
         function showScreen(screenId, navElement = null) {
@@ -430,6 +517,51 @@
                 document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
                 navElement.classList.add('active');
             }
+        }
+
+        /* AI Support Chat Functions */
+        function openChatModal() {
+            document.getElementById('chatModal').style.display = 'flex';
+        }
+
+        function closeChatModal() {
+            document.getElementById('chatModal').style.display = 'none';
+        }
+
+        function handleChatKey(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const chatBody = document.getElementById('chatBody');
+            
+            const userBubble = document.createElement('div');
+            userBubble.className = 'chat-bubble user';
+            userBubble.innerText = text;
+            chatBody.appendChild(userBubble);
+            input.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
+            setTimeout(() => {
+                const botBubble = document.createElement('div');
+                botBubble.className = 'chat-bubble bot';
+                
+                let lowerText = text.toLowerCase();
+                if (lowerText.includes('reward') || lowerText.includes('bonus') || lowerText.includes('paise')) {
+                    botBubble.innerText = "Naye users ko registration par ₹20 milte hain, aur 7 din tak roz 30 min game khelne par ₹20 ka extra streak bonus milta hai!";
+                } else if (lowerText.includes('withdraw') || lowerText.includes('nikalna')) {
+                    botBubble.innerText = "Withdrawal system jald hi live hoga jisme aap UPI ke zariye apne paise transfer kar sakenge.";
+                } else {
+                    botBubble.innerText = "Main aapki baat samajh gaya. Game kheliye aur apna 7-day streak complete karke bonus claim kijiye!";
+                }
+
+                chatBody.appendChild(botBubble);
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 600);
         }
 
         function resetActivity() {
@@ -480,11 +612,25 @@
 
                     if(timeLeft <= 0) {
                         clearInterval(gameTimer);
-                        userBalance += 5.00;
-                        document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-                        saveUserData();
-                        alert('30 minutes completed! Earned ₹5.00 reward.');
+                        
+                        // Increment streak progress for completing 30 mins session
+                        if (currentUser) {
+                            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+                            let userData = usersDB[currentUser];
+                            let todayStr = new Date().toDateString();
+
+                            if (userData && userData.lastPlayDate !== todayStr) {
+                                userData.streakCount = (userData.streakCount || 0) + 1;
+                                if (userData.streakCount > 7) userData.streakCount = 7;
+                                userData.lastPlayDate = todayStr;
+                                usersDB[currentUser] = userData;
+                                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
+                            }
+                        }
+
+                        alert('30 minutes session completed! Your streak progress has been updated.');
                         closeGameModal();
+                        updateStreakUI();
                     }
                 }
             }, 1000);
@@ -494,7 +640,7 @@
             if (isAfk) return;
             let mins = Math.floor(timeLeft / 60);
             let secs = timeLeft % 60;
-            document.getElementById('timerText').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left to earn ₹5.00`;
+            document.getElementById('timerText').innerText = `Time Active: ${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')} left in session`;
             document.getElementById('resumeBtn').style.display = 'none';
         }
 
