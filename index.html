@@ -185,7 +185,8 @@
                     <div style="font-size: 12px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
                     <div style="font-size: 11px; color: var(--accent-gold);">VIP Level 1 Gamer</div>
                 </div>
-                <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="openChatModal()"></i>
+                <!-- AI Support Chat Trigger Button -->
+                <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="openChatModal()" title="Open AI Support"></i>
             </div>
 
             <div class="marquee-box">
@@ -340,7 +341,6 @@
         }
         renderGames();
 
-        // Check if user was already logged in before refresh
         window.onload = function() {
             let savedUser = localStorage.getItem('nexus_current_session');
             if(savedUser) {
@@ -425,7 +425,6 @@
                 currentUser = phone;
                 userBalance = usersDB[phone].balance;
                 
-                // Save session so page refresh won't log out
                 localStorage.setItem('nexus_current_session', currentUser);
                 
                 document.getElementById('accountPhone').innerText = phone;
@@ -470,7 +469,7 @@
             gameTimer = setInterval(() => {
                 if (isAfk) return;
 
-                if (Date.now() - lastActivityTime > 60000) { // 1 min inactivity check
+                if (Date.now() - lastActivityTime > 60000) {
                     triggerAfkMode();
                     return;
                 }
@@ -540,7 +539,7 @@
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
             if(!currentUser || !usersDB[currentUser]) return;
 
-,            if(usersDB[currentUser].streakCount >= 7 && !usersDB[currentUser].streakClaimed) {
+            if(usersDB[currentUser].streakCount >= 7 && !usersDB[currentUser].streakClaimed) {
                 usersDB[currentUser].balance += 20.00;
                 usersDB[currentUser].streakClaimed = true;
                 userBalance = usersDB[currentUser].balance;
