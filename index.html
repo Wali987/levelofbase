@@ -532,7 +532,7 @@
         
         function sendChatMessage() {
             let input = document.getElementById('chatInput');
-            let text = input.value.trim();
+            let text = input.value.trim().toLowerCase();
             if(!text) return;
 
             let chatBody = document.getElementById('chatBody');
@@ -540,7 +540,17 @@
             input.value = '';
 
             setTimeout(() => {
-                chatBody.innerHTML += `<div class="chat-bubble bot">Thanks for reaching out! Our team or automated system will help you resolve your query shortly. Keep playing to earn more!</div>`;
+                let botReply = "Thanks for reaching out! Our team or automated system will help you resolve your query shortly. Keep playing to earn more!";
+
+                if (text.includes('withdraw') || text.includes('paisa') || text.includes('nikal')) {
+                    botReply = "Withdrawal system abhi under maintenance ya coming soon hai. Jaise hi banking feature live hoga, aap apna balance nikal sakenge!";
+                } else if (text.includes('bonus') || text.includes('streak') || text.includes('free')) {
+                    botReply = "Naye users ko ₹20 welcome bonus milta hai, aur 7 din tak roz 30 min game khelne par ₹20 ka extra streak reward milta hai!";
+                } else if (text.includes('game') || text.includes('khel') || text.includes('play')) {
+                    botReply = "Aap lobby se koi bhi game select karke khel sakte hain. Har 30 min session poora karne par aapko ₹5 milte hain!";
+                }
+
+                chatBody.innerHTML += `<div class="chat-bubble bot">${botReply}</div>`;
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 600);
         }
