@@ -57,22 +57,6 @@
         }
         .screen-content.active { display: flex; }
 
-        #screen-welcome { justify-content: center; text-align: center; padding: 25px; background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, var(--bg-deep) 70%); }
-        .welcome-logo-box { width: 100px; height: 100px; border: 2px dashed var(--accent-neon); border-radius: 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 15px auto; background: rgba(0, 240, 255, 0.05); box-shadow: var(--glow); }
-        .welcome-logo-box i { font-size: 40px; color: var(--accent-neon); }
-        
-        .auth-tabs { display: flex; background: var(--bg-card); border-radius: 10px; padding: 4px; margin-bottom: 15px; border: 1px solid rgba(139,155,180,0.2); max-width: 400px; margin-left: auto; margin-right: auto; }
-        .auth-tab-btn { flex: 1; background: transparent; border: none; padding: 10px; color: var(--text-muted); font-weight: 700; font-size: 13px; cursor: pointer; border-radius: 8px; transition: 0.2s; }
-        .auth-tab-btn.active-tab { background: var(--accent-neon); color: black; box-shadow: var(--glow); }
-
-        .input-group { margin-bottom: 12px; text-align: left; max-width: 400px; margin-left: auto; margin-right: auto; width: 100%; }
-        .input-group label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
-        .input-box { display: flex; align-items: center; background: var(--bg-card); border: 1px solid rgba(139, 155, 180, 0.2); border-radius: 10px; padding: 0 12px; }
-        .input-box input { width: 100%; background: transparent; border: none; padding: 10px; color: white; font-size: 14px; }
-        .input-box i { color: var(--accent-neon); font-size: 14px; }
-
-        .btn-main { width: 100%; max-width: 400px; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); margin-left: auto; margin-right: auto; display: block; }
-        
         .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
         .marquee-box { background: rgba(0,240,255,0.08); border-left: 3px solid var(--accent-neon); padding: 10px 12px; font-size: 13px; color: var(--accent-neon); margin-bottom: 15px; border-radius: 6px; display: flex; align-items: center; overflow: hidden; width: 100%; }
         .marquee-box marquee { width: 100%; font-weight: 600; letter-spacing: 0.5px; }
@@ -95,8 +79,7 @@
 
         .leaderboard-item { display: flex; justify-content: space-between; align-items: center; background: var(--bg-card); padding: 12px 15px; border-radius: 8px; margin-bottom: 8px; border: 1px solid rgba(139,155,180,0.1); font-size: 14px; }
 
-        .bottom-nav { height: 65px; background: var(--bg-card); border-top: 1px solid rgba(0, 240, 255, 0.15); display: none; justify-content: space-around; align-items: center; position: absolute; bottom: 0; width: 100%; z-index: 100; }
-        .bottom-nav.active-nav { display: flex; }
+        .bottom-nav { height: 65px; background: var(--bg-card); border-top: 1px solid rgba(0, 240, 255, 0.15); display: flex; justify-content: space-around; align-items: center; position: absolute; bottom: 0; width: 100%; z-index: 100; }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; cursor: pointer; background: none; border: none; }
         .nav-item.active { color: var(--accent-neon); }
         .nav-item i { font-size: 18px; margin-bottom: 2px; }
@@ -115,90 +98,47 @@
         .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
         .game-modal-header { padding: 12px 20px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
-        .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .resume-btn { background: var(--accent-green); color: black; border: none; padding: 3px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; display: none; }
     </style>
 </head>
 <body>
 
     <div class="app-container">
-        <div id="screen-welcome" class="screen-content active">
-            <h1 style="font-family: 'Orbitron'; font-size: 22px; color: var(--accent-neon);">NEXUS ARCADE</h1>
-            <div class="welcome-logo-box">
-                <i class="fa-solid fa-gamepad"></i>
-            </div>
-            
-            <div class="auth-tabs">
-                <button class="auth-tab-btn active-tab" id="tabLoginBtn" onclick="switchAuthMode('login')">Login</button>
-                <button class="auth-tab-btn" id="tabRegisterBtn" onclick="switchAuthMode('register')">Register</button>
-            </div>
-
-            <div class="input-group">
-                <label>Phone Number</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-phone"></i>
-                    <input type="text" id="phoneInput" placeholder="Enter phone number" onkeypress="handleAuthKey(event)">
-                </div>
-            </div>
-            <div class="input-group">
-                <label>Password</label>
-                <div class="input-box">
-                    <i class="fa-solid fa-lock"></i>
-                    <input type="password" id="passInput" placeholder="Enter password" onkeypress="handleAuthKey(event)">
-                </div>
-            </div>
-            
-            <div id="registerExtraFields" style="display:none;">
-                <div class="input-group">
-                    <label>Invitation Code (Optional)</label>
-                    <div class="input-box">
-                        <i class="fa-solid fa-user-plus"></i>
-                        <input type="text" id="refInput" placeholder="Enter referral code" onkeypress="handleAuthKey(event)">
-                    </div>
-                </div>
-            </div>
-
-            <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 15px;">Login</button>
-        </div>
-
-        <div id="screen-lobby" class="screen-content">
+        <!-- LOBBY SCREEN (DEFAULT HOME) -->
+        <div id="screen-lobby" class="screen-content active">
             <div class="top-user-bar">
                 <div>
                     <div style="font-size: 12px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
                     <div style="font-size: 11px; color: var(--accent-gold);" id="displayNickname">Gamer</div>
                 </div>
                 <div style="display: flex; gap: 15px; align-items: center;">
-                    <i class="fa-solid fa-shield-halved" style="font-size: 20px; color: var(--accent-gold); cursor: pointer; display: none;" id="adminNavBtn" onclick="openAdminPanel()" title="Admin Panel"></i>
                     <i class="fa-solid fa-headset" style="font-size: 22px; color: var(--accent-neon); cursor: pointer;" onclick="openChatModal()" title="Open AI Support"></i>
                 </div>
             </div>
 
-            <div class="marquee-box">
-                <marquee scrollamount="4">📢 Naye users ko Signup par 200 Points Welcome Bonus milta hai! | Milestone Target 2,000 Points hai!</marquee>
-            </div>
-
             <div class="wallet-card">
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Total Points (Milestone: 2,000 Points)</div>
-                    <div class="balance-amount" id="balanceDisplay">0 Points</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Total Points (Milestone Target: 2,000 Pts)</div>
+                    <div class="balance-amount" id="balanceDisplay">200 Points</div>
                 </div>
                 <button class="withdraw-btn" onclick="handleWithdrawRequest()">Redeem</button>
             </div>
 
+            <!-- Daily Lucky Spin Section -->
             <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(0,240,255,0.2); text-align: center;">
                 <h3 style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 6px;"><i class="fa-solid fa-dharmachakra"></i> Daily Lucky Spin</h3>
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Rozana spin karein aur paayein random points (Max 50 Points tak)!</p>
                 <div id="spinResultBox" style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-gold); margin-bottom: 10px; min-height: 24px;">Tap to Spin!</div>
-                <button class="btn-main" onclick="spinLuckyWheel()" style="max-width: 200px; padding: 8px; font-size: 12px;">SPIN NOW</button>
+                <button class="btn-main" onclick="spinLuckyWheel()" style="width: 100%; max-width: 200px; padding: 8px; font-size: 12px; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); border: none; border-radius: 30px; color: white; font-weight: 700; cursor: pointer;">SPIN NOW</button>
             </div>
 
             <div class="section-heading">
-                <i class="fa-solid fa-bolt"></i> All Arcade Games (50+ Titles)
+                <i class="fa-solid fa-bolt"></i> All Arcade Games (50 Titles)
             </div>
 
             <div class="games-grid" id="gamesGrid"></div>
         </div>
 
+        <!-- LEADERBOARD SCREEN -->
         <div id="screen-leaderboard" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 15px;"><i class="fa-solid fa-trophy"></i> Top Active Earners</h2>
             <div id="leaderboardList">
@@ -208,6 +148,7 @@
             </div>
         </div>
 
+        <!-- REWARDS & REFERRAL SCREEN -->
         <div id="screen-rewards" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">Rewards & Referrals</h2>
             
@@ -217,30 +158,27 @@
                 
                 <div style="display: flex; gap: 10px; align-items: center; background: var(--bg-deep); padding: 10px; border-radius: 8px; border: 1px dashed var(--accent-neon); margin-bottom: 10px;">
                     <span style="font-size: 12px; color: var(--text-muted);">Aapka Code:</span>
-                    <strong id="myReferralCode" style="color: var(--accent-gold); font-family: 'Orbitron';">-</strong>
+                    <strong id="myReferralCode" style="color: var(--accent-gold); font-family: 'Orbitron';">REF4829</strong>
                     <button onclick="copyReferralCode()" style="margin-left: auto; background: var(--accent-neon); border: none; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer;">Copy</button>
                 </div>
             </div>
-
-            <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(139,155,180,0.2);">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Roz game khel kar streak poora karein aur <b>200 Points Bonus</b> paayein!</p>
-                <button class="btn-main" onclick="claimStreakBonus()" style="padding: 10px; font-size: 13px; margin-top: 10px;">Claim Streak Reward (200 Pts)</button>
-            </div>
         </div>
 
+        <!-- ACCOUNT SCREEN -->
         <div id="screen-account" class="screen-content">
             <div style="text-align:center; padding: 20px; background:var(--bg-card); border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%;">
                 <i class="fa-solid fa-user-circle" style="font-size:50px; color:var(--accent-neon); margin-bottom:10px;"></i>
-                <div id="accountPhone" style="font-family:'Orbitron'; font-weight:700; font-size: 15px;">+91 9876543210</div>
+                <div style="font-family:'Orbitron'; font-weight:700; font-size: 15px;">Player Profile</div>
                 <div style="font-size:12px; color: var(--text-muted); margin-bottom: 15px;">Status: Active Gamer</div>
                 
                 <div style="text-align: left; margin-bottom: 10px;">
                     <label style="font-size: 11px; color: var(--text-muted);">Change Nickname</label>
-                    <input type="text" id="updateNicknameInput" placeholder="Enter new nickname" style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px;">
+                    <input type="text" id="updateNicknameInput" placeholder="Enter new nickname" value="Gamer" style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px;">
                 </div>
-                <button class="btn-main" onclick="saveProfileChanges()" style="padding: 8px; font-size: 12px; margin-bottom: 15px;">Update Profile</button>
+                <button onclick="saveProfileChanges()" style="width:100%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; border: none; padding: 8px; border-radius: 30px; font-weight: 700; font-size: 12px; cursor: pointer;">Update Profile</button>
             </div>
 
+            <!-- FEEDBACK FORM SECTION -->
             <div style="background:var(--bg-card); padding:15px; border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%; border:1px solid rgba(0,240,255,0.2);">
                 <h3 style="font-family:'Orbitron'; font-size:14px; color:var(--accent-neon); margin-bottom:8px;"><i class="fa-solid fa-comment-dots"></i> App Feedback & Rating</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Apna experience share karein!</p>
@@ -256,14 +194,11 @@
                     <label style="font-size: 11px; color: var(--text-muted);">Suggestions</label>
                     <textarea id="feedbackText" placeholder="Write comments..." style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px; height:70px; resize:none;"></textarea>
                 </div>
-                <button class="btn-main" onclick="submitUserFeedback()" style="padding: 8px; font-size: 12px;">Submit Feedback</button>
-            </div>
-
-            <div onclick="logoutUser()" style="background:var(--bg-card); padding:12px; border-radius:10px; text-align:center; color:#ff4d4d; font-weight:700; cursor:pointer; border:1px solid rgba(255,77,77,0.2); font-size: 14px; max-width:400px; margin-left:auto; margin-right:auto;">
-                <i class="fa-solid fa-right-from-bracket"></i> Logout
+                <button onclick="submitUserFeedback()" style="width:100%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; border: none; padding: 8px; border-radius: 30px; font-weight: 700; font-size: 12px; cursor: pointer;">Submit Feedback</button>
             </div>
         </div>
 
+        <!-- BOTTOM NAV -->
         <div class="bottom-nav" id="mainBottomNav">
             <button class="nav-item active" onclick="showScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
@@ -280,6 +215,7 @@
         </div>
     </div>
 
+    <!-- CHAT MODAL -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-container">
             <div class="chat-header">
@@ -296,24 +232,8 @@
         </div>
     </div>
 
-    <div class="chat-modal" id="adminModal" style="display:none;">
-        <div class="chat-container" style="max-width: 600px; height: 600px;">
-            <div class="chat-header">
-                <span><i class="fa-solid fa-shield-halved"></i> Admin Control Panel</span>
-                <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeAdminPanel()"></i>
-            </div>
-            <div class="chat-body" style="background: var(--bg-deep);">
-                <div style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 10px;">Registered Users Database</div>
-                <div id="adminUserListContainer" style="display: flex; flex-direction: column; gap: 8px;"></div>
-            </div>
-        </div>
-    </div>
-
+    <!-- GAME MODAL -->
     <div class="game-modal" id="gameModal">
-        <div class="timer-banner" id="timerBanner">
-            <span id="timerText">Time Active: 30:00 left</span>
-            <button class="resume-btn" id="resumeBtn" onclick="manualResumeTimer()">RESUME PLAY</button>
-        </div>
         <div class="game-modal-header">
             <span id="modalGameTitle" style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon);">Game</span>
             <button class="close-game-btn" onclick="closeGameModal()">QUIT & SAVE</button>
@@ -322,12 +242,8 @@
     </div>
 
     <script>
-        let currentUser = null;
-        let userPoints = 0;
-        let authMode = 'login';
-        let gameTimerInterval = null;
-        let timeLeft = 1800;
-        let isTimerPaused = false;
+        let userPoints = parseInt(localStorage.getItem('nexus_points') || '200');
+        let nickname = localStorage.getItem('nexus_nickname') || 'Gamer';
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -369,89 +285,23 @@
             { title: "Snake Retro", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-worm", bg: "linear-gradient(135deg, #517fa4, #243949)" },
             { title: "Memory Match", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-brain", bg: "linear-gradient(135deg, #654ea3, #eaafc8)" },
             { title: "Bubble Shooter", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-circle", bg: "linear-gradient(135deg, #ff7e5f, #feb47b)" },
-            { title: "Color Switch", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-palette", bg: "linear-gradient(135deg, #3a1c71, #d76d77)" }
+            { title: "Color Switch", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-palette", bg: "linear-gradient(135deg, #3a1c71, #d76d77)" },
+            { title: "Neon Brick Breaker", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-square", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Stunt Master", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-motorcycle", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
+            { title: "Mega Ramp", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" },
+            { title: "City Driver", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-taxi", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Galaxy Patrol", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-fighter-jet", bg: "linear-gradient(135deg, #200122, #6f0000)" },
+            { title: "Bounty Hunter", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-hat-cowboy", bg: "linear-gradient(135deg, #000046, #1cb5e0)" },
+            { title: "Idle Miner", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-hammer", bg: "linear-gradient(135deg, #4ca1af, #c4e0e5)" },
+            { title: "Farm Tycoon", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-wheat-awn", bg: "linear-gradient(135deg, #56ab2f, #a8e063)" },
+            { title: "Jumping Ninja", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-cloud", bg: "linear-gradient(135deg, #ff9966, #ff5e62)" },
+            { title: "Ultimate Golf", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-golf-ball-tee", bg: "linear-gradient(135deg, #11998e, #38ef7d)" }
         ];
 
-        function switchAuthMode(mode) {
-            authMode = mode;
-            const loginBtn = document.getElementById('tabLoginBtn');
-            const regBtn = document.getElementById('tabRegisterBtn');
-            const submitBtn = document.getElementById('authSubmitBtn');
-            const extraFields = document.getElementById('registerExtraFields');
-
-            if (mode === 'login') {
-                loginBtn.classList.add('active-tab');
-                regBtn.classList.remove('active-tab');
-                submitBtn.innerText = 'Login';
-                extraFields.style.display = 'none';
-            } else {
-                regBtn.classList.add('active-tab');
-                loginBtn.classList.remove('active-tab');
-                submitBtn.innerText = 'Register';
-                extraFields.style.display = 'block';
-            }
-        }
-
-        function handleAuthKey(e) {
-            if (e.key === 'Enter') handleAuth();
-        }
-
-        function handleAuth() {
-            const phone = document.getElementById('phoneInput').value.trim();
-            const pass = document.getElementById('passInput').value.trim();
-            if (!phone || !pass) {
-                alert('Please enter phone number and password.');
-                return;
-            }
-
-            let users = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-
-            if (authMode === 'register') {
-                if (users[phone]) {
-                    alert('User already exists! Please login.');
-                    switchAuthMode('login');
-                    return;
-                }
-                const refCode = document.getElementById('refInput').value.trim();
-                let initialPoints = 200; // Welcome bonus points
-                users[phone] = {
-                    phone: phone,
-                    pass: pass,
-                    nickname: 'Gamer_' + phone.slice(-4),
-                    playerId: '#' + Math.floor(100000 + Math.random() * 900000),
-                    points: initialPoints,
-                    referralCode: 'REF' + Math.floor(1000 + Math.random() * 9000)
-                };
-                localStorage.setItem('nexus_users', JSON.stringify(users));
-                alert('Registration successful! You received 200 Points Welcome Bonus.');
-            }
-
-            if (!users[phone] || users[phone].pass !== pass) {
-                alert('Invalid phone number or password.');
-                return;
-            }
-
-            currentUser = users[phone];
-            userPoints = currentUser.points || 0;
-            updateUI();
-            
-            document.getElementById('screen-welcome').classList.remove('active');
-            document.getElementById('screen-lobby').classList.add('active');
-            document.getElementById('mainBottomNav').classList.add('active-nav');
-        }
-
         function updateUI() {
-            if (!currentUser) return;
             document.getElementById('balanceDisplay').innerText = userPoints + ' Points';
-            document.getElementById('displayPlayerId').innerText = currentUser.playerId;
-            document.getElementById('displayNickname').innerText = currentUser.nickname;
-            document.getElementById('accountPhone').innerText = currentUser.phone;
-            document.getElementById('myReferralCode').innerText = currentUser.referralCode;
-            document.getElementById('updateNicknameInput').value = currentUser.nickname;
-            
-            if (currentUser.phone === 'admin' || currentUser.phone === '9999999999') {
-                document.getElementById('adminNavBtn').style.display = 'block';
-            }
+            document.getElementById('displayNickname').innerText = nickname;
+            document.getElementById('updateNicknameInput').value = nickname;
         }
 
         function showScreen(screenId, btnElement) {
@@ -465,7 +315,7 @@
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = '';
-            games.forEach((game, index) => {
+            games.forEach((game) => {
                 grid.innerHTML += `
                     <div class="game-card" onclick="launchGame('${game.title}', '${game.url}')">
                         <div class="game-thumb" style="background: ${game.bg}">
@@ -484,49 +334,19 @@
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
-            startActiveTimer();
+            
+            // Add points on launching a game
+            userPoints += 5;
+            saveUserData();
         }
 
         function closeGameModal() {
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
-            stopActiveTimer();
-        }
-
-        function startActiveTimer() {
-            timeLeft = 1800;
-            isTimerPaused = false;
-            document.getElementById('resumeBtn').style.display = 'none';
-            clearInterval(gameTimerInterval);
-
-            gameTimerInterval = setInterval(() => {
-                if (!isTimerPaused) {
-                    timeLeft--;
-                    let mins = Math.floor(timeLeft / 60);
-                    let secs = timeLeft % 60;
-                    document.getElementById('timerText').innerText = `Time Active: ${mins}:${secs < 10 ? '0' : ''}${secs} left`;
-
-                    if (timeLeft <= 0) {
-                        clearInterval(gameTimerInterval);
-                        userPoints += 10; // Earn points for playing
-                        saveUserData();
-                        alert('Great session! You earned 10 Points.');
-                    }
-                }
-            }, 1000);
-        }
-
-        function stopActiveTimer() {
-            clearInterval(gameTimerInterval);
-        }
-
-        function manualResumeTimer() {
-            isTimerPaused = false;
-            document.getElementById('resumeBtn').style.display = 'none';
         }
 
         function spinLuckyWheel() {
-            const reward = Math.floor(Math.random() * 45) + 5; // 5 to 50 points
+            const reward = Math.floor(Math.random() * 45) + 5;
             userPoints += reward;
             saveUserData();
             document.getElementById('spinResultBox').innerText = `Won +${reward} Points!`;
@@ -534,28 +354,22 @@
 
         function handleWithdrawRequest() {
             if (userPoints < 2000) {
-                alert('Minimum redemption target is 2,000 Points!');
+                alert('Minimum milestone redemption target is 2,000 Points!');
             } else {
-                alert('Redemption request submitted successfully! Points will be processed.');
+                alert('Milestone target achieved! Redemption request submitted successfully.');
             }
         }
 
-        function claimStreakBonus() {
-            userPoints += 200;
-            saveUserData();
-            alert('Streak Reward Claimed! +200 Points added.');
-        }
-
         function copyReferralCode() {
-            navigator.clipboard.writeText(currentUser.referralCode);
+            navigator.clipboard.writeText("REF4829");
             alert('Referral code copied to clipboard!');
         }
 
         function saveProfileChanges() {
             const newNick = document.getElementById('updateNicknameInput').value.trim();
             if (newNick) {
-                currentUser.nickname = newNick;
-                saveUserData();
+                nickname = newNick;
+                localStorage.setItem('nexus_nickname', nickname);
                 updateUI();
                 alert('Profile updated successfully!');
             }
@@ -566,19 +380,8 @@
         }
 
         function saveUserData() {
-            if (!currentUser) return;
-            currentUser.points = userPoints;
-            let users = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-            users[currentUser.phone] = currentUser;
-            localStorage.setItem('nexus_users', JSON.stringify(users));
+            localStorage.setItem('nexus_points', userPoints);
             updateUI();
-        }
-
-        function logoutUser() {
-            currentUser = null;
-            document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-welcome').classList.add('active');
-            document.getElementById('mainBottomNav').classList.remove('active-nav');
         }
 
         function openChatModal() { document.getElementById('chatModal').style.display = 'flex'; }
@@ -598,38 +401,14 @@
             input.value = '';
 
             setTimeout(() => {
-                let reply = "Milestone target 2,000 Points hai. Aap games khel kar aur referrals se points earn kar sakte hain.";
-                if (text.toLowerCase().includes('points') || text.toLowerCase().includes('earn')) {
-                    reply = "Games khelne par aur daily lucky spin se aap points earn kar sakte hain!";
-                }
+                let reply = "Milestone target 2,000 Points hai. Aap games khel kar aur lucky spin se points earn kar sakte hain.";
                 body.innerHTML += `<div class="chat-bubble bot">${reply}</div>`;
                 body.scrollTop = body.scrollHeight;
             }, 600);
         }
 
-        function openAdminPanel() {
-            document.getElementById('adminModal').style.display = 'flex';
-            const container = document.getElementById('adminUserListContainer');
-            container.innerHTML = '';
-            let users = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-            Object.values(users).forEach(u => {
-                container.innerHTML += `
-                    <div style="background:var(--bg-card); padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; font-size:13px;">
-                        <div>
-                            <div><b>${u.nickname}</b> (${u.phone})</div>
-                            <div style="color:var(--text-muted); font-size:11px;">ID: ${u.playerId}</div>
-                        </div>
-                        <div style="color:var(--accent-gold); font-family:'Orbitron';">${u.points} Points</div>
-                    </div>
-                `;
-            });
-        }
-
-        function closeAdminPanel() {
-            document.getElementById('adminModal').style.display = 'none';
-        }
-
         window.onload = function() {
+            updateUI();
             renderGames();
         };
     </script>
