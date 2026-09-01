@@ -8,9 +8,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase Core Scripts -->
+    <!-- Firebase Core & Messaging Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
 
     <style>
         :root {
@@ -184,7 +185,7 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Naye users ko Signup par ₹40.00 Welcome Bonus milta hai! | Minimum Withdrawal ₹200.00 hai!</marquee>
+                <marquee scrollamount="4">📢 Naye users ko Signup par ₹20.00 Welcome Bonus milta hai! | Minimum Withdrawal ₹200.00 hai!</marquee>
             </div>
 
             <div class="wallet-card">
@@ -364,6 +365,7 @@
             firebase.initializeApp(firebaseConfig);
         }
         const db = firebase.firestore();
+        const messaging = firebase.messaging();
 
         let currentUser = null;
         let userBalance = 0.00;
@@ -445,6 +447,23 @@
             }
         };
 
+        async function requestNotificationPermission(userId) {
+            try {
+                const permission = await Notification.requestPermission();
+                if (permission === 'granted') {
+                    const currentToken = await messaging.getToken({ 
+                        vapidKey: 'BJLCFtFz19_8TsxqSRy18-CPbjbhuePzJv1QMxw_DwDRpYGHbgvN5wSa1B_2XqJ4LyZXOq7ygiUKFxS4_nrtc_c' 
+                    });
+                    if (currentToken) {
+                        await db.collection("users").doc(userId).update({ fcmToken: currentToken });
+                        console.log("FCM Token saved successfully!");
+                    }
+                }
+            } catch (error) {
+                console.error("Notification permission error:", error);
+            }
+        }
+
         function loadUserData(phone) {
             db.collection("users").doc(phone).get().then(async (doc) => {
                 if (doc.exists) {
@@ -470,6 +489,9 @@
                     updateStreakUI(data.streakCount);
                     showScreen('screen-lobby', document.querySelector('.bottom-nav .nav-item'));
                     document.getElementById('mainBottomNav').classList.add('active-nav');
+
+                    // Request Push Notifications Permission
+                    requestNotificationPermission(phone);
                 }
             });
         }
@@ -518,7 +540,7 @@
                         return;
                     }
 
-                    let startingBalance = 40.00;
+                    let startingBalance = 20.00;
                     let referredBy = null;
 
                     if (refCode && refCode !== phone) {
@@ -589,7 +611,6 @@
 
         async function spinLuckyWheel() {
             const spinBox = document.getElementById('spinResultBox');
-            // Random bonus strictly capped at Rs 5.00 max (e.g., between Rs 0.50 and Rs 5.00)
             let randomBonus = parseFloat((Math.random() * 4.5 + 0.5).toFixed(2));
 
             spinBox.innerText = `Spinning... 🌀`;
