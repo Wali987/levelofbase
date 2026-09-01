@@ -175,7 +175,7 @@
             <div class="top-user-bar">
                 <div>
                     <div style="font-size: 12px; color: var(--text-muted);">Player ID: <span id="displayPlayerId" style="color:var(--accent-neon)">#918402</span></div>
-                    <div style="font-size: 11px; color: var(--accent-gold);">VIP Level 1 Gamer</div>
+                    <div style="font-size: 11px; color: var(--accent-gold);" id="displayNickname">Gamer</div>
                 </div>
                 <div style="display: flex; gap: 15px; align-items: center;">
                     <i class="fa-solid fa-shield-halved" style="font-size: 20px; color: var(--accent-gold); cursor: pointer; display: none;" id="adminNavBtn" onclick="openAdminPanel()" title="Admin Panel"></i>
@@ -184,15 +184,23 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Naye users ko Signup par ₹40.00 Welcome Bonus milta hai! | 7 Din tak roz 30 min game khelne par ₹20.00 Extra Bonus paayein!</marquee>
+                <marquee scrollamount="4">📢 Naye users ko Signup par ₹40.00 Welcome Bonus milta hai! | Minimum Withdrawal ₹200.00 hai!</marquee>
             </div>
 
             <div class="wallet-card">
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Total Balance</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Total Balance (Min. W/D: ₹200)</div>
                     <div class="balance-amount" id="balanceDisplay">₹0.00</div>
                 </div>
-                <button class="withdraw-btn" onclick="alert('Banking system coming soon!')">Withdraw</button>
+                <button class="withdraw-btn" onclick="handleWithdrawRequest()">Withdraw</button>
+            </div>
+
+            <!-- Daily Lucky Spin Section -->
+            <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(0,240,255,0.2); text-align: center;">
+                <h3 style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 6px;"><i class="fa-solid fa-dharmachakra"></i> Daily Lucky Spin</h3>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Rozana spin karein aur paayein random bonus (Max ₹5.00 tak)!</p>
+                <div id="spinResultBox" style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-gold); margin-bottom: 10px; min-height: 24px;">Tap to Spin!</div>
+                <button class="btn-main" onclick="spinLuckyWheel()" style="max-width: 200px; padding: 8px; font-size: 12px;">SPIN NOW</button>
             </div>
 
             <div class="section-heading">
@@ -256,8 +264,16 @@
             <div style="text-align:center; padding: 20px; background:var(--bg-card); border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%;">
                 <i class="fa-solid fa-user-circle" style="font-size:50px; color:var(--accent-neon); margin-bottom:10px;"></i>
                 <div id="accountPhone" style="font-family:'Orbitron'; font-weight:700; font-size: 15px;">+91 9876543210</div>
-                <div style="font-size:12px; color: var(--text-muted);">Status: Active Time-Earn Gamer</div>
+                <div style="font-size:12px; color: var(--text-muted); margin-bottom: 15px;">Status: Active Gamer</div>
+                
+                <!-- Profile Customization Inputs -->
+                <div style="text-align: left; margin-bottom: 10px;">
+                    <label style="font-size: 11px; color: var(--text-muted);">Change Nickname</label>
+                    <input type="text" id="updateNicknameInput" placeholder="Enter new nickname" style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px;">
+                </div>
+                <button class="btn-main" onclick="saveProfileChanges()" style="padding: 8px; font-size: 12px; margin-bottom: 10px;">Update Profile</button>
             </div>
+
             <div onclick="logoutUser()" style="background:var(--bg-card); padding:12px; border-radius:10px; text-align:center; color:#ff4d4d; font-weight:700; cursor:pointer; border:1px solid rgba(255,77,77,0.2); font-size: 14px; max-width:400px; margin-left:auto; margin-right:auto;">
                 <i class="fa-solid fa-right-from-bracket"></i> Logout
             </div>
@@ -288,7 +304,7 @@
                 <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeChatModal()"></i>
             </div>
             <div class="chat-body" id="chatBody">
-                <div class="chat-bubble bot">Hello! Main Nexus Arcade AI Support hoon. Naye user ko ₹40 welcome bonus milta hai!</div>
+                <div class="chat-bubble bot">Hello! Main Nexus Arcade AI Support hoon. Minimum withdrawal ₹200 hai!</div>
             </div>
             <div class="chat-footer">
                 <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKey(event)">
@@ -438,15 +454,15 @@
                     
                     document.getElementById('accountPhone').innerText = currentUser;
                     document.getElementById('displayPlayerId').innerText = data.playerId;
+                    document.getElementById('displayNickname').innerText = data.nickname || "Gamer";
+                    document.getElementById('updateNicknameInput').value = data.nickname || "";
                     document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
                     document.getElementById('myReferralCode').innerText = phone;
 
-                    // Check if Admin (e.g., specific phone number can act as admin, or any user for testing)
                     if (phone === "+919876543210" || data.isAdmin) {
                         document.getElementById('adminNavBtn').style.display = 'block';
                     }
 
-                    // Fetch Referral Stats
                     const referralsQuery = await db.collection("users").where("referredBy", "==", phone).get();
                     document.getElementById('refCountDisplay').innerText = referralsQuery.size;
                     document.getElementById('refEarningsDisplay').innerText = `₹${(referralsQuery.size * 10.00).toFixed(2)}`;
@@ -523,6 +539,7 @@
                         password: pass,
                         balance: startingBalance,
                         playerId: '#' + Math.floor(100000 + Math.random() * 900000),
+                        nickname: "Gamer",
                         streakCount: 1,
                         referredBy: referredBy,
                         createdAt: new Date().toISOString()
@@ -557,6 +574,43 @@
             }
         }
 
+        async function saveProfileChanges() {
+            const newNickname = document.getElementById('updateNicknameInput').value.trim();
+            if(!newNickname) { alert("Nickname cannot be empty!"); return; }
+
+            try {
+                await db.collection("users").doc(currentUser).update({ nickname: newNickname });
+                document.getElementById('displayNickname').innerText = newNickname;
+                alert("Profile updated successfully!");
+            } catch(e) {
+                alert("Failed to update profile.");
+            }
+        }
+
+        async function spinLuckyWheel() {
+            const spinBox = document.getElementById('spinResultBox');
+            // Random bonus strictly capped at Rs 5.00 max (e.g., between Rs 0.50 and Rs 5.00)
+            let randomBonus = parseFloat((Math.random() * 4.5 + 0.5).toFixed(2));
+
+            spinBox.innerText = `Spinning... 🌀`;
+
+            setTimeout(async () => {
+                spinBox.innerText = `You won ₹${randomBonus.toFixed(2)}! 🎉`;
+                userBalance += randomBonus;
+                document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+
+                await db.collection("users").doc(currentUser).update({ balance: userBalance });
+            }, 1000);
+        }
+
+        function handleWithdrawRequest() {
+            if (userBalance < 200.00) {
+                alert(`Minimum withdrawal amount is ₹200.00! Aapka current balance ₹${userBalance.toFixed(2)} hai.`);
+            } else {
+                alert("Banking system coming soon! Withdrawal request will be processed once live.");
+            }
+        }
+
         function showScreen(screenId, navElement) {
             document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -575,7 +629,6 @@
         function openChatModal() { document.getElementById('chatModal').style.display = 'flex'; }
         function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
         
-        // Admin Panel Logic
         async function openAdminPanel() {
             document.getElementById('adminModal').style.display = 'flex';
             const userListContainer = document.getElementById('adminUserListContainer');
@@ -591,7 +644,7 @@
                     userListContainer.innerHTML += `
                         <div style="background: var(--bg-card); padding: 10px; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; font-size: 13px;">
                             <div>
-                                <strong>${doc.id}</strong> <small style="color:var(--text-muted)">(${uData.playerId || 'N/A'})</small>
+                                <strong>${doc.id}</strong> <small style="color:var(--text-muted)">(${uData.nickname || 'Gamer'})</small>
                             </div>
                             <div style="color: var(--accent-gold); font-family: 'Orbitron';">₹${(uData.balance || 0).toFixed(2)}</div>
                         </div>
@@ -618,7 +671,7 @@
             input.value = '';
 
             setTimeout(() => {
-                body.innerHTML += `<div class="chat-bubble bot">Aapka sawal mil gaya hai. Nexus Arcade support team jald hi ispar dhyan degi!</div>`;
+                body.innerHTML += `<div class="chat-bubble bot">Aapka sawal mil gaya hai. Minimum withdrawal limit ₹200 hai!</div>`;
                 body.scrollTop = body.scrollHeight;
             }, 600);
         }
