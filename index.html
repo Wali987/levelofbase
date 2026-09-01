@@ -426,6 +426,7 @@
         async function handleAuth() {
             const phone = document.getElementById('phoneInput').value.trim();
             const pass = document.getElementById('passInput').value.trim();
+            const refCode = document.getElementById('refInput') ? document.getElementById('refInput').value.trim() : '';
 
             if (!phone || phone.length < 10) { alert("Enter a valid phone number!"); return; }
             if (!pass) { alert("Enter a password!"); return; }
@@ -442,18 +443,36 @@
                         return;
                     }
 
+                    let startingBalance = 40.00;
+                    let referredBy = null;
+
+                    if (refCode && refCode !== phone) {
+                        const referrerRef = db.collection("users").doc(refCode);
+                        const referrerDoc = await referrerRef.get();
+
+                        if (referrerDoc.exists) {
+                            referredBy = refCode;
+                            let referrerData = referrerDoc.data();
+                            let newReferrerBalance = (referrerData.balance || 0) + 10.00;
+                            await referrerRef.update({ balance: newReferrerBalance });
+                        } else {
+                            alert("Invalid Referral Code! Proceeding with standard registration.");
+                        }
+                    }
+
                     const newUser = {
                         password: pass,
-                        balance: 40.00,
+                        balance: startingBalance,
                         playerId: '#' + Math.floor(100000 + Math.random() * 900000),
                         streakCount: 1,
+                        referredBy: referredBy,
                         createdAt: new Date().toISOString()
                     };
 
                     await userRef.set(newUser);
                     localStorage.setItem('nexus_current_session', phone);
                     
-                    alert("Registration successful! ₹40 Welcome Bonus added.");
+                    alert("Registration successful! Welcome bonus added.");
                     location.reload();
 
                 } else {
@@ -523,7 +542,6 @@
 
         function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
 
-        // Game Modal & Smart Auto-Pause Timer Functions
         function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
@@ -553,7 +571,6 @@
             }, 1000);
         }
 
-        // Auto-pause agar user 45 second tak koi movement na kare (game chhod kar chala jaye)
         function resetInactivityTimer() {
             clearTimeout(inactivityTimeout);
             if (!isTimerPaused) {
@@ -561,11 +578,10 @@
                     isTimerPaused = true;
                     document.getElementById('resumeBtn').style.display = 'inline-block';
                     document.getElementById('timerText').innerText = `Paused due to inactivity! Click Resume`;
-                }, 45000); // 45 seconds
+                }, 45000);
             }
         }
 
-        // Listen for user activity inside game modal
         window.addEventListener('mousemove', resetInactivityTimer);
         window.addEventListener('keydown', resetInactivityTimer);
         window.addEventListener('touchstart', resetInactivityTimer);
