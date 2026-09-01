@@ -7,10 +7,6 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%2300f0ff' d='M448 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V96c0-35.35-28.65-64-64-64zm-248 288h-48v48c0 8.84-7.16 16-16 16s-16-7.16-16-16v-48h-48c-8.84 0-16-7.16-16-16s7.16-16 16-16h48v-48c0-8.84 7.16-16 16-16s16 7.16 16 16v48h48c8.84 0 16 7.16 16 16s-7.16 16-16 16zm152 40c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40zm48-96c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40z'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Firebase Core & Messaging Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
     <style>
         :root {
@@ -104,9 +100,6 @@
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); font-size: 11px; cursor: pointer; background: none; border: none; }
         .nav-item.active { color: var(--accent-neon); }
         .nav-item i { font-size: 18px; margin-bottom: 2px; }
-
-        .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 15px 0; }
-        .streak-day { background: var(--bg-deep); border: 1px solid rgba(139,155,180,0.2); border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 11px; }
 
         .chat-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; justify-content: center; align-items: center; padding: 15px; }
         .chat-container { width: 100%; max-width: 450px; height: 500px; background: var(--bg-card); border-radius: 14px; border: 1px solid var(--accent-neon); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--glow); }
@@ -340,25 +333,7 @@
     </div>
 
     <script>
-        // Firebase Safe Init
-        let db = null;
-        try {
-            const firebaseConfig = {
-                apiKey: "AIzaSyDjTOf-hFj5pcjHkYiJnkElCz-Xmsc5o4s",
-                authDomain: "levelofbase.firebaseapp.com",
-                projectId: "levelofbase",
-                storageBucket: "levelofbase.firebasestorage.app",
-                messagingSenderId: "501026571235",
-                appId: "1:501026571235:web:322122a29e7d7bc14b16d6"
-            };
-            if (!firebase.apps.length) {
-                firebase.initializeApp(firebaseConfig);
-            }
-            db = firebase.firestore();
-        } catch (e) {
-            console.log("Using Local Storage Mode due to network/firewall restriction.");
-        }
-
+        // LocalStorage Mode (Firebase API Completely Removed)
         let currentUser = null;
         let userBalance = 0.00;
         let authMode = 'login';
@@ -462,7 +437,7 @@
             if (e.key === 'Enter') handleAuth();
         }
 
-        async function handleAuth() {
+        function handleAuth() {
             const phone = document.getElementById('phoneInput').value.trim();
             const pass = document.getElementById('passInput').value.trim();
 
@@ -472,73 +447,34 @@
             }
 
             let userData = null;
+            let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
 
-            // Try Firebase first, fallback to LocalStorage if error or offline
-            try {
-                if (db) {
-                    const docRef = db.collection('users').doc(phone);
-                    const doc = await docRef.get();
-                    if (authMode === 'login') {
-                        if (!doc.exists) {
-                            alert('Account not found! Please register first.');
-                            return;
-                        }
-                        userData = doc.data();
-                        if (userData.password !== pass) {
-                            alert('Incorrect password!');
-                            return;
-                        }
-                    } else {
-                        if (doc.exists) {
-                            alert('Account already exists! Please login.');
-                            return;
-                        }
-                        userData = {
-                            phone: phone,
-                            password: pass,
-                            balance: 20.00,
-                            nickname: 'Gamer_' + phone.slice(-4),
-                            playerId: '#' + Math.floor(100000 + Math.random() * 900000),
-                            referralCode: 'NEXUS' + Math.floor(1000 + Math.random() * 9000),
-                            isAdmin: phone === '9999999999'
-                        };
-                        await docRef.set(userData);
-                    }
+            if (authMode === 'login') {
+                if (!localUsers[phone]) {
+                    alert('Account not found! Please register first.');
+                    return;
                 }
-            } catch (err) {
-                console.log("Firebase fallback to LocalStorage triggered.");
-            }
-
-            // LocalStorage Fallback Handler
-            if (!userData) {
-                let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-                if (authMode === 'login') {
-                    if (!localUsers[phone]) {
-                        alert('Account not found in local storage! Please register.');
-                        return;
-                    }
-                    userData = localUsers[phone];
-                    if (userData.password !== pass) {
-                        alert('Incorrect password!');
-                        return;
-                    }
-                } else {
-                    if (localUsers[phone]) {
-                        alert('Account already exists! Please login.');
-                        return;
-                    }
-                    userData = {
-                        phone: phone,
-                        password: pass,
-                        balance: 20.00,
-                        nickname: 'Gamer_' + phone.slice(-4),
-                        playerId: '#' + Math.floor(100000 + Math.random() * 900000),
-                        referralCode: 'NEXUS' + Math.floor(1000 + Math.random() * 9000),
-                        isAdmin: phone === '9999999999'
-                    };
-                    localUsers[phone] = userData;
-                    localStorage.setItem('nexus_users', JSON.stringify(localUsers));
+                userData = localUsers[phone];
+                if (userData.password !== pass) {
+                    alert('Incorrect password!');
+                    return;
                 }
+            } else {
+                if (localUsers[phone]) {
+                    alert('Account already exists! Please login.');
+                    return;
+                }
+                userData = {
+                    phone: phone,
+                    password: pass,
+                    balance: 20.00,
+                    nickname: 'Gamer_' + phone.slice(-4),
+                    playerId: '#' + Math.floor(100000 + Math.random() * 900000),
+                    referralCode: 'NEXUS' + Math.floor(1000 + Math.random() * 9000),
+                    isAdmin: phone === '9999999999'
+                };
+                localUsers[phone] = userData;
+                localStorage.setItem('nexus_users', JSON.stringify(localUsers));
             }
 
             currentUser = phone;
@@ -583,7 +519,7 @@
             document.getElementById('gameIframe').src = '';
             clearInterval(gameTimerInterval);
             userBalance += 1.00;
-            updateBalanceInDB();
+            updateBalanceInLocalStorage();
             alert('Game session saved! You earned ₹1.00.');
         }
 
@@ -603,7 +539,7 @@
                     if (timeLeft <= 0) {
                         clearInterval(gameTimerInterval);
                         userBalance += 5.00;
-                        updateBalanceInDB();
+                        updateBalanceInLocalStorage();
                     }
                 }
             }, 1000);
@@ -614,12 +550,9 @@
             document.getElementById('resumeBtn').style.display = 'none';
         }
 
-        async function updateBalanceInDB() {
+        function updateBalanceInLocalStorage() {
             document.getElementById('balanceDisplay').innerText = '₹' + userBalance.toFixed(2);
             if (currentUser) {
-                try {
-                    if (db) await db.collection('users').doc(currentUser).update({ balance: userBalance });
-                } catch(e) {}
                 let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
                 if (localUsers[currentUser]) {
                     localUsers[currentUser].balance = userBalance;
@@ -636,7 +569,7 @@
                 if (upi) {
                     alert('Withdrawal request of ₹' + userBalance.toFixed(2) + ' submitted!');
                     userBalance = 0;
-                    updateBalanceInDB();
+                    updateBalanceInLocalStorage();
                 }
             }
         }
@@ -644,7 +577,7 @@
         function spinLuckyWheel() {
             const reward = (Math.random() * 5).toFixed(2);
             userBalance += parseFloat(reward);
-            updateBalanceInDB();
+            updateBalanceInLocalStorage();
             document.getElementById('spinResultBox').innerText = `🎉 You won ₹${reward} on Lucky Spin!`;
         }
 
@@ -656,18 +589,15 @@
 
         function claimStreakBonus() {
             userBalance += 20.00;
-            updateBalanceInDB();
+            updateBalanceInLocalStorage();
             alert('Streak Reward ₹20.00 claimed!');
         }
 
-        async function saveProfileChanges() {
+        function saveProfileChanges() {
             const newNick = document.getElementById('updateNicknameInput').value.trim();
             if (!newNick) return alert('Enter valid nickname.');
             document.getElementById('displayNickname').innerText = newNick;
             if (currentUser) {
-                try {
-                    if (db) await db.collection('users').doc(currentUser).update({ nickname: newNick });
-                } catch(e){}
                 let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
                 if (localUsers[currentUser]) {
                     localUsers[currentUser].nickname = newNick;
@@ -677,20 +607,12 @@
             }
         }
 
-        async function submitUserFeedback() {
+        function submitUserFeedback() {
             const rating = document.getElementById('feedbackRating').value;
             const text = document.getElementById('feedbackText').value.trim();
             if (!text) return alert('Please write feedback.');
-
-            try {
-                if(db) {
-                    await db.collection('feedbacks').add({ phone: currentUser, rating, comment: text });
-                }
-                alert('Thank you for your feedback!');
-                document.getElementById('feedbackText').value = '';
-            } catch(e) {
-                alert('Feedback submitted successfully!');
-            }
+            alert('Thank you for your feedback!');
+            document.getElementById('feedbackText').value = '';
         }
 
         function logoutUser() {
@@ -723,7 +645,7 @@
             }, 800);
         }
 
-        async function openAdminPanel() {
+        function openAdminPanel() {
             document.getElementById('adminModal').style.display = 'flex';
             const container = document.getElementById('adminUserListContainer');
             container.innerHTML = '';
