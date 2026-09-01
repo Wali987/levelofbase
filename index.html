@@ -308,6 +308,9 @@
         let currentUser = null;
         let userBalance = 0.00;
         let authMode = 'login';
+        let gameTimerInterval = null;
+        let timeLeft = 1800; // 30 minutes in seconds
+        let isTimerPaused = false;
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -315,7 +318,41 @@
             { title: "Neon Drift", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-car-burst", bg: "linear-gradient(135deg, #2b5876, #4e4376)" },
             { title: "Hyper Blade", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-khanda", bg: "linear-gradient(135deg, #3a1c71, #ffaf7b)" },
             { title: "Void Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-person-running", bg: "linear-gradient(135deg, #1f4068, #162447)" },
-            { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" }
+            { title: "Pixel Apex", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-cube", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Galaxy Siege", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-meteor", bg: "linear-gradient(135deg, #200122, #6f0000)" },
+            { title: "Speed Racer", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #000046, #1cb5e0)" },
+            { title: "Ninja Jump", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #4ca1af, #c4e0e5)" },
+            { title: "Zombie Arena", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-skull", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
+            { title: "Stellar Clash", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #833ab4, #fd1d1d)" },
+            { title: "Block Puzzle", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-shapes", bg: "linear-gradient(135deg, #232526, #414345)" },
+            { title: "Moto Extreme", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-motorcycle", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" },
+            { title: "Tank Wars", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
+            { title: "Shadow Fighter", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-user-secret", bg: "linear-gradient(135deg, #0f0c29, #302b63)" },
+            { title: "Arcade Pong", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-table-tennis-paddle-ball", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
+            { title: "Super Sniper", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #ee0979, #ff6a00)" },
+            { title: "Retro Brick", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-gamepad", bg: "linear-gradient(135deg, #1f1c2c, #928dab)" },
+            { title: "Air Combat", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-plane", bg: "linear-gradient(135deg, #5c258d, #4389a2)" },
+            { title: "Labyrinth Maze", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-puzzle-piece", bg: "linear-gradient(135deg, #396afc, #2948ff)" },
+            { title: "Basket Hero", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-basketball", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Soccer Striker", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-futbol", bg: "linear-gradient(135deg, #56ab2f, #a8e063)" },
+            { title: "Epic Runner", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-shoe-prints", bg: "linear-gradient(135deg, #ff9966, #ff5e62)" },
+            { title: "Neon Ball", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-bowling-ball", bg: "linear-gradient(135deg, #4e54c8, #8f94fb)" },
+            { title: "Cyber Fighter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-hand-fist", bg: "linear-gradient(135deg, #000428, #004e92)" },
+            { title: "Diamond Dash", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-gem", bg: "linear-gradient(135deg, #1fa2ff, #12d8fa)" },
+            { title: "Monster Truck", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-truck-monster", bg: "linear-gradient(135deg, #283e51, #4887c2)" },
+            { title: "Space Shooter", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-satellite", bg: "linear-gradient(135deg, #3a6073, #16222a)" },
+            { title: "Tower Defense", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-chess-rook", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
+            { title: "Speed Drift", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #1d976c, #93f9b9)" },
+            { title: "Dark Dungeon", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-dungeon", bg: "linear-gradient(135deg, #232526, #414345)" },
+            { title: "Ghost Hunter", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-ghost", bg: "linear-gradient(135deg, #4b6cb7, #182848)" },
+            { title: "Dragon Flight", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-dragon", bg: "linear-gradient(135deg, #cb356b, #bd3f32)" },
+            { title: "Magic Card", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-clone", bg: "linear-gradient(135deg, #3f2b96, #a8c0ff)" },
+            { title: "Turbo Rally", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-car-side", bg: "linear-gradient(135deg, #ffb347, #ffcc33)" },
+            { title: "Neon Pinball", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-circle-dot", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
+            { title: "Matrix Hacker", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-terminal", bg: "linear-gradient(135deg, #000000, #434343)" },
+            { title: "Bounty Hunter", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-hat-cowboy", bg: "linear-gradient(135deg, #3e5151, #decba4)" },
+            { title: "Fire Storm", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-fire", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
+            { title: "Final Strike", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-burst", bg: "linear-gradient(135deg, #141e30, #243b55)" }
         ];
 
         function renderGames() {
@@ -340,7 +377,6 @@
         }
         renderGames();
 
-        // Check active session on load
         window.onload = function() {
             let savedUser = localStorage.getItem('nexus_current_session');
             if(savedUser) {
@@ -386,7 +422,6 @@
             if(e.key === 'Enter') handleAuth();
         }
 
-        // Firebase Cloud Database Authentication Handler
         async function handleAuth() {
             const phone = document.getElementById('phoneInput').value.trim();
             const pass = document.getElementById('passInput').value.trim();
@@ -408,7 +443,7 @@
 
                     const newUser = {
                         password: pass,
-                        balance: 20.00,
+                        balance: 40.00,
                         playerId: '#' + Math.floor(100000 + Math.random() * 900000),
                         streakCount: 1,
                         createdAt: new Date().toISOString()
@@ -417,7 +452,7 @@
                     await userRef.set(newUser);
                     localStorage.setItem('nexus_current_session', phone);
                     
-                    alert("Registration successful! ₹20 Welcome Bonus added.");
+                    alert("Registration successful! ₹40 Welcome Bonus added.");
                     location.reload();
 
                 } else {
@@ -487,13 +522,45 @@
 
         function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
 
+        // Game Modal & Working 30-min Timer Functions
         function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
+            
+            // Reset and start timer
+            timeLeft = 1800; 
+            isTimerPaused = false;
+            document.getElementById('resumeBtn').style.display = 'none';
+            startTimer();
+        }
+
+        function startTimer() {
+            clearInterval(gameTimerInterval);
+            gameTimerInterval = setInterval(() => {
+                if (!isTimerPaused) {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        let minutes = Math.floor(timeLeft / 60);
+                        let seconds = timeLeft % 60;
+                        document.getElementById('timerText').innerText = `Time Active: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds} left to complete session`;
+                    } else {
+                        clearInterval(gameTimerInterval);
+                        document.getElementById('timerText').innerText = `Session Complete! Reward Unlocked.`;
+                    }
+                }
+            }, 1000);
+        }
+
+        function manualResumeTimer() {
+            isTimerPaused = false;
+            document.getElementById('resumeBtn').style.display = 'none';
         }
 
         function closeGameModal() {
+            clearInterval(gameTimerInterval);
+            isTimerPaused = true;
+            document.getElementById('resumeBtn').style.display = 'inline-block';
             document.getElementById('gameIframe').src = '';
             document.getElementById('gameModal').style.display = 'none';
         }
