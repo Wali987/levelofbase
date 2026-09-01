@@ -76,11 +76,9 @@
         .input-box i { color: var(--accent-neon); font-size: 14px; }
 
         .btn-main { width: 100%; max-width: 400px; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); margin-left: auto; margin-right: auto; display: block; }
-        
         .btn-secondary { width: 100%; max-width: 400px; padding: 10px; border: 1px solid var(--accent-neon); border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: var(--accent-neon); margin: 8px auto 0 auto; display: block; }
 
         .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
-        
         .marquee-box { background: rgba(0,240,255,0.08); border-left: 3px solid var(--accent-neon); padding: 10px 12px; font-size: 13px; color: var(--accent-neon); margin-bottom: 15px; border-radius: 6px; display: flex; align-items: center; overflow: hidden; width: 100%; }
         .marquee-box marquee { width: 100%; font-weight: 600; letter-spacing: 0.5px; }
 
@@ -91,9 +89,7 @@
         .section-heading { font-family: 'Orbitron', sans-serif; font-size: 15px; margin: 20px 0 12px 0; display: flex; align-items: center; gap: 8px; color: var(--accent-neon); }
 
         .games-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        @media (min-width: 768px) {
-            .games-grid { grid-template-columns: repeat(4, 1fr); }
-        }
+        @media (min-width: 768px) { .games-grid { grid-template-columns: repeat(4, 1fr); } }
         .game-card { background: var(--bg-card); border-radius: 12px; overflow: hidden; border: 1px solid rgba(139, 155, 180, 0.15); cursor: pointer; transition: 0.2s; }
         .game-thumb { height: 110px; background-size: cover; background-position: center; display: flex; align-items: center; justify-content: center; position: relative; }
         .game-thumb::after { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.3); }
@@ -128,7 +124,6 @@
         .game-modal { display: none; position: fixed; inset: 0; background: #000; z-index: 3000; flex-direction: column; }
         .game-modal-header { padding: 12px 20px; background: #131622; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0, 240, 255, 0.2); }
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
-        
         .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: flex; justify-content: center; align-items: center; gap: 15px; }
         .resume-btn { background: var(--accent-green); color: black; border: none; padding: 3px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; display: none; }
     </style>
@@ -303,14 +298,15 @@
     </div>
 
     <script>
-        // Initialize Firebase (Replace with your actual Firebase project config credentials)
+        // Updated Firebase Configuration for levelofbase
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_AUTH_DOMAIN",
-            projectId: "YOUR_PROJECT_ID",
-            storageBucket: "YOUR_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyDjT0f-hfj5pcjHkYIJnKElCz-Xmsc5o4s",
+            authDomain: "levelofbase.firebaseapp.com",
+            projectId: "levelofbase",
+            storageBucket: "levelofbase.appspot.com",
+            messagingSenderId: "501026571235",
+            appId: "1:501026571235:web:322122a29e7d7bc14b16d6",
+            measurementId: "G-KY1VPYRPJ9"
         };
         
         if (!firebase.apps.length) {
@@ -321,10 +317,6 @@
         let userBalance = 0.00;
         let authMode = 'login';
         let verificationResult = null;
-        let gameTimer = null;
-        let timeLeft = 1800; // 30 minutes
-        let lastActivityTime = Date.now();
-        let isAfk = false;
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -362,7 +354,6 @@
         renderGames();
 
         window.onload = function() {
-            // Setup Firebase reCAPTCHA verifier
             window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
                 'size': 'normal',
                 'callback': (response) => {}
@@ -447,7 +438,6 @@
                 if (!window.confirmationResult) { alert("Please click 'Send OTP' first!"); return; }
 
                 window.confirmationResult.confirm(otp).then((result) => {
-                    // Phone authentication successful via Firebase
                     if (usersDB[phone]) { alert("Account already exists! Please login."); switchAuthMode('login'); return; }
                     
                     usersDB[phone] = { 
@@ -461,14 +451,13 @@
                     localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
                     localStorage.setItem('nexus_current_session', phone);
                     
-                    alert("Registration successful with Firebase Phone Auth! ₹20 bonus added.");
+                    alert("Registration successful! ₹20 bonus added.");
                     location.reload();
                 }).catch((error) => {
                     alert("Invalid OTP verification code: " + error.message);
                 });
 
             } else {
-                // Login flow
                 if (!usersDB[phone]) { alert("Account not found! Please register first."); switchAuthMode('register'); return; }
                 if (usersDB[phone].password !== pass) { alert("Incorrect password!"); return; }
 
