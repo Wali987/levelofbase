@@ -181,7 +181,7 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Naye users ko Signup par ₹20.00 Welcome Bonus milta hai! | 7 Din tak roz 30 min game khelne par ₹20.00 Extra Bonus paayein!</marquee>
+                <marquee scrollamount="4">📢 Naye users ko Signup par ₹40.00 Welcome Bonus milta hai! | 7 Din tak roz 30 min game khelne par ₹20.00 Extra Bonus paayein!</marquee>
             </div>
 
             <div class="wallet-card">
@@ -266,7 +266,7 @@
                 <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeChatModal()"></i>
             </div>
             <div class="chat-body" id="chatBody">
-                <div class="chat-bubble bot">Hello! Main Nexus Arcade AI Support hoon. Naye user ko ₹20 welcome bonus milta hai!</div>
+                <div class="chat-bubble bot">Hello! Main Nexus Arcade AI Support hoon. Naye user ko ₹40 welcome bonus milta hai!</div>
             </div>
             <div class="chat-footer">
                 <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKey(event)">
@@ -311,6 +311,7 @@
         let gameTimerInterval = null;
         let timeLeft = 1800; // 30 minutes in seconds
         let isTimerPaused = false;
+        let inactivityTimeout = null;
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -522,17 +523,17 @@
 
         function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
 
-        // Game Modal & Working 30-min Timer Functions
+        // Game Modal & Smart Auto-Pause Timer Functions
         function openGameModal(title, url) {
             document.getElementById('modalGameTitle').innerText = title;
             document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
             
-            // Reset and start timer
             timeLeft = 1800; 
             isTimerPaused = false;
             document.getElementById('resumeBtn').style.display = 'none';
             startTimer();
+            resetInactivityTimer();
         }
 
         function startTimer() {
@@ -543,7 +544,7 @@
                         timeLeft--;
                         let minutes = Math.floor(timeLeft / 60);
                         let seconds = timeLeft % 60;
-                        document.getElementById('timerText').innerText = `Time Active: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds} left to complete session`;
+                        document.getElementById('timerText').innerText = `Time Active: ${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds} left`;
                     } else {
                         clearInterval(gameTimerInterval);
                         document.getElementById('timerText').innerText = `Session Complete! Reward Unlocked.`;
@@ -552,15 +553,33 @@
             }, 1000);
         }
 
+        // Auto-pause agar user 45 second tak koi movement na kare (game chhod kar chala jaye)
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimeout);
+            if (!isTimerPaused) {
+                inactivityTimeout = setTimeout(() => {
+                    isTimerPaused = true;
+                    document.getElementById('resumeBtn').style.display = 'inline-block';
+                    document.getElementById('timerText').innerText = `Paused due to inactivity! Click Resume`;
+                }, 45000); // 45 seconds
+            }
+        }
+
+        // Listen for user activity inside game modal
+        window.addEventListener('mousemove', resetInactivityTimer);
+        window.addEventListener('keydown', resetInactivityTimer);
+        window.addEventListener('touchstart', resetInactivityTimer);
+
         function manualResumeTimer() {
             isTimerPaused = false;
             document.getElementById('resumeBtn').style.display = 'none';
+            resetInactivityTimer();
         }
 
         function closeGameModal() {
             clearInterval(gameTimerInterval);
+            clearTimeout(inactivityTimeout);
             isTimerPaused = true;
-            document.getElementById('resumeBtn').style.display = 'inline-block';
             document.getElementById('gameIframe').src = '';
             document.getElementById('gameModal').style.display = 'none';
         }
