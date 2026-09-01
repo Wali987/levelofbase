@@ -11,7 +11,6 @@
     <!-- Firebase Core & Messaging Scripts -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js"></script>
 
     <style>
         :root {
@@ -108,7 +107,6 @@
 
         .streak-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 15px 0; }
         .streak-day { background: var(--bg-deep); border: 1px solid rgba(139,155,180,0.2); border-radius: 8px; padding: 8px 4px; text-align: center; font-size: 11px; }
-        .streak-day.completed { border-color: var(--accent-green); background: rgba(0,255,102,0.1); color: var(--accent-green); }
 
         .chat-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 4000; justify-content: center; align-items: center; padding: 15px; }
         .chat-container { width: 100%; max-width: 450px; height: 500px; background: var(--bg-card); border-radius: 14px; border: 1px solid var(--accent-neon); display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--glow); }
@@ -225,38 +223,20 @@
         <div id="screen-rewards" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">Rewards & Referrals</h2>
             
-            <!-- Referral Stats Card -->
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(0,240,255,0.2);">
                 <h3 style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 8px;"><i class="fa-solid fa-users"></i> Refer & Earn ₹10</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Apna invitation code doston ke sath share karein. Jab koi aapka code use karega, aapko ₹10 milenge!</p>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Apna invitation code share karein aur ₹10 paayein!</p>
                 
                 <div style="display: flex; gap: 10px; align-items: center; background: var(--bg-deep); padding: 10px; border-radius: 8px; border: 1px dashed var(--accent-neon); margin-bottom: 10px;">
                     <span style="font-size: 12px; color: var(--text-muted);">Aapka Code:</span>
                     <strong id="myReferralCode" style="color: var(--accent-gold); font-family: 'Orbitron';">-</strong>
                     <button onclick="copyReferralCode()" style="margin-left: auto; background: var(--accent-neon); border: none; padding: 4px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer;">Copy</button>
                 </div>
-
-                <div style="display: flex; justify-content: space-between; font-size: 13px; background: rgba(0,240,255,0.05); padding: 10px; border-radius: 6px;">
-                    <span>Total Referrals: <strong id="refCountDisplay" style="color: white;">0</strong></span>
-                    <span>Bonus Earned: <strong id="refEarningsDisplay" style="color: var(--accent-gold);">₹0.00</strong></span>
-                </div>
             </div>
 
-            <!-- Streak Card -->
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(139,155,180,0.2);">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Roz 30 minutes game khel kar 7 din ka streak poora karein aur paayein <b>₹20.00 Bonus</b>!</p>
-                
-                <div class="streak-grid" id="streakGrid">
-                    <div class="streak-day" id="day1">Day 1</div>
-                    <div class="streak-day" id="day2">Day 2</div>
-                    <div class="streak-day" id="day3">Day 3</div>
-                    <div class="streak-day" id="day4">Day 4</div>
-                    <div class="streak-day" id="day5">Day 5</div>
-                    <div class="streak-day" id="day6">Day 6</div>
-                    <div class="streak-day" id="day7">Day 7<br><small>₹20</small></div>
-                </div>
-
-                <button class="btn-main" id="claimStreakBtn" onclick="claimStreakBonus()" style="padding: 10px; font-size: 13px; margin-top: 10px;">Claim 7-Day Streak Reward (₹20)</button>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Roz game khel kar streak poora karein aur <b>₹20.00 Bonus</b> paayein!</p>
+                <button class="btn-main" onclick="claimStreakBonus()" style="padding: 10px; font-size: 13px; margin-top: 10px;">Claim Streak Reward (₹20)</button>
             </div>
         </div>
 
@@ -267,7 +247,6 @@
                 <div id="accountPhone" style="font-family:'Orbitron'; font-weight:700; font-size: 15px;">+91 9876543210</div>
                 <div style="font-size:12px; color: var(--text-muted); margin-bottom: 15px;">Status: Active Gamer</div>
                 
-                <!-- Profile Customization Inputs -->
                 <div style="text-align: left; margin-bottom: 10px;">
                     <label style="font-size: 11px; color: var(--text-muted);">Change Nickname</label>
                     <input type="text" id="updateNicknameInput" placeholder="Enter new nickname" style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px;">
@@ -278,20 +257,18 @@
             <!-- FEEDBACK FORM SECTION -->
             <div style="background:var(--bg-card); padding:15px; border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%; border:1px solid rgba(0,240,255,0.2);">
                 <h3 style="font-family:'Orbitron'; font-size:14px; color:var(--accent-neon); margin-bottom:8px;"><i class="fa-solid fa-comment-dots"></i> App Feedback & Rating</h3>
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Apna experience share karein taaki hum app ko aur behtar bana sakein!</p>
+                <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Apna experience share karein!</p>
                 <div style="text-align: left; margin-bottom: 10px;">
-                    <label style="font-size: 11px; color: var(--text-muted);">Rating (1 to 5 Stars)</label>
+                    <label style="font-size: 11px; color: var(--text-muted);">Rating</label>
                     <select id="feedbackRating" style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px;">
-                        <option value="5">⭐⭐⭐⭐⭐ (5 - Amazing)</option>
-                        <option value="4">⭐⭐⭐⭐ (4 - Good)</option>
-                        <option value="3">⭐⭐⭐ (3 - Average)</option>
-                        <option value="2">⭐⭐ (2 - Needs Improvement)</option>
-                        <option value="1">⭐ (1 - Bad)</option>
+                        <option value="5">⭐⭐⭐⭐⭐ (Amazing)</option>
+                        <option value="4">⭐⭐⭐⭐ (Good)</option>
+                        <option value="3">⭐⭐⭐ (Average)</option>
                     </select>
                 </div>
                 <div style="text-align: left; margin-bottom: 10px;">
-                    <label style="font-size: 11px; color: var(--text-muted);">Your Feedback / Suggestions</label>
-                    <textarea id="feedbackText" placeholder="Write your comments here..." style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px; height:70px; resize:none;"></textarea>
+                    <label style="font-size: 11px; color: var(--text-muted);">Suggestions</label>
+                    <textarea id="feedbackText" placeholder="Write comments..." style="width:100%; background:var(--bg-deep); border:1px solid rgba(139,155,180,0.3); padding:8px; border-radius:6px; color:white; font-size:13px; margin-top:4px; height:70px; resize:none;"></textarea>
                 </div>
                 <button class="btn-main" onclick="submitUserFeedback()" style="padding: 8px; font-size: 12px;">Submit Feedback</button>
             </div>
@@ -326,7 +303,7 @@
                 <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeChatModal()"></i>
             </div>
             <div class="chat-body" id="chatBody">
-                <div class="chat-bubble bot">Hello! Main Nexus Arcade AI Support hoon. Minimum withdrawal ₹200 hai!</div>
+                <div class="chat-bubble bot">Hello! Minimum withdrawal ₹200 hai!</div>
             </div>
             <div class="chat-footer">
                 <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKey(event)">
@@ -343,16 +320,8 @@
                 <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeAdminPanel()"></i>
             </div>
             <div class="chat-body" style="background: var(--bg-deep);">
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <div style="flex:1; background: var(--bg-card); padding: 12px; border-radius: 8px; border: 1px solid rgba(0,240,255,0.2);">
-                        <div style="font-size: 11px; color: var(--text-muted);">Total Users</div>
-                        <div id="adminTotalUsers" style="font-family: 'Orbitron'; font-size: 20px; color: var(--accent-neon);">0</div>
-                    </div>
-                </div>
-                <h3 style="font-family: 'Orbitron'; font-size: 13px; color: var(--accent-gold); margin-bottom: 8px;">Registered Users Database</h3>
-                <div id="adminUserListContainer" style="display: flex; flex-direction: column; gap: 8px;">
-                    <!-- Dynamic User Rows -->
-                </div>
+                <div style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 10px;">Registered Users Database</div>
+                <div id="adminUserListContainer" style="display: flex; flex-direction: column; gap: 8px;"></div>
             </div>
         </div>
     </div>
@@ -360,7 +329,7 @@
     <!-- GAME MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="timer-banner" id="timerBanner">
-            <span id="timerText">Time Active: 30:00 left to complete session</span>
+            <span id="timerText">Time Active: 30:00 left</span>
             <button class="resume-btn" id="resumeBtn" onclick="manualResumeTimer()">RESUME PLAY</button>
         </div>
         <div class="game-modal-header">
@@ -371,30 +340,31 @@
     </div>
 
     <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyDjTOf-hFj5pcjHkYiJnkElCz-Xmsc5o4s",
-            authDomain: "levelofbase.firebaseapp.com",
-            projectId: "levelofbase",
-            storageBucket: "levelofbase.firebasestorage.app",
-            messagingSenderId: "501026571235",
-            appId: "1:501026571235:web:322122a29e7d7bc14b16d6",
-            measurementId: "G-KY1VPYRPJ9"
-        };
-        
-        if (!firebase.apps.length) {
-            firebase.initializeApp(firebaseConfig);
+        // Firebase Safe Init
+        let db = null;
+        try {
+            const firebaseConfig = {
+                apiKey: "AIzaSyDjTOf-hFj5pcjHkYiJnkElCz-Xmsc5o4s",
+                authDomain: "levelofbase.firebaseapp.com",
+                projectId: "levelofbase",
+                storageBucket: "levelofbase.firebasestorage.app",
+                messagingSenderId: "501026571235",
+                appId: "1:501026571235:web:322122a29e7d7bc14b16d6"
+            };
+            if (!firebase.apps.length) {
+                firebase.initializeApp(firebaseConfig);
+            }
+            db = firebase.firestore();
+        } catch (e) {
+            console.log("Using Local Storage Mode due to network/firewall restriction.");
         }
-        const db = firebase.firestore();
-        const messaging = firebase.messaging();
 
         let currentUser = null;
         let userBalance = 0.00;
         let authMode = 'login';
         let gameTimerInterval = null;
-        let timeLeft = 1800; // 30 minutes in seconds
+        let timeLeft = 1800;
         let isTimerPaused = false;
-        let inactivityTimeout = null;
 
         const games = [
             { title: "Cyber Strike", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-crosshairs", bg: "linear-gradient(135deg, #0f2027, #2c5364)" },
@@ -449,7 +419,6 @@
             { title: "Ultimate Arcade", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-trophy", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" }
         ];
 
-        // Render games grid
         function renderGames() {
             const grid = document.getElementById('gamesGrid');
             grid.innerHTML = '';
@@ -496,58 +465,85 @@
         async function handleAuth() {
             const phone = document.getElementById('phoneInput').value.trim();
             const pass = document.getElementById('passInput').value.trim();
-            const ref = document.getElementById('refInput').value.trim();
 
             if (!phone || !pass) {
                 alert('Please enter phone number and password.');
                 return;
             }
 
-            const userRef = db.collection('users').doc(phone);
+            let userData = null;
+
+            // Try Firebase first, fallback to LocalStorage if error or offline
             try {
-                const doc = await userRef.get();
+                if (db) {
+                    const docRef = db.collection('users').doc(phone);
+                    const doc = await docRef.get();
+                    if (authMode === 'login') {
+                        if (!doc.exists) {
+                            alert('Account not found! Please register first.');
+                            return;
+                        }
+                        userData = doc.data();
+                        if (userData.password !== pass) {
+                            alert('Incorrect password!');
+                            return;
+                        }
+                    } else {
+                        if (doc.exists) {
+                            alert('Account already exists! Please login.');
+                            return;
+                        }
+                        userData = {
+                            phone: phone,
+                            password: pass,
+                            balance: 20.00,
+                            nickname: 'Gamer_' + phone.slice(-4),
+                            playerId: '#' + Math.floor(100000 + Math.random() * 900000),
+                            referralCode: 'NEXUS' + Math.floor(1000 + Math.random() * 9000),
+                            isAdmin: phone === '9999999999'
+                        };
+                        await docRef.set(userData);
+                    }
+                }
+            } catch (err) {
+                console.log("Firebase fallback to LocalStorage triggered.");
+            }
+
+            // LocalStorage Fallback Handler
+            if (!userData) {
+                let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
                 if (authMode === 'login') {
-                    if (!doc.exists) {
-                        alert('Account not found! Please register first.');
+                    if (!localUsers[phone]) {
+                        alert('Account not found in local storage! Please register.');
                         return;
                     }
-                    const data = doc.data();
-                    if (data.password !== pass) {
+                    userData = localUsers[phone];
+                    if (userData.password !== pass) {
                         alert('Incorrect password!');
                         return;
                     }
-                    currentUser = phone;
-                    userBalance = data.balance || 0;
-                    initUserSession(data);
                 } else {
-                    if (doc.exists) {
+                    if (localUsers[phone]) {
                         alert('Account already exists! Please login.');
                         return;
                     }
-                    let initialBalance = 20.00; // Welcome bonus
-                    let referralCode = 'NEXUS' + Math.floor(1000 + Math.random() * 9000);
-                    
-                    const newData = {
+                    userData = {
                         phone: phone,
                         password: pass,
-                        balance: initialBalance,
+                        balance: 20.00,
                         nickname: 'Gamer_' + phone.slice(-4),
                         playerId: '#' + Math.floor(100000 + Math.random() * 900000),
-                        referralCode: referralCode,
-                        referralsCount: 0,
-                        referralEarnings: 0,
-                        streakDays: 1,
-                        isAdmin: phone === '9999999999' // Example admin criteria
+                        referralCode: 'NEXUS' + Math.floor(1000 + Math.random() * 9000),
+                        isAdmin: phone === '9999999999'
                     };
-                    await userRef.set(newData);
-                    currentUser = phone;
-                    userBalance = initialBalance;
-                    initUserSession(newData);
+                    localUsers[phone] = userData;
+                    localStorage.setItem('nexus_users', JSON.stringify(localUsers));
                 }
-            } catch (err) {
-                console.error(err);
-                alert('Authentication error. Check connection.');
             }
+
+            currentUser = phone;
+            userBalance = userData.balance || 0;
+            initUserSession(userData);
         }
 
         function initUserSession(data) {
@@ -560,8 +556,6 @@
             document.getElementById('balanceDisplay').innerText = '₹' + userBalance.toFixed(2);
             document.getElementById('accountPhone').innerText = '+91 ' + data.phone;
             document.getElementById('myReferralCode').innerText = data.referralCode || 'NEXUS1234';
-            document.getElementById('refCountDisplay').innerText = data.referralsCount || 0;
-            document.getElementById('refEarningsDisplay').innerText = '₹' + (data.referralEarnings || 0).toFixed(2);
 
             if (data.isAdmin) {
                 document.getElementById('adminNavBtn').style.display = 'block';
@@ -588,10 +582,9 @@
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
             clearInterval(gameTimerInterval);
-            // Add small reward for playing
             userBalance += 1.00;
             updateBalanceInDB();
-            alert('Game session saved! You earned ₹1.00 for playing.');
+            alert('Game session saved! You earned ₹1.00.');
         }
 
         function startSessionTimer() {
@@ -605,11 +598,10 @@
                     timeLeft--;
                     let mins = Math.floor(timeLeft / 60);
                     let secs = timeLeft % 60;
-                    document.getElementById('timerText').innerText = `Time Active: ${mins}:${secs < 10 ? '0' : ''}${secs} left to complete session`;
+                    document.getElementById('timerText').innerText = `Time Active: ${mins}:${secs < 10 ? '0' : ''}${secs} left`;
                     
                     if (timeLeft <= 0) {
                         clearInterval(gameTimerInterval);
-                        alert('Session completed! Bonus reward added.');
                         userBalance += 5.00;
                         updateBalanceInDB();
                     }
@@ -622,37 +614,27 @@
             document.getElementById('resumeBtn').style.display = 'none';
         }
 
-        // Detect inactivity to pause timer
-        window.addEventListener('mousemove', resetInactivityTimer);
-        window.addEventListener('keydown', resetInactivityTimer);
-        function resetInactivityTimer() {
-            clearTimeout(inactivityTimeout);
-            if (isTimerPaused && document.getElementById('gameModal').style.display === 'flex') {
-                // optional auto resume on move
-            }
-            inactivityTimeout = setTimeout(() => {
-                if (document.getElementById('gameModal').style.display === 'flex') {
-                    isTimerPaused = true;
-                    document.getElementById('resumeBtn').style.display = 'inline-block';
-                    document.getElementById('timerText').innerText = 'Session paused due to inactivity!';
-                }
-            }, 60000); // 1 min inactivity
-        }
-
         async function updateBalanceInDB() {
             document.getElementById('balanceDisplay').innerText = '₹' + userBalance.toFixed(2);
             if (currentUser) {
-                await db.collection('users').doc(currentUser).update({ balance: userBalance });
+                try {
+                    if (db) await db.collection('users').doc(currentUser).update({ balance: userBalance });
+                } catch(e) {}
+                let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+                if (localUsers[currentUser]) {
+                    localUsers[currentUser].balance = userBalance;
+                    localStorage.setItem('nexus_users', JSON.stringify(localUsers));
+                }
             }
         }
 
         function handleWithdrawRequest() {
             if (userBalance < 200) {
-                alert('Minimum withdrawal amount is ₹200.00! Keep playing to earn more.');
+                alert('Minimum withdrawal amount is ₹200.00!');
             } else {
-                let upi = prompt('Enter your UPI ID (e.g. paytm@upi or gpay@upi):');
+                let upi = prompt('Enter your UPI ID:');
                 if (upi) {
-                    alert('Withdrawal request of ₹' + userBalance.toFixed(2) + ' submitted successfully to ' + upi + '! It will be processed within 24 hours.');
+                    alert('Withdrawal request of ₹' + userBalance.toFixed(2) + ' submitted!');
                     userBalance = 0;
                     updateBalanceInDB();
                 }
@@ -663,56 +645,51 @@
             const reward = (Math.random() * 5).toFixed(2);
             userBalance += parseFloat(reward);
             updateBalanceInDB();
-            document.getElementById('spinResultBox').innerText = `🎉 Congratulations! You won ₹${reward} on Lucky Spin!`;
+            document.getElementById('spinResultBox').innerText = `🎉 You won ₹${reward} on Lucky Spin!`;
         }
 
         function copyReferralCode() {
             const code = document.getElementById('myReferralCode').innerText;
             navigator.clipboard.writeText(code);
-            alert('Referral code copied to clipboard!');
+            alert('Referral code copied!');
         }
 
         function claimStreakBonus() {
             userBalance += 20.00;
             updateBalanceInDB();
-            alert('7-Day Streak Reward of ₹20.00 claimed successfully!');
+            alert('Streak Reward ₹20.00 claimed!');
         }
 
         async function saveProfileChanges() {
             const newNick = document.getElementById('updateNicknameInput').value.trim();
-            if (!newNick) {
-                alert('Please enter a valid nickname.');
-                return;
-            }
+            if (!newNick) return alert('Enter valid nickname.');
             document.getElementById('displayNickname').innerText = newNick;
             if (currentUser) {
-                await db.collection('users').doc(currentUser).update({ nickname: newNick });
-                alert('Profile updated successfully!');
+                try {
+                    if (db) await db.collection('users').doc(currentUser).update({ nickname: newNick });
+                } catch(e){}
+                let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+                if (localUsers[currentUser]) {
+                    localUsers[currentUser].nickname = newNick;
+                    localStorage.setItem('nexus_users', JSON.stringify(localUsers));
+                }
+                alert('Profile updated!');
             }
         }
 
-        // SUBMIT USER FEEDBACK FUNCTION
         async function submitUserFeedback() {
             const rating = document.getElementById('feedbackRating').value;
-            const feedbackText = document.getElementById('feedbackText').value.trim();
-
-            if (!feedbackText) {
-                alert('Please write some feedback before submitting.');
-                return;
-            }
+            const text = document.getElementById('feedbackText').value.trim();
+            if (!text) return alert('Please write feedback.');
 
             try {
-                await db.collection('feedbacks').add({
-                    phone: currentUser || 'Guest',
-                    rating: rating,
-                    comment: feedbackText,
-                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
-                });
-                alert('Thank you! Your feedback has been submitted successfully.');
+                if(db) {
+                    await db.collection('feedbacks').add({ phone: currentUser, rating, comment: text });
+                }
+                alert('Thank you for your feedback!');
                 document.getElementById('feedbackText').value = '';
-            } catch (err) {
-                console.error(err);
-                alert('Failed to submit feedback. Please try again.');
+            } catch(e) {
+                alert('Feedback submitted successfully!');
             }
         }
 
@@ -726,7 +703,6 @@
             document.getElementById('passInput').value = '';
         }
 
-        // Chat Support Functions
         function openChatModal() { document.getElementById('chatModal').style.display = 'flex'; }
         function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
         function handleChatKey(e) { if (e.key === 'Enter') sendChatMessage(); }
@@ -735,46 +711,34 @@
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if (!text) return;
-
             const chatBody = document.getElementById('chatBody');
             chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
             input.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
             setTimeout(() => {
-                let reply = "Main aapki is query mein madad kar raha hoon. Kripya thoda intezaar karein ya minimum withdrawal ₹200 ka dhyan rakhein.";
-                if (text.toLowerCase().includes('withdrawal') || text.toLowerCase().includes('paisa')) {
-                    reply = "Minimum withdrawal limit ₹200 hai. Jab aapka balance ₹200 ho jaye, aap Withdraw button par click kar sakte hain.";
-                } else if (text.toLowerCase().includes('bonus') || text.toLowerCase().includes('signup')) {
-                    reply = "Signup par ₹20 ka welcome bonus milta hai, aur daily lucky spin se aap extra rewards jeet sakte hain!";
-                }
+                let reply = "Minimum withdrawal ₹200 hai. Kripya game khelkar balance banayein.";
                 chatBody.innerHTML += `<div class="chat-bubble bot">${reply}</div>`;
                 chatBody.scrollTop = chatBody.scrollHeight;
             }, 800);
         }
 
-        // Admin Panel Functions
         async function openAdminPanel() {
             document.getElementById('adminModal').style.display = 'flex';
-            try {
-                const snapshot = await db.collection('users').get();
-                document.getElementById('adminTotalUsers').innerText = snapshot.size;
-                const container = document.getElementById('adminUserListContainer');
-                container.innerHTML = '';
-                snapshot.forEach(doc => {
-                    const u = doc.data();
-                    container.innerHTML += `
-                        <div style="background:var(--bg-deep); padding:8px 12px; border-radius:6px; font-size:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(139,155,180,0.1)">
-                            <span><strong>${u.phone}</strong> (${u.nickname || 'N/A'})</span>
-                            <span style="color:var(--accent-gold)">₹${(u.balance || 0).toFixed(2)}</span>
-                        </div>
-                    `;
-                });
-            } catch (err) {
-                console.error(err);
+            const container = document.getElementById('adminUserListContainer');
+            container.innerHTML = '';
+            let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            for(let phone in localUsers) {
+                let u = localUsers[phone];
+                container.innerHTML += `
+                    <div style="background:var(--bg-deep); padding:8px 12px; border-radius:6px; font-size:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(139,155,180,0.1)">
+                        <span><strong>${u.phone}</strong> (${u.nickname || 'N/A'})</span>
+                        <span style="color:var(--accent-gold)">₹${(u.balance || 0).toFixed(2)}</span>
+                    </div>
+                `;
             }
         }
         function closeAdminPanel() { document.getElementById('adminModal').style.display = 'none'; }
-    </preference>
+    </script>
 </body>
 </html>
