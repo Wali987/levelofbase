@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexusArcade - Play & Earn Rewards</title>
+    <title>NexusArcade - Play & Earn Points</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%2300f0ff' d='M448 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V96c0-35.35-28.65-64-64-64zm-248 288h-48v48c0 8.84-7.16 16-16 16s-16-7.16-16-16v-48h-48c-8.84 0-16-7.16-16-16s7.16-16 16-16h48v-48c0-8.84 7.16-16 16-16s16 7.16 16 16v48h48c8.84 0 16 7.16 16 16s-7.16 16-16 16zm152 40c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40zm48-96c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40z'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -122,7 +122,6 @@
 <body>
 
     <div class="app-container">
-        <!-- WELCOME / AUTH SCREEN -->
         <div id="screen-welcome" class="screen-content active">
             <h1 style="font-family: 'Orbitron'; font-size: 22px; color: var(--accent-neon);">NEXUS ARCADE</h1>
             <div class="welcome-logo-box">
@@ -162,7 +161,6 @@
             <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 15px;">Login</button>
         </div>
 
-        <!-- LOBBY SCREEN -->
         <div id="screen-lobby" class="screen-content">
             <div class="top-user-bar">
                 <div>
@@ -176,21 +174,20 @@
             </div>
 
             <div class="marquee-box">
-                <marquee scrollamount="4">📢 Naye users ko Signup par ₹20.00 Welcome Bonus milta hai! | Minimum Withdrawal ₹200.00 hai!</marquee>
+                <marquee scrollamount="4">📢 Naye users ko Signup par 200 Points Welcome Bonus milta hai! | Milestone Target 2,000 Points hai!</marquee>
             </div>
 
             <div class="wallet-card">
                 <div>
-                    <div style="font-size: 12px; color: var(--text-muted);">Total Balance (Min. W/D: ₹200)</div>
-                    <div class="balance-amount" id="balanceDisplay">₹0.00</div>
+                    <div style="font-size: 12px; color: var(--text-muted);">Total Points (Milestone: 2,000 Points)</div>
+                    <div class="balance-amount" id="balanceDisplay">0 Points</div>
                 </div>
-                <button class="withdraw-btn" onclick="handleWithdrawRequest()">Withdraw</button>
+                <button class="withdraw-btn" onclick="handleWithdrawRequest()">Redeem</button>
             </div>
 
-            <!-- Daily Lucky Spin Section -->
             <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 20px; border: 1px solid rgba(0,240,255,0.2); text-align: center;">
                 <h3 style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 6px;"><i class="fa-solid fa-dharmachakra"></i> Daily Lucky Spin</h3>
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Rozana spin karein aur paayein random bonus (Max ₹5.00 tak)!</p>
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">Rozana spin karein aur paayein random points (Max 50 Points tak)!</p>
                 <div id="spinResultBox" style="font-family: 'Orbitron'; font-size: 16px; color: var(--accent-gold); margin-bottom: 10px; min-height: 24px;">Tap to Spin!</div>
                 <button class="btn-main" onclick="spinLuckyWheel()" style="max-width: 200px; padding: 8px; font-size: 12px;">SPIN NOW</button>
             </div>
@@ -202,23 +199,21 @@
             <div class="games-grid" id="gamesGrid"></div>
         </div>
 
-        <!-- LEADERBOARD SCREEN -->
         <div id="screen-leaderboard" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 15px;"><i class="fa-solid fa-trophy"></i> Top Active Earners</h2>
             <div id="leaderboardList">
-                <div class="leaderboard-item"><span>🥇 #918291 (Abdul Q.)</span><span style="color:var(--accent-gold)">₹1,450.00</span></div>
-                <div class="leaderboard-item"><span>🥈 #917382 (Rohan M.)</span><span style="color:var(--accent-gold)">₹1,200.00</span></div>
-                <div class="leaderboard-item"><span>🥉 #915521 (Faizan K.)</span><span style="color:var(--accent-gold)">₹980.00</span></div>
+                <div class="leaderboard-item"><span>🥇 #918291 (Abdul Q.)</span><span style="color:var(--accent-gold)">14,500 Points</span></div>
+                <div class="leaderboard-item"><span>🥈 #917382 (Rohan M.)</span><span style="color:var(--accent-gold)">12,000 Points</span></div>
+                <div class="leaderboard-item"><span>🥉 #915521 (Faizan K.)</span><span style="color:var(--accent-gold)">9,800 Points</span></div>
             </div>
         </div>
 
-        <!-- REWARDS & REFERRAL SCREEN -->
         <div id="screen-rewards" class="screen-content">
             <h2 style="font-family: 'Orbitron'; font-size: 18px; color: var(--accent-neon); margin-bottom: 12px;">Rewards & Referrals</h2>
             
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(0,240,255,0.2);">
-                <h3 style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 8px;"><i class="fa-solid fa-users"></i> Refer & Earn ₹10</h3>
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Apna invitation code share karein aur ₹10 paayein!</p>
+                <h3 style="font-family: 'Orbitron'; font-size: 14px; color: var(--accent-neon); margin-bottom: 8px;"><i class="fa-solid fa-users"></i> Refer & Earn 100 Points</h3>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Apna invitation code share karein aur 100 Points paayein!</p>
                 
                 <div style="display: flex; gap: 10px; align-items: center; background: var(--bg-deep); padding: 10px; border-radius: 8px; border: 1px dashed var(--accent-neon); margin-bottom: 10px;">
                     <span style="font-size: 12px; color: var(--text-muted);">Aapka Code:</span>
@@ -228,12 +223,11 @@
             </div>
 
             <div style="background: var(--bg-card); padding: 15px; border-radius: 10px; margin-bottom: 15px; border:1px solid rgba(139,155,180,0.2);">
-                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Roz game khel kar streak poora karein aur <b>₹20.00 Bonus</b> paayein!</p>
-                <button class="btn-main" onclick="claimStreakBonus()" style="padding: 10px; font-size: 13px; margin-top: 10px;">Claim Streak Reward (₹20)</button>
+                <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 10px;">Roz game khel kar streak poora karein aur <b>200 Points Bonus</b> paayein!</p>
+                <button class="btn-main" onclick="claimStreakBonus()" style="padding: 10px; font-size: 13px; margin-top: 10px;">Claim Streak Reward (200 Pts)</button>
             </div>
         </div>
 
-        <!-- ACCOUNT SCREEN -->
         <div id="screen-account" class="screen-content">
             <div style="text-align:center; padding: 20px; background:var(--bg-card); border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%;">
                 <i class="fa-solid fa-user-circle" style="font-size:50px; color:var(--accent-neon); margin-bottom:10px;"></i>
@@ -247,7 +241,6 @@
                 <button class="btn-main" onclick="saveProfileChanges()" style="padding: 8px; font-size: 12px; margin-bottom: 15px;">Update Profile</button>
             </div>
 
-            <!-- FEEDBACK FORM SECTION -->
             <div style="background:var(--bg-card); padding:15px; border-radius:10px; margin-bottom:15px; max-width:400px; margin-left:auto; margin-right:auto; width:100%; border:1px solid rgba(0,240,255,0.2);">
                 <h3 style="font-family:'Orbitron'; font-size:14px; color:var(--accent-neon); margin-bottom:8px;"><i class="fa-solid fa-comment-dots"></i> App Feedback & Rating</h3>
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Apna experience share karein!</p>
@@ -271,7 +264,6 @@
             </div>
         </div>
 
-        <!-- BOTTOM NAV -->
         <div class="bottom-nav" id="mainBottomNav">
             <button class="nav-item active" onclick="showScreen('screen-lobby', this)">
                 <i class="fa-solid fa-house"></i> Home
@@ -288,7 +280,6 @@
         </div>
     </div>
 
-    <!-- CHAT MODAL -->
     <div class="chat-modal" id="chatModal">
         <div class="chat-container">
             <div class="chat-header">
@@ -296,7 +287,7 @@
                 <i class="fa-solid fa-xmark" style="cursor:pointer; font-size:18px;" onclick="closeChatModal()"></i>
             </div>
             <div class="chat-body" id="chatBody">
-                <div class="chat-bubble bot">Hello! Minimum withdrawal ₹200 hai!</div>
+                <div class="chat-bubble bot">Hello! Milestone target 2,000 Points hai!</div>
             </div>
             <div class="chat-footer">
                 <input type="text" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKey(event)">
@@ -305,7 +296,6 @@
         </div>
     </div>
 
-    <!-- ADMIN PANEL MODAL -->
     <div class="chat-modal" id="adminModal" style="display:none;">
         <div class="chat-container" style="max-width: 600px; height: 600px;">
             <div class="chat-header">
@@ -319,7 +309,6 @@
         </div>
     </div>
 
-    <!-- GAME MODAL -->
     <div class="game-modal" id="gameModal">
         <div class="timer-banner" id="timerBanner">
             <span id="timerText">Time Active: 30:00 left</span>
@@ -333,9 +322,8 @@
     </div>
 
     <script>
-        // LocalStorage Mode (Firebase API Completely Removed)
         let currentUser = null;
-        let userBalance = 0.00;
+        let userPoints = 0;
         let authMode = 'login';
         let gameTimerInterval = null;
         let timeLeft = 1800;
@@ -381,55 +369,26 @@
             { title: "Snake Retro", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-worm", bg: "linear-gradient(135deg, #517fa4, #243949)" },
             { title: "Memory Match", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-brain", bg: "linear-gradient(135deg, #654ea3, #eaafc8)" },
             { title: "Bubble Shooter", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-circle", bg: "linear-gradient(135deg, #ff7e5f, #feb47b)" },
-            { title: "Color Switch", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-palette", bg: "linear-gradient(135deg, #00c6ff, #0072ff)" },
-            { title: "Stack Tower", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-layer-group", bg: "linear-gradient(135deg, #f7ff00, #db36a4)" },
-            { title: "Flappy Bird", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-feather", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
-            { title: "Knife Hit", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-utensils", bg: "linear-gradient(135deg, #eb3349, #f45c43)" },
-            { title: "Helix Jump", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-circle-chevron-down", bg: "linear-gradient(135deg, #fd746c, #ff9068)" },
-            { title: "Subway Runner", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-train-subway", bg: "linear-gradient(135deg, #2b32b2, #1488cc)" },
-            { title: "Temple Dash", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-landmark", bg: "linear-gradient(135deg, #cc2b5e, #753a88)" },
-            { title: "Ludo Classic", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-dice", bg: "linear-gradient(135deg, #232526, #414345)" },
-            { title: "Carrom Board", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-circle-dot", bg: "linear-gradient(135deg, #4ca1af, #c4e0e5)" },
-            { title: "Pool Billiards", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-baseball", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
-            { title: "Ultimate Arcade", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-trophy", bg: "linear-gradient(135deg, #ff4e50, #f9d423)" }
+            { title: "Color Switch", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-palette", bg: "linear-gradient(135deg, #3a1c71, #d76d77)" }
         ];
-
-        function renderGames() {
-            const grid = document.getElementById('gamesGrid');
-            grid.innerHTML = '';
-            games.forEach((game, index) => {
-                const card = document.createElement('div');
-                card.className = 'game-card';
-                card.innerHTML = `
-                    <div class="game-thumb" style="background: ${game.bg};">
-                        <i class="fa-solid ${game.icon}"></i>
-                    </div>
-                    <div class="game-info">
-                        <span class="game-name">${game.title}</span>
-                        <button class="play-now-sm" onclick="launchGame(${index})">Play</button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
 
         function switchAuthMode(mode) {
             authMode = mode;
             const loginBtn = document.getElementById('tabLoginBtn');
             const regBtn = document.getElementById('tabRegisterBtn');
-            const extraFields = document.getElementById('registerExtraFields');
             const submitBtn = document.getElementById('authSubmitBtn');
+            const extraFields = document.getElementById('registerExtraFields');
 
             if (mode === 'login') {
                 loginBtn.classList.add('active-tab');
                 regBtn.classList.remove('active-tab');
-                extraFields.style.display = 'none';
                 submitBtn.innerText = 'Login';
+                extraFields.style.display = 'none';
             } else {
                 regBtn.classList.add('active-tab');
                 loginBtn.classList.remove('active-tab');
+                submitBtn.innerText = 'Register';
                 extraFields.style.display = 'block';
-                submitBtn.innerText = 'Register & Get ₹20';
             }
         }
 
@@ -440,90 +399,101 @@
         function handleAuth() {
             const phone = document.getElementById('phoneInput').value.trim();
             const pass = document.getElementById('passInput').value.trim();
-
             if (!phone || !pass) {
                 alert('Please enter phone number and password.');
                 return;
             }
 
-            let userData = null;
-            let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            let users = JSON.parse(localStorage.getItem('nexus_users') || '{}');
 
-            if (authMode === 'login') {
-                if (!localUsers[phone]) {
-                    alert('Account not found! Please register first.');
+            if (authMode === 'register') {
+                if (users[phone]) {
+                    alert('User already exists! Please login.');
+                    switchAuthMode('login');
                     return;
                 }
-                userData = localUsers[phone];
-                if (userData.password !== pass) {
-                    alert('Incorrect password!');
-                    return;
-                }
-            } else {
-                if (localUsers[phone]) {
-                    alert('Account already exists! Please login.');
-                    return;
-                }
-                userData = {
+                const refCode = document.getElementById('refInput').value.trim();
+                let initialPoints = 200; // Welcome bonus points
+                users[phone] = {
                     phone: phone,
-                    password: pass,
-                    balance: 20.00,
+                    pass: pass,
                     nickname: 'Gamer_' + phone.slice(-4),
                     playerId: '#' + Math.floor(100000 + Math.random() * 900000),
-                    referralCode: 'NEXUS' + Math.floor(1000 + Math.random() * 9000),
-                    isAdmin: phone === '9999999999'
+                    points: initialPoints,
+                    referralCode: 'REF' + Math.floor(1000 + Math.random() * 9000)
                 };
-                localUsers[phone] = userData;
-                localStorage.setItem('nexus_users', JSON.stringify(localUsers));
+                localStorage.setItem('nexus_users', JSON.stringify(users));
+                alert('Registration successful! You received 200 Points Welcome Bonus.');
             }
 
-            currentUser = phone;
-            userBalance = userData.balance || 0;
-            initUserSession(userData);
-        }
+            if (!users[phone] || users[phone].pass !== pass) {
+                alert('Invalid phone number or password.');
+                return;
+            }
 
-        function initUserSession(data) {
+            currentUser = users[phone];
+            userPoints = currentUser.points || 0;
+            updateUI();
+            
             document.getElementById('screen-welcome').classList.remove('active');
             document.getElementById('screen-lobby').classList.add('active');
             document.getElementById('mainBottomNav').classList.add('active-nav');
+        }
 
-            document.getElementById('displayPlayerId').innerText = data.playerId || '#918402';
-            document.getElementById('displayNickname').innerText = data.nickname || 'Gamer';
-            document.getElementById('balanceDisplay').innerText = '₹' + userBalance.toFixed(2);
-            document.getElementById('accountPhone').innerText = '+91 ' + data.phone;
-            document.getElementById('myReferralCode').innerText = data.referralCode || 'NEXUS1234';
-
-            if (data.isAdmin) {
+        function updateUI() {
+            if (!currentUser) return;
+            document.getElementById('balanceDisplay').innerText = userPoints + ' Points';
+            document.getElementById('displayPlayerId').innerText = currentUser.playerId;
+            document.getElementById('displayNickname').innerText = currentUser.nickname;
+            document.getElementById('accountPhone').innerText = currentUser.phone;
+            document.getElementById('myReferralCode').innerText = currentUser.referralCode;
+            document.getElementById('updateNicknameInput').value = currentUser.nickname;
+            
+            if (currentUser.phone === 'admin' || currentUser.phone === '9999999999') {
                 document.getElementById('adminNavBtn').style.display = 'block';
             }
-            renderGames();
         }
 
-        function showScreen(screenId, btnElem) {
+        function showScreen(screenId, btnElement) {
             document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
+
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            if (btnElem) btnElem.classList.add('active');
+            if (btnElement) btnElement.classList.add('active');
         }
 
-        function launchGame(index) {
-            const game = games[index];
-            document.getElementById('modalGameTitle').innerText = game.title;
-            document.getElementById('gameIframe').src = game.url;
+        function renderGames() {
+            const grid = document.getElementById('gamesGrid');
+            grid.innerHTML = '';
+            games.forEach((game, index) => {
+                grid.innerHTML += `
+                    <div class="game-card" onclick="launchGame('${game.title}', '${game.url}')">
+                        <div class="game-thumb" style="background: ${game.bg}">
+                            <i class="fa-solid ${game.icon}"></i>
+                        </div>
+                        <div class="game-info">
+                            <span class="game-name">${game.title}</span>
+                            <button class="play-now-sm">Play</button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function launchGame(title, url) {
+            document.getElementById('modalGameTitle').innerText = title;
+            document.getElementById('gameIframe').src = url;
             document.getElementById('gameModal').style.display = 'flex';
-            startSessionTimer();
+            startActiveTimer();
         }
 
         function closeGameModal() {
             document.getElementById('gameModal').style.display = 'none';
             document.getElementById('gameIframe').src = '';
-            clearInterval(gameTimerInterval);
-            userBalance += 1.00;
-            updateBalanceInLocalStorage();
-            alert('Game session saved! You earned ₹1.00.');
+            stopActiveTimer();
         }
 
-        function startSessionTimer() {
+        function startActiveTimer() {
             timeLeft = 1800;
             isTimerPaused = false;
             document.getElementById('resumeBtn').style.display = 'none';
@@ -535,14 +505,19 @@
                     let mins = Math.floor(timeLeft / 60);
                     let secs = timeLeft % 60;
                     document.getElementById('timerText').innerText = `Time Active: ${mins}:${secs < 10 ? '0' : ''}${secs} left`;
-                    
+
                     if (timeLeft <= 0) {
                         clearInterval(gameTimerInterval);
-                        userBalance += 5.00;
-                        updateBalanceInLocalStorage();
+                        userPoints += 10; // Earn points for playing
+                        saveUserData();
+                        alert('Great session! You earned 10 Points.');
                     }
                 }
             }, 1000);
+        }
+
+        function stopActiveTimer() {
+            clearInterval(gameTimerInterval);
         }
 
         function manualResumeTimer() {
@@ -550,117 +525,113 @@
             document.getElementById('resumeBtn').style.display = 'none';
         }
 
-        function updateBalanceInLocalStorage() {
-            document.getElementById('balanceDisplay').innerText = '₹' + userBalance.toFixed(2);
-            if (currentUser) {
-                let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-                if (localUsers[currentUser]) {
-                    localUsers[currentUser].balance = userBalance;
-                    localStorage.setItem('nexus_users', JSON.stringify(localUsers));
-                }
-            }
+        function spinLuckyWheel() {
+            const reward = Math.floor(Math.random() * 45) + 5; // 5 to 50 points
+            userPoints += reward;
+            saveUserData();
+            document.getElementById('spinResultBox').innerText = `Won +${reward} Points!`;
         }
 
         function handleWithdrawRequest() {
-            if (userBalance < 200) {
-                alert('Minimum withdrawal amount is ₹200.00!');
+            if (userPoints < 2000) {
+                alert('Minimum redemption target is 2,000 Points!');
             } else {
-                let upi = prompt('Enter your UPI ID:');
-                if (upi) {
-                    alert('Withdrawal request of ₹' + userBalance.toFixed(2) + ' submitted!');
-                    userBalance = 0;
-                    updateBalanceInLocalStorage();
-                }
+                alert('Redemption request submitted successfully! Points will be processed.');
             }
         }
 
-        function spinLuckyWheel() {
-            const reward = (Math.random() * 5).toFixed(2);
-            userBalance += parseFloat(reward);
-            updateBalanceInLocalStorage();
-            document.getElementById('spinResultBox').innerText = `🎉 You won ₹${reward} on Lucky Spin!`;
+        function claimStreakBonus() {
+            userPoints += 200;
+            saveUserData();
+            alert('Streak Reward Claimed! +200 Points added.');
         }
 
         function copyReferralCode() {
-            const code = document.getElementById('myReferralCode').innerText;
-            navigator.clipboard.writeText(code);
-            alert('Referral code copied!');
-        }
-
-        function claimStreakBonus() {
-            userBalance += 20.00;
-            updateBalanceInLocalStorage();
-            alert('Streak Reward ₹20.00 claimed!');
+            navigator.clipboard.writeText(currentUser.referralCode);
+            alert('Referral code copied to clipboard!');
         }
 
         function saveProfileChanges() {
             const newNick = document.getElementById('updateNicknameInput').value.trim();
-            if (!newNick) return alert('Enter valid nickname.');
-            document.getElementById('displayNickname').innerText = newNick;
-            if (currentUser) {
-                let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-                if (localUsers[currentUser]) {
-                    localUsers[currentUser].nickname = newNick;
-                    localStorage.setItem('nexus_users', JSON.stringify(localUsers));
-                }
-                alert('Profile updated!');
+            if (newNick) {
+                currentUser.nickname = newNick;
+                saveUserData();
+                updateUI();
+                alert('Profile updated successfully!');
             }
         }
 
         function submitUserFeedback() {
-            const rating = document.getElementById('feedbackRating').value;
-            const text = document.getElementById('feedbackText').value.trim();
-            if (!text) return alert('Please write feedback.');
-            alert('Thank you for your feedback!');
-            document.getElementById('feedbackText').value = '';
+            alert('Thank you for your valuable feedback!');
+        }
+
+        function saveUserData() {
+            if (!currentUser) return;
+            currentUser.points = userPoints;
+            let users = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            users[currentUser.phone] = currentUser;
+            localStorage.setItem('nexus_users', JSON.stringify(users));
+            updateUI();
         }
 
         function logoutUser() {
             currentUser = null;
-            document.getElementById('screen-lobby').classList.remove('active');
-            document.getElementById('screen-account').classList.remove('active');
+            document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById('screen-welcome').classList.add('active');
             document.getElementById('mainBottomNav').classList.remove('active-nav');
-            document.getElementById('phoneInput').value = '';
-            document.getElementById('passInput').value = '';
         }
 
         function openChatModal() { document.getElementById('chatModal').style.display = 'flex'; }
         function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
-        function handleChatKey(e) { if (e.key === 'Enter') sendChatMessage(); }
+        
+        function handleChatKey(e) {
+            if (e.key === 'Enter') sendChatMessage();
+        }
 
         function sendChatMessage() {
             const input = document.getElementById('chatInput');
             const text = input.value.trim();
             if (!text) return;
-            const chatBody = document.getElementById('chatBody');
-            chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+
+            const body = document.getElementById('chatBody');
+            body.innerHTML += `<div class="chat-bubble user">${text}</div>`;
             input.value = '';
-            chatBody.scrollTop = chatBody.scrollHeight;
 
             setTimeout(() => {
-                let reply = "Minimum withdrawal ₹200 hai. Kripya game khelkar balance banayein.";
-                chatBody.innerHTML += `<div class="chat-bubble bot">${reply}</div>`;
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 800);
+                let reply = "Milestone target 2,000 Points hai. Aap games khel kar aur referrals se points earn kar sakte hain.";
+                if (text.toLowerCase().includes('points') || text.toLowerCase().includes('earn')) {
+                    reply = "Games khelne par aur daily lucky spin se aap points earn kar sakte hain!";
+                }
+                body.innerHTML += `<div class="chat-bubble bot">${reply}</div>`;
+                body.scrollTop = body.scrollHeight;
+            }, 600);
         }
 
         function openAdminPanel() {
             document.getElementById('adminModal').style.display = 'flex';
             const container = document.getElementById('adminUserListContainer');
             container.innerHTML = '';
-            let localUsers = JSON.parse(localStorage.getItem('nexus_users') || '{}');
-            for(let phone in localUsers) {
-                let u = localUsers[phone];
+            let users = JSON.parse(localStorage.getItem('nexus_users') || '{}');
+            Object.values(users).forEach(u => {
                 container.innerHTML += `
-                    <div style="background:var(--bg-deep); padding:8px 12px; border-radius:6px; font-size:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(139,155,180,0.1)">
-                        <span><strong>${u.phone}</strong> (${u.nickname || 'N/A'})</span>
-                        <span style="color:var(--accent-gold)">₹${(u.balance || 0).toFixed(2)}</span>
+                    <div style="background:var(--bg-card); padding:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; font-size:13px;">
+                        <div>
+                            <div><b>${u.nickname}</b> (${u.phone})</div>
+                            <div style="color:var(--text-muted); font-size:11px;">ID: ${u.playerId}</div>
+                        </div>
+                        <div style="color:var(--accent-gold); font-family:'Orbitron';">${u.points} Points</div>
                     </div>
                 `;
-            }
+            });
         }
-        function closeAdminPanel() { document.getElementById('adminModal').style.display = 'none'; }
+
+        function closeAdminPanel() {
+            document.getElementById('adminModal').style.display = 'none';
+        }
+
+        window.onload = function() {
+            renderGames();
+        };
     </script>
 </body>
 </html>
