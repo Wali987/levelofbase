@@ -7,6 +7,11 @@
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='%2300f0ff' d='M448 32H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h384c35.35 0 64-28.65 64-64V96c0-35.35-28.65-64-64-64zm-248 288h-48v48c0 8.84-7.16 16-16 16s-16-7.16-16-16v-48h-48c-8.84 0-16-7.16-16-16s7.16-16 16-16h48v-48c0-8.84 7.16-16 16-16s16 7.16 16 16v48h48c8.84 0 16 7.16 16 16s-7.16 16-16 16zm152 40c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40zm48-96c-22.09 0-40-17.91-40-40s17.91-40 40-40 40 17.91 40 40-17.91 40-40 40z'/></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Firebase App (Modular/Compat Scripts) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
     <style>
         :root {
             --bg-deep: #0a0b10;
@@ -71,6 +76,8 @@
         .input-box i { color: var(--accent-neon); font-size: 14px; }
 
         .btn-main { width: 100%; max-width: 400px; padding: 12px; border: none; border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: 0.2s; background: linear-gradient(135deg, var(--accent-purple), var(--accent-neon)); color: white; box-shadow: 0 4px 15px rgba(0, 240, 255, 0.4); margin-left: auto; margin-right: auto; display: block; }
+        
+        .btn-secondary { width: 100%; max-width: 400px; padding: 10px; border: 1px solid var(--accent-neon); border-radius: 30px; font-family: 'Orbitron', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: var(--accent-neon); margin: 8px auto 0 auto; display: block; }
 
         .top-user-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: var(--bg-card); padding: 12px 20px; border-radius: 10px; border: 1px solid rgba(0,240,255,0.15); }
         
@@ -123,7 +130,6 @@
         .close-game-btn { background: #ff007f; color: white; border: none; padding: 6px 14px; border-radius: 6px; font-weight: 700; cursor: pointer; font-family: 'Orbitron'; font-size: 12px; }
         
         .timer-banner { background: rgba(0, 240, 255, 0.1); border-bottom: 1px dashed var(--accent-neon); padding: 8px; text-align: center; font-family: 'Orbitron'; font-size: 13px; color: var(--accent-neon); display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .afk-warning { background: rgba(255, 77, 77, 0.2) !important; color: #ff4d4d !important; border-bottom: 1px dashed #ff4d4d; }
         .resume-btn { background: var(--accent-green); color: black; border: none; padding: 3px 10px; border-radius: 4px; font-weight: 700; font-size: 11px; cursor: pointer; font-family: 'Orbitron'; display: none; }
     </style>
 </head>
@@ -142,10 +148,10 @@
             </div>
 
             <div class="input-group">
-                <label>Phone Number</label>
+                <label>Phone Number (e.g. +91XXXXXXXXXX)</label>
                 <div class="input-box">
                     <i class="fa-solid fa-phone"></i>
-                    <input type="text" id="phoneInput" placeholder="Enter phone number" onkeypress="handleAuthKey(event)">
+                    <input type="text" id="phoneInput" placeholder="Enter phone number with country code" onkeypress="handleAuthKey(event)">
                 </div>
             </div>
             <div class="input-group">
@@ -156,14 +162,8 @@
                 </div>
             </div>
             
+            <!-- Register Form Extra Fields with Firebase OTP & reCAPTCHA -->
             <div id="registerExtraFields" style="display:none;">
-                <div class="input-group">
-                    <label>Verification Code (OTP)</label>
-                    <div class="input-box">
-                        <i class="fa-solid fa-shield-halved"></i>
-                        <input type="text" id="otpInput" placeholder="Enter 4-digit OTP" onkeypress="handleAuthKey(event)">
-                    </div>
-                </div>
                 <div class="input-group">
                     <label>Invitation Code (Optional)</label>
                     <div class="input-box">
@@ -171,9 +171,22 @@
                         <input type="text" id="refInput" placeholder="Enter referral code" onkeypress="handleAuthKey(event)">
                     </div>
                 </div>
+
+                <!-- reCAPTCHA Container Required for Firebase Phone Auth -->
+                <div id="recaptcha-container" style="max-width:400px; margin: 10px auto;"></div>
+
+                <button class="btn-secondary" id="sendOtpBtn" onclick="sendFirebaseOTP()">Send OTP</button>
+
+                <div class="input-group" style="margin-top: 12px;">
+                    <label>Verification Code (OTP)</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <input type="text" id="otpInput" placeholder="Enter 6-digit OTP" onkeypress="handleAuthKey(event)">
+                    </div>
+                </div>
             </div>
 
-            <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 10px;">Login</button>
+            <button class="btn-main" id="authSubmitBtn" onclick="handleAuth()" style="margin-top: 15px;">Login</button>
         </div>
 
         <div id="screen-lobby" class="screen-content">
@@ -290,9 +303,24 @@
     </div>
 
     <script>
+        // Initialize Firebase (Replace with your actual Firebase project config credentials)
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+
         let currentUser = null;
         let userBalance = 0.00;
         let authMode = 'login';
+        let verificationResult = null;
         let gameTimer = null;
         let timeLeft = 1800; // 30 minutes
         let lastActivityTime = Date.now();
@@ -308,37 +336,7 @@
             { title: "Omega Core", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-atom", bg: "linear-gradient(135deg, #232526, #414345)" },
             { title: "Stellar Strike", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-meteor", bg: "linear-gradient(135deg, #2c3e50, #4ca1af)" },
             { title: "Galaxy Siege", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-space-shuttle", bg: "linear-gradient(135deg, #200122, #6f0000)" },
-            { title: "Nitro X", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #000000, #434343)" },
-            { title: "Shadow Ninja", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-user-ninja", bg: "linear-gradient(135deg, #2c3e50, #000000)" },
-            { title: "Ball Blast", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-bowling-ball", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
-            { title: "Zombieland", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-skull", bg: "linear-gradient(135deg, #4ca1af, #2c3e50)" },
-            { title: "Block Puzzle", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-shapes", bg: "linear-gradient(135deg, #f857a6, #ff5858)" },
-            { title: "Tower Defense", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-chess-rook", bg: "linear-gradient(135deg, #ff9966, #ff5e62)" },
-            { title: "Super Racer", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-flag-checkered", bg: "linear-gradient(135deg, #007991, #78ffd6)" },
-            { title: "Bubble Shooter", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-circle-dot", bg: "linear-gradient(135deg, #e96443, #904e95)" },
-            { title: "Temple Jump", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-person-hiking", bg: "linear-gradient(135deg, #f2994a, #f2c94c)" },
-            { title: "Fruit Slicer", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-apple-whole", bg: "linear-gradient(135deg, #56ab2f, #a8e063)" },
-            { title: "Ludo Master", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-dice", bg: "linear-gradient(135deg, #ff416c, #ff4b2b)" },
-            { title: "Carrom Clash", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-circle", bg: "linear-gradient(135deg, #870000, #190a05)" },
-            { title: "Chess Arena", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-chess", bg: "linear-gradient(135deg, #283048, #859398)" },
-            { title: "Pool King", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-baseball", bg: "linear-gradient(135deg, #11998e, #38ef7d)" },
-            { title: "Cricket Hero", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-baseball-bat-ball", bg: "linear-gradient(135deg, #314755, #26a0da)" },
-            { title: "Football Star", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-futbol", bg: "linear-gradient(135deg, #005c97, #363795)" },
-            { title: "Basketball Dunk", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-basketball", bg: "linear-gradient(135deg, #fc4a1a, #f7b733)" },
-            { title: "Archery Master", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-bullseye", bg: "linear-gradient(135deg, #4568dc, #b06ab3)" },
-            { title: "Knife Hit", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-utensils", bg: "linear-gradient(135deg, #654ea3, #eaafc8)" },
-            { title: "Pinball Wizard", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-star", bg: "linear-gradient(135deg, #ff0844, #ffb199)" },
-            { title: "Snake Rush", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-worm", bg: "linear-gradient(135deg, #134e5e, #71b280)" },
-            { title: "Tic Tac Toe", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-hashtag", bg: "linear-gradient(135deg, #373b44, #4286f4)" },
-            { title: "Memory Cards", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-clone", bg: "linear-gradient(135deg, #2c3e50, #3498db)" },
-            { title: "Jigsaw Puzzle", url: "https://html5.gamemonetize.co/tw5q4hpa0iplg8vdpd1ztxohsofmdc63/", icon: "fa-puzzle-piece", bg: "linear-gradient(135deg, #8e2de2, #4a00e0)" },
-            { title: "Word Search", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-font", bg: "linear-gradient(135deg, #f12711, #f5af19)" },
-            { title: "Math Quiz", url: "https://html5.gamemonetize.co/i0ls0z1jfyvauimh5g7xlm26r0hjidm0/", icon: "fa-calculator", bg: "linear-gradient(135deg, #7f7fd5, #86a8e7, #91eae4)" },
-            { title: "Color Match", url: "https://html5.gamemonetize.co/hgjkmdxslgkbajmj6gw34e3n0mg5sols/", icon: "fa-palette", bg: "linear-gradient(135deg, #ee0979, #ff6a00)" },
-            { title: "Brick Breaker", url: "https://html5.gamemonetize.co/7ti5d19e7syonvvsmruhb36ph9mmzihp/", icon: "fa-bars", bg: "linear-gradient(135deg, #45af52, #11998e)" },
-            { title: "Space Shooter", url: "https://html5.gamemonetize.co/u1nspb6d6k05iahz4oc3qtbl0my3cwfi/", icon: "fa-jet-fighter", bg: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)" },
-            { title: "Tank Wars", url: "https://html5.gamemonetize.co/azd2160bf0hum6z3y5miuyxym0yjnqxw/", icon: "fa-shield-halved", bg: "linear-gradient(135deg, #3e5151, #decba4)" },
-            { title: "Ghost Hunter", url: "https://html5.gamemonetize.co/8uwvaog1k302b2er4de5t3jxc1q3xy74/", icon: "fa-ghost", bg: "linear-gradient(135deg, #2b5876, #4e4376)" }
+            { title: "Nitro X", url: "https://html5.gamemonetize.co/1zu28yuo42m9q6w3qm8q9v2t1nz9avyi/", icon: "fa-gauge-high", bg: "linear-gradient(135deg, #000000, #434343)" }
         ];
 
         function renderGames() {
@@ -364,6 +362,13 @@
         renderGames();
 
         window.onload = function() {
+            // Setup Firebase reCAPTCHA verifier
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+                'size': 'normal',
+                'callback': (response) => {}
+            });
+            window.recaptchaVerifier.render();
+
             let savedUser = localStorage.getItem('nexus_current_session');
             if(savedUser) {
                 let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
@@ -398,8 +403,27 @@
                 regBtn.classList.add('active-tab');
                 loginBtn.classList.remove('active-tab');
                 extraFields.style.display = 'block';
-                submitBtn.innerText = 'Register Account';
+                submitBtn.innerText = 'Verify & Register';
             }
+        }
+
+        function sendFirebaseOTP() {
+            const phone = document.getElementById('phoneInput').value.trim();
+            if (!phone || phone.length < 10) { 
+                alert("Please enter a valid phone number with country code (e.g., +91...)"); 
+                return; 
+            }
+
+            const appVerifier = window.recaptchaVerifier;
+            firebase.auth().signInWithPhoneNumber(phone, appVerifier)
+                .then((confirmationResult) => {
+                    window.confirmationResult = confirmationResult;
+                    alert("OTP sent successfully to your phone!");
+                })
+                .catch((error) => {
+                    console.error("SMS not sent", error);
+                    alert("Error sending OTP: " + error.message);
+                });
         }
 
         function handleAuthKey(e) {
@@ -418,20 +442,14 @@
             let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
 
             if (authMode === 'register') {
-                if (usersDB[phone]) { alert("Account exists! Please login."); switchAuthMode('login'); return; }
-                usersDB[phone] = { 
-                    password: pass, 
-                    balance: 20.00, 
-                    playerId: '#' + Math.floor(100000 + Math.random() * 900000), 
-                    streakCount: 1, 
-                    lastPlayDate: new Date().toDateString(), 
-                    streakClaimed: false 
-                };
-                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                alert("Registration successful! You received ₹20.00 Welcome Bonus.");
-                switchAuthMode('login');
-            } else {
-                if (!usersDB[phone]) { 
+                const otp = document.getElementById('otpInput').value.trim();
+                if (!otp || otp.length < 6) { alert("Please enter the 6-digit OTP received via SMS!"); return; }
+                if (!window.confirmationResult) { alert("Please click 'Send OTP' first!"); return; }
+
+                window.confirmationResult.confirm(otp).then((result) => {
+                    // Phone authentication successful via Firebase
+                    if (usersDB[phone]) { alert("Account already exists! Please login."); switchAuthMode('login'); return; }
+                    
                     usersDB[phone] = { 
                         password: pass, 
                         balance: 20.00, 
@@ -441,20 +459,30 @@
                         streakClaimed: false 
                     };
                     localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                }
+                    localStorage.setItem('nexus_current_session', phone);
+                    
+                    alert("Registration successful with Firebase Phone Auth! ₹20 bonus added.");
+                    location.reload();
+                }).catch((error) => {
+                    alert("Invalid OTP verification code: " + error.message);
+                });
+
+            } else {
+                // Login flow
+                if (!usersDB[phone]) { alert("Account not found! Please register first."); switchAuthMode('register'); return; }
                 if (usersDB[phone].password !== pass) { alert("Incorrect password!"); return; }
-                
+
+                localStorage.setItem('nexus_current_session', phone);
                 currentUser = phone;
                 userBalance = usersDB[phone].balance;
-                
-                localStorage.setItem('nexus_current_session', currentUser);
-                
-                document.getElementById('accountPhone').innerText = phone;
-                document.getElementById('displayPlayerId').innerText = usersDB[phone].playerId;
+
+                document.getElementById('accountPhone').innerText = currentUser;
+                document.getElementById('displayPlayerId').innerText = usersDB[currentUser].playerId;
                 document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
 
                 updateStreakUI();
-                showScreen('screen-lobby', document.querySelector('.bottom-nav .nav-item'));
+                document.getElementById('screen-welcome').classList.remove('active');
+                document.getElementById('screen-lobby').classList.add('active');
                 document.getElementById('mainBottomNav').classList.add('active-nav');
             }
         }
@@ -462,153 +490,80 @@
         function showScreen(screenId, navElement) {
             document.querySelectorAll('.screen-content').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
-            
+
             if(navElement) {
-                document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+                document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
                 navElement.classList.add('active');
             }
         }
 
-        function openGameModal(title, url) {
-            document.getElementById('modalGameTitle').innerText = title;
-            document.getElementById('gameIframe').src = url;
-            document.getElementById('gameModal').style.display = 'flex';
-            
-            timeLeft = 1800;
-            lastActivityTime = Date.now();
-            isAfk = false;
-            startTimer();
-        }
-
-        function closeGameModal() {
-            document.getElementById('gameModal').style.display = 'none';
-            document.getElementById('gameIframe').src = '';
-            clearInterval(gameTimer);
-        }
-
-        function startTimer() {
-            clearInterval(gameTimer);
-            gameTimer = setInterval(() => {
-                if (isAfk) return;
-
-                if (Date.now() - lastActivityTime > 60000) {
-                    triggerAfkMode();
-                    return;
-                }
-
-                timeLeft--;
-                let mins = Math.floor(timeLeft / 60);
-                let secs = timeLeft % 60;
-                document.getElementById('timerText').innerText = `Time Active: ${mins}:${secs < 10 ? '0' : ''}${secs} left to complete session`;
-
-                if (timeLeft <= 0) {
-                    clearInterval(gameTimer);
-                    rewardUserForPlaySession();
-                }
-            }, 1000);
-        }
-
-        function triggerAfkMode() {
-            isAfk = true;
-            let banner = document.getElementById('timerBanner');
-            banner.classList.add('afk-warning');
-            document.getElementById('timerText').innerText = '⚠️ AFK Detected! Timer Paused.';
-            document.getElementById('resumeBtn').style.display = 'inline-block';
-        }
-
-        function manualResumeTimer() {
-            isAfk = false;
-            lastActivityTime = Date.now();
-            let banner = document.getElementById('timerBanner');
-            banner.classList.remove('afk-warning');
-            document.getElementById('resumeBtn').style.display = 'none';
-        }
-
-        window.addEventListener('mousemove', () => { if(isAfk == false) lastActivityTime = Date.now(); });
-        window.addEventListener('keypress', () => { if(isAfk == false) lastActivityTime = Date.now(); });
-
-        function rewardUserForPlaySession() {
-            userBalance += 5.00;
-            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-            
-            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            if(currentUser && usersDB[currentUser]) {
-                usersDB[currentUser].balance = userBalance;
-                if(usersDB[currentUser].streakCount < 7) usersDB[currentUser].streakCount++;
-                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-            }
-            alert("Session completed! You earned ₹5.00 reward.");
-            closeGameModal();
-            updateStreakUI();
-        }
-
-        function updateStreakUI() {
-            if(!currentUser) return;
-            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            let count = usersDB[currentUser] ? usersDB[currentUser].streakCount : 1;
-            
-            for(let i=1; i<=7; i++) {
-                let dayEl = document.getElementById(`day${i}`);
-                if(i <= count) {
-                    dayEl.classList.add('completed');
-                } else {
-                    dayEl.classList.remove('completed');
-                }
-            }
-        }
-
-        function claimStreakBonus() {
-            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
-            if(!currentUser || !usersDB[currentUser]) return;
-
-            if(usersDB[currentUser].streakCount >= 7 && !usersDB[currentUser].streakClaimed) {
-                usersDB[currentUser].balance += 20.00;
-                usersDB[currentUser].streakClaimed = true;
-                userBalance = usersDB[currentUser].balance;
-                localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
-                document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
-                alert("Successfully claimed your ₹20 7-Day Streak Reward!");
-            } else {
-                alert("Complete your 7-day streak or you have already claimed this reward!");
-            }
-        }
-
         function logoutUser() {
-            currentUser = null;
             localStorage.removeItem('nexus_current_session');
-            document.getElementById('mainBottomNav').classList.remove('active-nav');
-            showScreen('screen-welcome', null);
+            location.reload();
         }
 
         function openChatModal() { document.getElementById('chatModal').style.display = 'flex'; }
         function closeChatModal() { document.getElementById('chatModal').style.display = 'none'; }
         
         function sendChatMessage() {
-            let input = document.getElementById('chatInput');
-            let text = input.value.trim().toLowerCase();
+            const input = document.getElementById('chatInput');
+            const body = document.getElementById('chatBody');
+            const text = input.value.trim();
             if(!text) return;
 
-            let chatBody = document.getElementById('chatBody');
-            chatBody.innerHTML += `<div class="chat-bubble user">${text}</div>`;
+            body.innerHTML += `<div class="chat-bubble user">${text}</div>`;
             input.value = '';
 
             setTimeout(() => {
-                let botReply = "Thanks for reaching out! Our team or automated system will help you resolve your query shortly. Keep playing to earn more!";
-
-                if (text.includes('withdraw') || text.includes('paisa') || text.includes('nikal')) {
-                    botReply = "Withdrawal system abhi under maintenance ya coming soon hai. Jaise hi banking feature live hoga, aap apna balance nikal sakenge!";
-                } else if (text.includes('bonus') || text.includes('streak') || text.includes('free')) {
-                    botReply = "Naye users ko ₹20 welcome bonus milta hai, aur 7 din tak roz 30 min game khelne par ₹20 ka extra streak reward milta hai!";
-                } else if (text.includes('game') || text.includes('khel') || text.includes('play')) {
-                    botReply = "Aap lobby se koi bhi game select karke khel sakte hain. Har 30 min session poora karne par aapko ₹5 milte hain!";
-                }
-
-                chatBody.innerHTML += `<div class="chat-bubble bot">${botReply}</div>`;
-                chatBody.scrollTop = chatBody.scrollHeight;
+                body.innerHTML += `<div class="chat-bubble bot">Aapka sawal mil gaya hai. Nexus Arcade support team jald hi ispar dhyan degi! Tab tak aap hamare games khelkar ₹20 bonus kama sakte hain.</div>`;
+                body.scrollTop = body.scrollHeight;
             }, 600);
         }
 
         function handleChatKey(e) { if(e.key === 'Enter') sendChatMessage(); }
+
+        function openGameModal(title, url) {
+            document.getElementById('modalGameTitle').innerText = title;
+            document.getElementById('gameIframe').src = url;
+            document.getElementById('gameModal').style.display = 'flex';
+        }
+
+        function closeGameModal() {
+            document.getElementById('gameIframe').src = '';
+            document.getElementById('gameModal').style.display = 'none';
+        }
+
+        function updateStreakUI() {
+            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+            if(!usersDB[currentUser]) return;
+            let streak = usersDB[currentUser].streakCount || 1;
+            for(let i=1; i<=7; i++) {
+                const dayEl = document.getElementById('day' + i);
+                if(i <= streak) {
+                    dayEl.classList.add('completed');
+                }
+            }
+        }
+
+        function claimStreakBonus() {
+            let usersDB = JSON.parse(localStorage.getItem('nexus_cloud_users') || '{}');
+            let user = usersDB[currentUser];
+            if(user.streakClaimed) {
+                alert("Aap pehle hi streak bonus claim kar chuke hain!");
+                return;
+            }
+            if(user.streakCount < 7) {
+                alert("Pehle 7 din ka streak poora karein!");
+                return;
+            }
+            user.balance += 20.00;
+            user.streakClaimed = true;
+            usersDB[currentUser] = user;
+            localStorage.setItem('nexus_cloud_users', JSON.stringify(usersDB));
+            userBalance = user.balance;
+            document.getElementById('balanceDisplay').innerText = `₹${userBalance.toFixed(2)}`;
+            alert("Badhai ho! ₹20 streak bonus aapke wallet mein add kar diya gaya hai.");
+        }
     </script>
 </body>
 </html>
